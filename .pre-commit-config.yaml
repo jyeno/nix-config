@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: alejandra
+        name: "nix formatter (alejandra)"
+        entry: alejandra
+        language: system
+        always_run: true
+        pass_filenames: true
