@@ -1,6 +1,4 @@
 {pkgs, ...}: {
-  # ../../modules/home/cli/gpg.nix # TODO, not working disabled for now
-
   home.username = "jyeno";
   home.homeDirectory = "/home/jyeno";
   home.packages = with pkgs; [
@@ -33,7 +31,6 @@
     spotdl
     lmstudio
     r2modman
-    # _64gram
     vesktop
 
     # TODO optimize packages list
@@ -89,7 +86,58 @@
       fnott.enable = true;
       foot.enable = true;
       hypridle.enable = true;
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        wallpaperPath = ../../extras/wallpapers/dragon.jpg;
+        extraConfig = ''
+          monitor = DP-1, 3440x1440@165, 0x0, 1, bitdepth, 10, cm, hdr, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1
+        '';
+        keyboard = {
+          layout = "us,us";
+          variant = ",workman-intl";
+          options = "ctrl:nocaps,grp:win_space_toggle";
+        };
+        animations.enable = false;
+        binds = {
+          config = let
+            grimblast = pkgs.lib.getExe pkgs.grimblast;
+            steam = "/run/current-system/sw/bin/steam";
+            telegram = pkgs.lib.getExe pkgs.materialgram;
+            light = pkgs.lib.getExe pkgs.light;
+            foot = pkgs.lib.getExe' pkgs.foot "footclient";
+            ghostty = pkgs.lib.getExe pkgs.ghostty;
+            tesseract = pkgs.lib.getExe pkgs.tesseract;
+            pactl = pkgs.lib.getExe' pkgs.pulseaudio "pactl";
+            notify-send = pkgs.lib.getExe' pkgs.libnotify "notify-send";
+            defaultApp = type: "${pkgs.lib.getExe pkgs.handlr-regex} launch ${type}";
+          in [
+            # Program bindings
+            "$mainMod, Return, exec, ${foot} sh -c 'tmux at -t 0 || tmux'"
+            "$mainMod ALT, Return, exec, ${ghostty}"
+            # "$mainMod, Return, exec, ${defaultApp "x-scheme-handler/terminal"}"
+            "$mainMod, e, exec, ${defaultApp "text/plain"}"
+            "$mainMod, b, exec, ${defaultApp "x-scheme-handler/https"}"
+            "$mainMod, s, exec, ${steam}"
+            "$mainMod, t, exec, ${telegram}"
+            # Brightness control (only works if the system has lightd)
+            ", XF86MonBrightnessUp, exec, ${light} -A 10"
+            ", XF86MonBrightnessDown, exec, ${light} -U 10"
+            # Volume
+            ", XF86AudioRaiseVolume, exec, ${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
+            ", XF86AudioLowerVolume, exec, ${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
+            ", XF86AudioMute, exec, ${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
+            "SHIFT, XF86AudioMute, exec, ${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+            ", XF86AudioMicMute, exec, ${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+            # Screenshotting
+            ", Print, exec, ${grimblast} --notify copy output"
+            "$mainMod, Print, exec, ${grimblast} --notify copy area"
+            # To OCR
+            "ALT, Print, exec, ${grimblast} save area - | ${tesseract} - - | wl-copy && ${notify-send} -t 3000 'OCR result copied to buffer'"
+          ];
+          enableCycleWorkspaces = true;
+          enableExtraBinds = true;
+        };
+      };
       hyprlock.enable = true;
       river.enable = false;
       ashell.enable = true;
