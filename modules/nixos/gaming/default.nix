@@ -20,23 +20,26 @@ in {
         };
       };
       vrr.enable = lib.mkEnableOption "Enable Variable Refresh Rate (VRR) support";
-    };
-    mangohud = {
-      enable = lib.mkEnableOption "Enable MangoHud configuration";
-      configStr = lib.mkOption {
-        type = lib.types.str;
-        default = "full,core_load=0";
-        description = "Mangohud config flags";
+      mangohud = {
+        enable = lib.mkEnableOption "Enable MangoHud configuration";
+        configStr = lib.mkOption {
+          type = lib.types.str;
+          default = "full,core_load=0";
+          description = "Mangohud config flags";
+        };
       };
+      vkbasalt.enable = lib.mkEnableOption "Enable vkBasalt configuration";
+      ntsync.enable = lib.mkEnableOption "Enable usage ntsync configuration"; #TODO add ntsync enablement in the config if possible
     };
-    vkbasalt.enable = lib.mkEnableOption "Enable vkBasalt configuration";
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages =
-      (lib.optionals cfg.mangohud.enable [pkgs.mangohud])
+      (lib.optionals cfg.settings.mangohud.enable [pkgs.mangohud])
       ++ (lib.optionals cfg.settings.hdr.enable [pkgs.gamescope-wsi])
-      ++ (lib.optionals cfg.vkbasalt.enable [pkgs.vkbasalt]);
+      ++ (lib.optionals cfg.settings.vkbasalt.enable [pkgs.vkbasalt]);
+
+    chaotic.hdr.enable = cfg.settings.hdr.enable;
 
     systemd.tmpfiles.rules = lib.mkIf cfg.settings.rt.enable [
       "w /proc/sys/kernel/sched_autogroup_enabled - - - - 1"

@@ -31,6 +31,15 @@
     };
     gaming = {
       enable = true;
+      settings = {
+        hdr.enable = true;
+        rt.enable = true;
+        vrr.enable = true;
+        vkbasalt.enable = true;
+        ntsync.enable = true;
+        mangohud.enable = true;
+      };
+      gamemode.enableNotifications = true;
       #gamescope = {};
       lact.enable = true;
     };

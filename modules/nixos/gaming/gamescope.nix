@@ -22,8 +22,8 @@ in {
     };
     enableMangoHudIntegration = lib.mkOption {
       type = lib.types.bool;
-      default = gaming.mangohud.enable;
-      defaultText = lib.literalExpression "config.local.gaming.mangohud.enable";
+      default = gaming.settings.mangohud.enable;
+      defaultText = lib.literalExpression "config.local.gaming.settings.mangohud.enable";
       description = "Enable MangoHUD integration (--mangoapp)";
     };
     fullscreen = lib.mkOption {
@@ -128,7 +128,7 @@ in {
       package = lib.mkDefault pkgs.gamescope;
       args =
         (mkGamescopeFlag "rt" cfg.realtimePriority)
-        ++ (mkGamescopeFlag "mangoapp" (gaming.mangohud.enable && cfg.enableMangoHudIntegration))
+        ++ (mkGamescopeFlag "mangoapp" (gaming.settings.mangohud.enable && cfg.enableMangoHudIntegration))
         ++ (mkGamescopeFlag "fullscreen" cfg.fullscreen)
         ++ (mkGamescopeFlag "adaptive-sync" cfg.adaptiveSync)
         ++ (mkGamescopeFlag "immediate-flips" cfg.immediateFlips)
@@ -174,9 +174,9 @@ in {
           ))
         ))
         ++ cfg.extraArgs;
-      env = lib.mkIf (gaming.mangohud.enable && !cfg.enableMangoHudIntegration) {
+      env = lib.mkIf (gaming.settings.mangohud.enable && !cfg.enableMangoHudIntegration) {
         MANGOHUD = true;
-        MANGOHUD_CONFIG = gaming.mangohud.configStr;
+        MANGOHUD_CONFIG = gaming.settings.mangohud.configStr;
         OBS_VKCAPTURE = true; # TODO move after obs capture option
       };
     };

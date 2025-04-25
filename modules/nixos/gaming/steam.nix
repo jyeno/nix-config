@@ -16,10 +16,10 @@ in {
     extraEnv = lib.mkOption {
       type = lib.types.nullOr lib.types.attrs;
       default = {
-        MANGOHUD = gaming.mangohud.enable; # && ! gaming.gamescope.enable
-        MANGOHUD_CONFIG = gaming.mangohud.configStr;
-        ENABLE_VKBASALT = gaming.vkbasalt.enable;
-        PROTON_USE_NTSYNC = true;
+        MANGOHUD = gaming.settings.mangohud.enable; # && ! gaming.gamescope.enable
+        MANGOHUD_CONFIG = gaming.settings.mangohud.configStr;
+        ENABLE_VKBASALT = gaming.settings.vkbasalt.enable;
+        PROTON_USE_NTSYNC = gaming.settings.ntsync.enable;
         PROTON_ENABLE_WAYLAND = true;
         WINE_FULLSCREEN_FSR = true;
         DXVK_HDR = gaming.settings.hdr.enable;
