@@ -76,7 +76,32 @@
       zathura.enable = true;
     };
     misc = {
-      persistent.enable = true;
+      persistent = {
+        enable = true;
+        directories = [
+          ".gnupg"
+          "music"
+          ".mozilla/firefox/jyeno"
+          ".local/share/materialgram"
+          ".local/share/direnv"
+          ".config/sops"
+          # ".config/r2modman"
+          # ".config/r2modmanPlus-local"
+          ".config/chromium"
+          ".config/vesktop"
+          ".password-store"
+          ".nixos"
+        ];
+        directoriesSymlink = [
+          ".local/share/Steam"
+          ".cache/lm-studio"
+        ];
+        files = [
+          ".local/share/fish/fish_history"
+          ".ssh/known_hosts"
+          ".Passwords.kdbx"
+        ];
+      };
       sops.enable = true;
       sound.enable = true;
     };
