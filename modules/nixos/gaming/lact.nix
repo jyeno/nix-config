@@ -8,6 +8,7 @@
 in {
   options.local.gaming.lact = {
     enable = lib.mkEnableOption "AMDGPU control software";
+    overclock = lib.mkEnableOption "Enable overclock control";
     config = lib.mkOption {
       type = lib.types.attrs;
       description = "Configuration passed to LACT.";
@@ -30,7 +31,10 @@ in {
   config = lib.mkIf cfg.enable {
     environment = {
       etc = lib.mkIf (cfg.config != {}) {
-        "lact/config.yaml".source = import ../../common/to-yaml.nix cfg.config;
+        "lact/config.yaml".text = lib.generators.toYAML {} cfg.config;
+        "modprobe.d/99-amdgpu-overdrive.conf".text = lib.mkIf cfg.overclock ''
+          options amdgpu ppfeaturemask=0xFFF7FFFF
+        '';
       };
       systemPackages = [pkgs.lact];
     };
