@@ -30,6 +30,6 @@ in {
       };
     };
 
-    xdg.configFile."ashell/config.yml".text = lib.mkIf (cfg.config != {}) (lib.generators.toYAML {} cfg.config);
+    xdg.configFile."ashell/config.yml".source = lib.mkIf (cfg.config != {}) ((pkgs.formats.yaml {}).generate "ashell-config" cfg.config);
   };
 }

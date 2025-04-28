@@ -31,7 +31,7 @@ in {
   config = lib.mkIf cfg.enable {
     environment = {
       etc = lib.mkIf (cfg.config != {}) {
-        "lact/config.yaml".text = lib.generators.toYAML {} cfg.config;
+        "lact/config.yaml".source = (pkgs.formats.yaml {}).generate "lact-config" cfg.config;
         "modprobe.d/99-amdgpu-overdrive.conf".text = lib.mkIf cfg.overclock ''
           options amdgpu ppfeaturemask=0xFFF7FFFF
         '';

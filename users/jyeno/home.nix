@@ -175,7 +175,7 @@
           launcher = pkgs.lib.getExe pkgs.wofi;
           cliphist = pkgs.lib.getExe pkgs.cliphist;
           clipboard = "selected=$(${cliphist} list | ${launcher} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy";
-          textCap = "150";
+          textCap = 150;
           fontName = "Comic Sans MS"; # TODO change
           backgroundColor = "#1e1e2e";
           primaryColor = "#fab387";
