@@ -32,7 +32,7 @@
     gaming = {
       enable = true;
       settings = {
-        hdr.enable = true;
+        hdr.enable = false;
         rt.enable = true;
         vrr.enable = true;
         vkbasalt.enable = true;
