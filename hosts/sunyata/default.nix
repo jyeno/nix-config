@@ -34,7 +34,7 @@
       settings = {
         hdr.enable = false;
         rt.enable = true;
-        vrr.enable = true;
+        vrr.enable = false;
         vkbasalt.enable = true;
         ntsync.enable = true;
         mangohud.enable = true;

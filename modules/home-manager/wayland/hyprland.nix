@@ -104,7 +104,7 @@ in {
           animate_manual_resizes = false;
           enable_swallow = true;
           focus_on_activate = true;
-          vrr = true;
+          vrr = false;
         };
 
         dwindle = {
