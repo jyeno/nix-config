@@ -11,6 +11,7 @@
   system.stateVersion = "24.05";
 
   local = {
+    users.jyeno.enable = true;
     cli = {
       enable = true;
       mtr = true;

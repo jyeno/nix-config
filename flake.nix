@@ -76,6 +76,9 @@
       ./modules/home-manager/misc/default.nix
       ./modules/home-manager/wayland/default.nix
     ];
+    usersModules = [
+      ./modules/users/jyeno/default.nix
+    ];
     homeFlakeModules = [
       inputs.sops-nix.homeManagerModules.sops
       inputs.nvf.homeManagerModules.default
@@ -89,22 +92,7 @@
       inputs.disko.nixosModules.default
       inputs.sops-nix.nixosModules.sops
     ];
-    userModule = {
-      # TODO remove
-      config,
-      pkgs,
-      ...
-    } @ moduleArgs: {
-      users.users =
-        builtins.mapAttrs (
-          username: userData: nixpkgs.lib.recursiveUpdate (import userData.defaultNixPath moduleArgs) {}
-        )
-        discoveredUsers;
-      home-manager.users =
-        builtins.mapAttrs (
-          username: userData: (import userData.homeConfigPath {inherit username pkgs config;})
-        )
-        discoveredUsers;
+    homeModule = {
       home-manager.sharedModules = homeModules ++ homeFlakeModules;
       home-manager.extraSpecialArgs = {inherit inputs outputs;};
       home-manager.useGlobalPkgs = true;
@@ -116,16 +104,18 @@
         specialArgs = {inherit inputs outputs;};
         modules =
           flakeModules
-          ++ [userModule]
+          ++ [homeModule]
           ++ nixosModules
+          ++ usersModules
           ++ [./hosts/marga/default.nix];
       };
       sunyata = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules =
           flakeModules
-          ++ [userModule]
+          ++ [homeModule]
           ++ nixosModules
+          ++ usersModules
           ++ [./hosts/sunyata/default.nix];
       };
     };
