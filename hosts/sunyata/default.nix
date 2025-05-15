@@ -33,19 +33,24 @@
     gaming = {
       enable = true;
       settings = {
-        hdr.enable = false;
+        hdr.enable = true;
         rt.enable = true;
         vrr.enable = false;
         vkbasalt.enable = true;
         ntsync.enable = true;
         mangohud.enable = true;
+        wayland.enable = true;
       };
       gamemode.enableNotifications = true;
       gamescope = {
         outputWidth = 3440;
         outputHeight = 1440;
-        nestedRefresh = 145;
+        nestedRefresh = 165;
         nestedUnfocusedRefresh = 30;
+        hdrItmSdrNits = 101;
+        hdrItmTargetNits = 400;
+        hdrSdrContentNits = 250;
+        sdrGamutWideness = 0.5;
       };
       lact = {
         enable = true;

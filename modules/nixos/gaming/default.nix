@@ -30,6 +30,7 @@ in {
       };
       vkbasalt.enable = lib.mkEnableOption "Enable vkBasalt configuration";
       ntsync.enable = lib.mkEnableOption "Enable usage ntsync configuration"; #TODO add ntsync enablement in the config if possible
+      wayland.enable = lib.mkEnableOption "Enable proton wayland support";
     };
   };
 
