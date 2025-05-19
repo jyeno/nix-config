@@ -121,7 +121,8 @@
         keyboard = {
           layout = "us,us";
           variant = ",workman-intl";
-          options = "ctrl:nocaps,grp:win_space_toggle";
+          options = "ctrl:swapcaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
+          # options = "ctrl:nocaps,caps:none,grp:win_space_toggle";
         };
         animations.enable = false;
         binds = {
