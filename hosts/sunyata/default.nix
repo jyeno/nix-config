@@ -11,6 +11,8 @@
 
   system.stateVersion = "24.05";
 
+  chaotic.mesa-git.enable = true;
+
   local = {
     users.jyeno.enable = true;
     cli = {
@@ -35,11 +37,11 @@
       settings = {
         hdr.enable = true;
         rt.enable = true;
-        vrr.enable = false;
+        vrr.enable = true;
         vkbasalt.enable = true;
         ntsync.enable = true;
         mangohud.enable = true;
-        wayland.enable = true;
+        wayland.enable = false;
       };
       gamemode.enableNotifications = true;
       gamescope = {

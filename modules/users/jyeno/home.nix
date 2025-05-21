@@ -116,12 +116,12 @@
         wallpaperPath = ../../../extras/wallpapers/dragon.jpg;
         #TODO only enable it if hdr is enabled
         extraConfig = ''
-          monitor = DP-1, 3440x1440@165, 0x0, 1, bitdepth, 10, cm, hdr, sdrbrightness, 1.2, sdrsaturation, 0.98
+          monitor = DP-1, 3440x1440@165, 0x0, 1, bitdepth, 10, cm, hdr, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1
         '';
         keyboard = {
           layout = "us,us";
           variant = ",workman-intl";
-          options = "ctrl:swapcaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
+          options = "ctrl:nocaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
           # options = "ctrl:nocaps,caps:none,grp:win_space_toggle";
         };
         animations.enable = false;
