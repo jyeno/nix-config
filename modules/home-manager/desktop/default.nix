@@ -4,5 +4,6 @@
     ./firefox.nix
     ./ghostty.nix
     ./zathura.nix
+    ./plasma.nix
   ];
 }
