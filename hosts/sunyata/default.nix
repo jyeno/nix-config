@@ -29,7 +29,7 @@
       hyprland.enable = true;
       river.enable = false;
       nvidia.enable = false;
-      plasma.enable = false;
+      plasma.enable = true;
       wireshark.enable = false;
     };
     gaming = {

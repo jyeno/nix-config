@@ -17,6 +17,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    plasma-manager.url = "github:nix-community/plasma-manager";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,13 +55,6 @@
     ...
   } @ inputs: let
     inherit (self) outputs;
-    discoveredUsers = {
-      # TODO have a ./modules/users/jyeno with the settings instead
-      jyeno = {
-        defaultNixPath = ./users/jyeno/default.nix;
-        homeConfigPath = ./users/jyeno/home.nix;
-      };
-    };
     nixosModules = [
       # TODO automatize the modules discovery
       ./modules/nixos/cli
@@ -84,6 +78,7 @@
       inputs.nvf.homeManagerModules.default
       inputs.impermanence.nixosModules.home-manager.impermanence
       inputs.gBar.homeManagerModules.x86_64-linux.default
+      inputs.plasma-manager.homeManagerModules.plasma-manager
     ];
     flakeModules = [
       chaotic.nixosModules.default

@@ -74,6 +74,7 @@
       firefox.enable = true;
       ghostty.enable = true;
       zathura.enable = true;
+      plasma.enable = true;
     };
     misc = {
       persistent = {
@@ -106,11 +107,11 @@
       sound.enable = true;
     };
     wayland = {
-      enable = true;
+      enable = false;
       cliphist.enable = true;
       fnott.enable = true;
       foot.enable = true;
-      hypridle.enable = true;
+      hypridle.enable = false;
       hyprland = {
         enable = true;
         wallpaperPath = ../../../extras/wallpapers/dragon.jpg;
@@ -165,10 +166,10 @@
           enableExtraBinds = true;
         };
       };
-      hyprlock.enable = true;
+      hyprlock.enable = false;
       river.enable = false;
       ashell = {
-        enable = true;
+        enable = false;
         config = let
           terminal = pkgs.lib.getExe pkgs.ghostty;
           pavucontrol = pkgs.lib.getExe pkgs.pavucontrol;
