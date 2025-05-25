@@ -32,6 +32,7 @@
     lmstudio
     r2modman
     vesktop
+    materialgram
 
     # TODO optimize packages list
     # programming
@@ -123,7 +124,6 @@
           layout = "us,us";
           variant = ",workman-intl";
           options = "ctrl:nocaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
-          # options = "ctrl:nocaps,caps:none,grp:win_space_toggle";
         };
         animations.enable = false;
         binds = {

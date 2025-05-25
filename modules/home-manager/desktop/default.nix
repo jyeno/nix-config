@@ -5,5 +5,8 @@
     ./ghostty.nix
     ./zathura.nix
     ./plasma.nix
+    ./hyprland.nix
+    ./riverwm.nix
   ];
+  #TODO move themes to here
 }
