@@ -114,7 +114,7 @@
       foot.enable = true;
       hypridle.enable = false;
       hyprland = {
-        enable = true;
+        enable = false;
         wallpaperPath = ../../../extras/wallpapers/dragon.jpg;
         #TODO only enable it if hdr is enabled
         extraConfig = ''

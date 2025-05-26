@@ -16,25 +16,4 @@ in {
 
     services.seatd.enable = true;
   };
-
-  # programs.uwsm = {
-  #   enable = true;
-  #   waylandCompositors = {
-  #     hyprland = {
-  #       prettyName = "Hyprland";
-  #       comment = "Hyprland compositor managed by UWSM";
-  #       binPath = "/run/current-system/sw/bin/Hyprland";
-  #     };
-  #   };
-  # };
-
-  # xdg.portal = {
-  #   enable = true;
-  #   wlr.enable = true;
-  #   xdgOpenUsePortal = true;
-  #   extraPortals = [
-  #     pkgs.xdg-desktop-portal-hyprland
-  #     pkgs.xdg-desktop-portal-gtk
-  #   ];
-  # };
 }

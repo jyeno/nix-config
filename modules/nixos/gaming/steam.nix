@@ -20,11 +20,8 @@ in {
         MANGOHUD_CONFIG = gaming.settings.mangohud.configStr;
         ENABLE_VKBASALT = gaming.settings.vkbasalt.enable;
         PROTON_USE_NTSYNC = gaming.settings.ntsync.enable;
-        DXVK_HDR = gaming.settings.hdr.enable;
         PROTON_ENABLE_HDR = gaming.settings.hdr.enable;
         PROTON_ENABLE_WAYLAND = gaming.settings.wayland.enable;
-        ENABLE_HDR_WSI = gaming.settings.hdr.enable;
-        WINE_FULLSCREEN_FSR = true;
       };
       description = lib.literalExpression "Env vars to insert into steam package environment";
     };

@@ -16,9 +16,9 @@ in {
       size = 24;
       package = pkgs.kdePackages.breeze;
     };
-    # home.file."/home/${config.home.username}/.gtkrc-2.0".force = lib.mkForce true;
-    # home.file."/home/${config.home.username}/.config/gtk-3.0/settings.ini".force = lib.mkForce true;
-    # home.file."/home/${config.home.username}/.config/gtk-4.0/settings.ini".force = lib.mkForce true;
+    home.file."/home/${config.home.username}/.gtkrc-2.0".force = lib.mkForce true;
+    home.file."/home/${config.home.username}/.config/gtk-3.0/settings.ini".force = lib.mkForce true;
+    home.file."/home/${config.home.username}/.config/gtk-4.0/settings.ini".force = lib.mkForce true;
     gtk = {
       enable = true;
       theme.name = "Breeze";
@@ -218,7 +218,7 @@ in {
           blur.enable = false;
           dimAdminMode.enable = false;
           wobblyWindows.enable = false;
-          minimization.animation = "none";
+          minimization.animation = "off";
           # minimization.animation = "magiclamp";
         };
         nightLight = {
@@ -281,9 +281,9 @@ in {
 
       configFile = {
         baloofilerc."Basic Settings".Indexing-Enabled = false;
-        kwinrc.org.kde.kdecoration2.ButtonsOnLeft = "SF";
+        # kwinrc.org.kde.kdecoration2.ButtonsOnLeft = "SF";
         kwinrc.Desktops.Number = {
-          value = 8;
+          value = 4;
           # Forces kde to not change this value (even through the settings app).
           immutable = true;
         };

@@ -26,7 +26,7 @@
         enable = true;
         # xkb = {};
       };
-      hyprland.enable = true;
+      hyprland.enable = false;
       river.enable = false;
       nvidia.enable = false;
       plasma.enable = true;
@@ -41,10 +41,11 @@
         vkbasalt.enable = true;
         ntsync.enable = true;
         mangohud.enable = true;
-        wayland.enable = false;
+        wayland.enable = true;
       };
       gamemode.enableNotifications = true;
       gamescope = {
+        enable = false;
         outputWidth = 3440;
         outputHeight = 1440;
         nestedRefresh = 165;
@@ -55,7 +56,7 @@
         sdrGamutWideness = 0.5;
       };
       lact = {
-        enable = true;
+        enable = false;
         overclock = true;
         config = {
           daemon = {
@@ -106,7 +107,7 @@
     };
     service = {
       bluetooth.enable = true;
-      docker.enable = true;
+      docker.enable = false;
       home-dns.enable = true;
       iwd.enable = true;
       jenkins.enable = false;
