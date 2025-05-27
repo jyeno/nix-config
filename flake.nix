@@ -67,8 +67,8 @@
     homeModules = [
       ./modules/home-manager/cli/default.nix
       ./modules/home-manager/desktop/default.nix
+      ./modules/home-manager/desktop/wlr/default.nix
       ./modules/home-manager/misc/default.nix
-      ./modules/home-manager/wayland/default.nix
     ];
     usersModules = [
       ./modules/users/jyeno/default.nix

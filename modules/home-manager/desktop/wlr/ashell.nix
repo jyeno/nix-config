@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland.ashell;
+  cfg = config.local.home.desktop.wlr.ashell;
 in {
-  options.local.home.wayland.ashell = {
+  options.local.home.desktop.wlr.ashell = {
     enable = lib.mkEnableOption "Enable ashell configuration";
     config = lib.mkOption {
       type = lib.types.attrs;

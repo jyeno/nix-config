@@ -3,10 +3,10 @@
   lib,
   ...
 }: let
-  wayland = config.local.home.wayland;
+  wayland = config.local.home.desktop.wlr;
   cfg = wayland.fnott;
 in {
-  options.local.home.wayland.fnott = {
+  options.local.home.desktop.wlr.fnott = {
     enable = lib.mkEnableOption "Enable fnott configuration";
   };
   config = lib.mkIf cfg.enable {

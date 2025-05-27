@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland.yambar;
+  cfg = config.local.home.desktop.wlr.yambar;
 in {
-  options.local.home.wayland.yambar = {
+  options.local.home.desktop.wlr.yambar = {
     enable = lib.mkEnableOption "Enable yambar configuration";
   };
   config = lib.mkIf cfg.enable {

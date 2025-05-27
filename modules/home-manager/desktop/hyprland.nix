@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland.hyprland;
+  cfg = config.local.home.desktop.hyprland;
 in {
-  options.local.home.wayland.hyprland = {
+  options.local.home.desktop.hyprland = {
     enable = lib.mkEnableOption "Enable hyprland configuration";
     wallpaperPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;

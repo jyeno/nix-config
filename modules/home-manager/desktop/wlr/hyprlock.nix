@@ -3,10 +3,10 @@
   lib,
   ...
 }: let
-  wayland = config.local.home.wayland;
+  wayland = config.local.home.desktop.wlr;
   cfg = wayland.hyprlock;
 in {
-  options.local.home.wayland.hyprlock = {
+  options.local.home.desktop.wlr.hyprlock = {
     enable = lib.mkEnableOption "Enable hyprlock configuration";
   };
   config = lib.mkIf cfg.enable {

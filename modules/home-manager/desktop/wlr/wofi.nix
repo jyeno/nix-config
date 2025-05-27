@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland.wofi;
+  cfg = config.local.home.desktop.wlr.wofi;
 in {
-  options.local.home.wayland.wofi = {
+  options.local.home.desktop.wlr.wofi = {
     enable = lib.mkEnableOption "Enable wofi configuration";
   };
   config = lib.mkIf cfg.enable {

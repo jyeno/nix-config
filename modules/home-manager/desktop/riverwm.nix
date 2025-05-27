@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland.river;
+  cfg = config.local.home.desktop.river;
 in {
-  options.local.home.wayland.river = {
+  options.local.home.desktop.river = {
     enable = lib.mkEnableOption "Enable riverwm configuration";
   };
   config = lib.mkIf cfg.enable {

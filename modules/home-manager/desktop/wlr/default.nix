@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland;
+  cfg = config.local.home.desktop.wlr;
 in {
-  options.local.home.wayland = {
+  options.local.home.desktop.wlr = {
     #TODO I dont know
     enable = lib.mkEnableOption "Enable wayland user configuration files";
     imv.enable = lib.mkEnableOption "Enable imv";
@@ -21,14 +21,11 @@ in {
 
   imports = [
     ./ashell.nix
-    ./cliphist.nix
     ./fnott.nix
     ./foot.nix
     ./gbar.nix
     ./hypridle.nix
-    ./hyprland.nix
     ./hyprlock.nix
-    ./riverwm.nix
     ./waybar.nix
     ./wofi.nix
     ./yambar.nix

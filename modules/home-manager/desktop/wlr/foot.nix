@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  wayland = config.local.home.wayland;
+  wayland = config.local.home.desktop.wlr;
   cfg = wayland.foot;
 in {
-  options.local.home.wayland.foot = {
+  options.local.home.desktop.wlr.foot = {
     enable = lib.mkEnableOption "Enable foot configuration";
   };
   config = lib.mkIf cfg.enable {

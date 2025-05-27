@@ -4,10 +4,10 @@
   inputs,
   ...
 }: let
-  wayland = config.local.home.wayland;
+  wayland = config.local.home.desktop.wlr;
   cfg = wayland.gbar;
 in {
-  options.local.home.wayland.gbar = {
+  options.local.home.desktop.wlr.gbar = {
     enable = lib.mkEnableOption "Enable GBar configuration";
   };
   config = lib.mkIf cfg.enable {

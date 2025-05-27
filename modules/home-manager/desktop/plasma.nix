@@ -16,9 +16,6 @@ in {
       size = 24;
       package = pkgs.kdePackages.breeze;
     };
-    home.file.".gtkrc-2.0".force = lib.mkForce true;
-    home.file.".config/gtk-3.0/settings.ini".force = lib.mkForce true;
-    home.file.".config/gtk-4.0/settings.ini".force = lib.mkForce true;
     gtk = {
       enable = true;
       theme.name = "Breeze";
@@ -37,7 +34,7 @@ in {
       };
     };
 
-    home.file.".local/share/konsole/${config.home.username}.profile".content = ''
+    home.file.".local/share/konsole/${config.home.username}.profile".text = ''
       [General]
       Name=${config.home.username}
       Parent=FALLBACK/
@@ -47,7 +44,7 @@ in {
       ScrollFullPage=1
     '';
     #monitor settings, TODO improve
-    home.file.".config/kwinoutputconfig.json".content = builtins.toJSON [
+    home.file.".config/kwinoutputconfig.json".text = builtins.toJSON [
       {
         data = [
           {

@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  wayland = config.local.home.wayland;
+  wayland = config.local.home.desktop.wlr;
   cfg = wayland.hypridle;
 in {
-  options.local.home.wayland.hypridle = {
+  options.local.home.desktop.wlr.hypridle = {
     enable = lib.mkEnableOption "Enable hypridle configuration";
   };
   config = lib.mkIf cfg.enable {

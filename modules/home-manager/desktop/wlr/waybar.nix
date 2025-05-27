@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.wayland.waybar;
+  cfg = config.local.home.desktop.wlr.waybar;
 in {
-  options.local.home.wayland.waybar = {
+  options.local.home.desktop.wlr.waybar = {
     enable = lib.mkEnableOption "Enable waybar configuration";
   };
   config = lib.mkIf cfg.enable {
