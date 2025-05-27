@@ -86,6 +86,7 @@
           ".mozilla/firefox/jyeno"
           ".local/share/materialgram"
           ".local/share/direnv"
+          ".local/state/wireplumber"
           ".config/sops"
           # ".config/r2modman"
           # ".config/r2modmanPlus-local"

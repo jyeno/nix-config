@@ -16,9 +16,9 @@ in {
       size = 24;
       package = pkgs.kdePackages.breeze;
     };
-    home.file."/home/${config.home.username}/.gtkrc-2.0".force = lib.mkForce true;
-    home.file."/home/${config.home.username}/.config/gtk-3.0/settings.ini".force = lib.mkForce true;
-    home.file."/home/${config.home.username}/.config/gtk-4.0/settings.ini".force = lib.mkForce true;
+    home.file.".gtkrc-2.0".force = lib.mkForce true;
+    home.file.".config/gtk-3.0/settings.ini".force = lib.mkForce true;
+    home.file.".config/gtk-4.0/settings.ini".force = lib.mkForce true;
     gtk = {
       enable = true;
       theme.name = "Breeze";
@@ -37,6 +37,68 @@ in {
       };
     };
 
+    home.file.".local/share/konsole/${config.home.username}.profile".content = ''
+      [General]
+      Name=${config.home.username}
+      Parent=FALLBACK/
+
+      [Scrolling]
+      HistorySize=10000
+      ScrollFullPage=1
+    '';
+    #monitor settings, TODO improve
+    home.file.".config/kwinoutputconfig.json".content = builtins.toJSON [
+      {
+        data = [
+          {
+            allowSdrSoftwareBrightness = true;
+            autoRotation = "InTabletMode";
+            brightness = 0.8;
+            colorPowerTradeoff = "PreferEfficiency";
+            colorProfileSource = "sRGB";
+            connectorName = "DP-3";
+            edidHash = "b3e79804fc4869bddefc8ec3849f2628";
+            edidIdentifier = "ICB 13312 0 22 2022 0";
+            highDynamicRange = true;
+            iccProfilePath = "";
+            mode = {
+              height = 1440;
+              refreshRate = 165001;
+              width = 3440;
+            };
+            overscan = 0;
+            rgbRange = "Automatic";
+            scale = 1;
+            sdrBrightness = 250;
+            sdrGamutWideness = 0.5;
+            transform = "Normal";
+            vrrPolicy = "Automatic";
+            wideColorGamut = true;
+          }
+        ];
+        name = "outputs";
+      }
+      {
+        data = [
+          {
+            lidClosed = false;
+            outputs = [
+              {
+                enabled = true;
+                outputIndex = 0;
+                position = {
+                  x = 0;
+                  y = 0;
+                };
+                priority = 0;
+              }
+            ];
+          }
+        ];
+        name = "setups";
+      }
+    ];
+
     programs.plasma = {
       enable = true;
       workspace = {
@@ -54,10 +116,10 @@ in {
 
       kscreenlocker.autoLock = true;
 
-      hotkeys.commands."launch-konsole" = {
-        name = "Launch Konsole";
+      hotkeys.commands."launch-ghostty" = {
+        name = "Launch Ghostty";
         key = "Meta+Enter";
-        command = "${pkgs.kdePackages.konsole}";
+        command = "${pkgs.ghostty}";
       };
 
       panels = [
@@ -70,23 +132,24 @@ in {
                 icon = "nix-snowflake-white";
               };
             }
-            {
-              pager.general = {
-                showWindowOutlines = true;
-                showApplicationIconsOnWindowOutlines = true;
-                showOnlyCurrentScreen = true;
-                navigationWrapsAround = true;
-                displayedText = "desktopNumber";
-                selectingCurrentVirtualDesktop = "doNothing";
-              };
-            }
+            "org.kde.plasma.pager"
+            # {
+            #   pager.general = {
+            #     showWindowOutlines = true;
+            #     showApplicationIconsOnWindowOutlines = true;
+            #     showOnlyCurrentScreen = true;
+            #     navigationWrapsAround = true;
+            #     displayedText = "desktopNumber";
+            #     selectingCurrentVirtualDesktop = "doNothing";
+            #   };
+            # }
             {
               iconTasks = {
                 launchers = [
                   "applications:org.kde.konsole.desktop"
-                  "applications:materialgram.desktop"
                   "applications:steam.desktop"
-                  "applications:chromium.desktop"
+                  "applications:io.github.kukuruzka165.materialgram.desktop"
+                  "applications:chromium-browser.desktop"
                 ];
                 behavior.showTasks = {
                   onlyInCurrentScreen = true;
@@ -117,7 +180,6 @@ in {
         }
       ];
 
-      #TODO move all conversation applications to workspace 2
       window-rules = [
         {
           description = "Plasma Desktop Workspace";
@@ -141,45 +203,9 @@ in {
             };
           };
         }
-        # {
-        #   description = "Vesktop";
-        #   match = {
-        #     window-class = {
-        #       value = "vesktop";
-        #       type = "exact";
-        #       match-whole = false;
-        #     };
-        #     title = {
-        #       value = "Discord$|Discord Updater";
-        #       type = "regex";
-        #     };
-        #   };
-        #   apply = {
-        #     maximizehoriz = {
-        #       value = true;
-        #       apply = "initially";
-        #     };
-        #     maximizevert = {
-        #       value = true;
-        #       apply = "initially";
-        #     };
-        #     screen = {
-        #       value = 1;
-        #       apply = "remember";
-        #     };
-        #     activity = {
-        #       value = "Communication";
-        #       apply = "force";
-        #     };
-        #     desktops = {
-        #       value = "Desktop_1";
-        #       apply = "force";
-        #     };
-        #   };
-        # }
       ];
 
-      # powerdevil = {
+      # powerdevil = lib.mkOptionals config.local.laptop {
       #   AC = {
       #     autoSuspend = {
       #       action = "nothing";
@@ -222,7 +248,7 @@ in {
           # minimization.animation = "magiclamp";
         };
         nightLight = {
-          enable = true;
+          enable = false;
           location.latitude = "52";
           location.longitude = "13";
           mode = "location";
@@ -284,7 +310,6 @@ in {
         # kwinrc.org.kde.kdecoration2.ButtonsOnLeft = "SF";
         kwinrc.Desktops.Number = {
           value = 4;
-          # Forces kde to not change this value (even through the settings app).
           immutable = true;
         };
         PlasmaDiscoverUpdates.Global.RequiredNotificationInterval = -1;
@@ -311,8 +336,25 @@ in {
           };
           main.currentActivity = "Default";
         };
+        spectaclerc = {
+          General = {
+            clipboardGroup = "PostScreenshotCopyImage";
+            launchAction = "UseLastUsedCapturemode";
+            rememberSelectionRect = "Always";
+          };
+          GuiConfig = {
+            captureMode = 0;
+            includeDecorations = false;
+          };
+          ImageSave = {
+            imageCompressionQuality = 100;
+            translatedScreenshotsFolder = "Screenshots";
+          };
+          VideoSave.translatedScreencastsFolder = "Screencasts";
+        };
         kxkbrc.Layout = {
           Use = true;
+          VariantList = "intl,workman-intl,colemak_dh";
           Options = "ctrl:nocaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
           ResetOldOptions = true;
           ShowLayoutIndicator = true;
@@ -324,6 +366,17 @@ in {
           autoCloseIdleDaemon = true;
           disabledTrayIcon = true;
           saveLastRegion = true;
+        };
+        konsolerc = {
+          MenuBar = "Disabled";
+          "Desktop Entry".DefaultProfile = "${config.home.username}.profile";
+          General.ConfigVersion = 1;
+          KonsoleWindow.RemoveWindowTitleBarAndFrame = true;
+          TabBar = {
+            NewTabBehavior = "PutNewTabAfterCurrentTab";
+            TabBarVisibility = "AlwaysHideTabBar";
+          };
+          UiSettings.ColorScheme = "";
         };
       };
 
