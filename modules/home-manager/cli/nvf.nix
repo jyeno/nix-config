@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }: let
@@ -16,7 +15,7 @@ in {
       enable = lib.mkDefault true;
       settings = {
         vim = {
-          theme = {
+          theme = lib.mkDefault {
             enable = true;
             name = "catppuccin";
             style = "mocha";
@@ -27,7 +26,7 @@ in {
             enable = true;
           };
 
-          statusline.lualine = {
+          statusline.lualine = lib.mkDefault {
             enable = true;
             theme = "molokai";
           };

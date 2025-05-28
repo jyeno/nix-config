@@ -17,6 +17,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     plasma-manager.url = "github:nix-community/plasma-manager";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -52,6 +56,7 @@
     home-manager,
     impermanence,
     chaotic,
+    stylix,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -83,6 +88,7 @@
     flakeModules = [
       chaotic.nixosModules.default
       impermanence.nixosModules.impermanence
+      stylix.nixosModules.stylix
       inputs.home-manager.nixosModules.default
       inputs.disko.nixosModules.default
       inputs.sops-nix.nixosModules.sops

@@ -10,30 +10,7 @@ in {
     enable = lib.mkEnableOption "Enable plasma configuration";
   };
   config = lib.mkIf cfg.enable {
-    home.pointerCursor = {
-      x11.enable = true;
-      name = "breeze_cursors";
-      size = 24;
-      package = pkgs.kdePackages.breeze;
-    };
-    gtk = {
-      enable = true;
-      theme.name = "Breeze";
-      iconTheme.name = "breeze-dark";
-      cursorTheme = {
-        name = "breeze_cursors";
-        size = 24;
-      };
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = true;
-        gtk-decoration-layout = "icon:minimize,maximize,close";
-      };
-      gtk4.extraConfig = {
-        gtk-application-prefer-dark-theme = true;
-        gtk-decoration-layout = "icon:minimize,maximize,close";
-      };
-    };
-
+    home.packages = with pkgs; [kdePackages.qtstyleplugin-kvantum];
     home.file.".local/share/konsole/${config.home.username}.profile".text = ''
       [General]
       Name=${config.home.username}
@@ -50,7 +27,7 @@ in {
           {
             allowSdrSoftwareBrightness = true;
             autoRotation = "InTabletMode";
-            brightness = 0.8;
+            brightness = 1;
             colorPowerTradeoff = "PreferEfficiency";
             colorProfileSource = "sRGB";
             connectorName = "DP-3";
@@ -67,7 +44,7 @@ in {
             rgbRange = "Automatic";
             scale = 1;
             sdrBrightness = 250;
-            sdrGamutWideness = 0.5;
+            sdrGamutWideness = 0;
             transform = "Normal";
             vrrPolicy = "Automatic";
             wideColorGamut = true;
@@ -104,7 +81,7 @@ in {
         lookAndFeel = "org.kde.breezedark.desktop";
         iconTheme = "breeze-dark";
         theme = "breeze-dark";
-        wallpaper = ../../../extras/wallpapers/dragon.jpg;
+        # wallpaper = ../../../extras/wallpapers/dragon.jpg;
         cursor = {
           theme = "breeze_cursors";
           size = 24;
@@ -116,7 +93,7 @@ in {
       hotkeys.commands."launch-ghostty" = {
         name = "Launch Ghostty";
         key = "Meta+Enter";
-        command = "${pkgs.ghostty}";
+        command = "${lib.getExe pkgs.ghostty}";
       };
 
       panels = [
@@ -129,7 +106,6 @@ in {
                 icon = "nix-snowflake-white";
               };
             }
-            "org.kde.plasma.pager"
             # {
             #   pager.general = {
             #     showWindowOutlines = true;
@@ -320,7 +296,10 @@ in {
         kwinrc.Windows.DelayFocusInterval = 0;
         kwinrc.Windows.FocusPolicy = "FocusFollowsMouse";
         kwinrc.Windows.NextFocusPrefersMouse = true;
-        kcminputrc.Mouse.XLbInptAccelProfileFlat = true;
+        kcminputrc = {
+          Keyboard.RepeatDelay = 300;
+          Mouse.XLbInptAccelProfileFlat = true;
+        };
         kded5rc.Module-device_automounter.autoload = false;
         kactivitymanagerdrc = {
           activities = {
@@ -365,7 +344,6 @@ in {
           saveLastRegion = true;
         };
         konsolerc = {
-          MenuBar = "Disabled";
           "Desktop Entry".DefaultProfile = "${config.home.username}.profile";
           General.ConfigVersion = 1;
           KonsoleWindow.RemoveWindowTitleBarAndFrame = true;

@@ -10,13 +10,6 @@ in {
     #TODO I dont know
     enable = lib.mkEnableOption "Enable wayland user configuration files";
     imv.enable = lib.mkEnableOption "Enable imv";
-    theme = {
-      cursorSize = lib.mkOption {
-        type = lib.types.int;
-        default = 18;
-        description = "Set cursor size";
-      };
-    };
   };
 
   imports = [
@@ -33,45 +26,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs.imv.enable = cfg.imv.enable;
-
-    #TODO add more options
-    gtk = {
-      enable = lib.mkDefault true;
-      theme = {
-        name = "Arc-Dark";
-        package = pkgs.arc-theme;
-      };
-
-      iconTheme = {
-        package = pkgs.arc-icon-theme;
-        name = "Arc";
-      };
-
-      cursorTheme = {
-        package = pkgs.vimix-cursors;
-        name = "Vimix-cursors";
-        size = cfg.theme.cursorSize;
-      };
-
-      gtk3.extraConfig = {
-        Settings = lib.mkDefault ''
-          gtk-application-prefer-dark-theme=1
-        '';
-      };
-
-      gtk4.extraConfig = {
-        Settings = lib.mkDefault ''
-          gtk-application-prefer-dark-theme=1
-        '';
-      };
-    };
-
-    home.pointerCursor = {
-      gtk.enable = lib.mkDefault true;
-      name = "Vimix-cursors";
-      package = pkgs.vimix-cursors;
-      size = cfg.theme.cursorSize;
-    };
 
     home.sessionVariables = {
       NIXOS_OZONE_WL = "1";

@@ -86,6 +86,30 @@
       browserpass.enable = true;
     };
     desktop = {
+      theme = {
+        stylix = {
+          enable = true;
+          autoEnable = true;
+          image = ../../../extras/wallpapers/dragon.jpg;
+          # polarity = "dark";
+          base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";
+          fonts = {
+            monospace = {
+              package = pkgs.nerd-fonts.jetbrains-mono;
+              name = "JetBrains Mono Nerd Font";
+            };
+            sizes = {
+              terminal = 15;
+              desktop = 14;
+              applications = 14;
+            };
+          };
+          # targets = {
+          #   nvf.enable = true;
+          #   qt.enable = true;
+          # };
+        };
+      };
       chromium.enable = true;
       firefox.enable = true;
       ghostty.enable = true;
@@ -135,11 +159,15 @@
         };
       };
       wlr = {
-        enable = false;
-        fnott.enable = true;
-        foot.enable = true;
+        enable = true;
+        wofi.enable = true;
+        fnott.enable = false;
+        foot.enable = false;
         hypridle.enable = false;
         hyprlock.enable = false;
+        gbar.enable = false;
+        waybar.enable = false;
+        yambar.enable = false;
         ashell = {
           enable = false;
           config = let
@@ -218,10 +246,6 @@
             };
           };
         };
-        gbar.enable = false;
-        waybar.enable = false;
-        wofi.enable = true;
-        yambar.enable = false;
       };
     };
     misc = {
