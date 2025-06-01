@@ -43,7 +43,7 @@
           nvf.enable = true;
           qt = {
             enable = true;
-            platform = "qtct";
+            # platform = "qtct";
           };
         };
       };

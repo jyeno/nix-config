@@ -15,28 +15,27 @@ in {
       enable = lib.mkDefault true;
       settings = {
         vim = {
-          theme = lib.mkDefault {
-            enable = true;
-            name = "catppuccin";
-            style = "mocha";
-          };
+          # theme = lib.mkDefault {
+          #   enable = true;
+          #   name = "catppuccin";
+          #   style = "mocha";
+          # };
           viAlias = true;
           vimAlias = true;
-          lsp = {
-            enable = true;
-          };
+          lsp.enable = true;
 
-          statusline.lualine = lib.mkDefault {
-            enable = true;
-            theme = "molokai";
-          };
+          statusline.lualine.enable = true;
 
           telescope.enable = true;
           autocomplete.nvim-cmp.enable = true;
           git.enable = true; # git-signs, vim-fugitive, git-conflict
 
+          notes.neorg = {
+            enable = true;
+            treesitter.enable = true;
+          };
+
           languages = {
-            enableLSP = true;
             enableTreesitter = true;
 
             nix.enable = true;

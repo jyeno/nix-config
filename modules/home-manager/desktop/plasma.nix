@@ -91,7 +91,7 @@ in {
 
       hotkeys.commands."launch-ghostty" = {
         name = "Launch Ghostty";
-        key = "Meta+Enter";
+        key = "Meta+Return";
         command = "${lib.getExe pkgs.ghostty}";
       };
 
