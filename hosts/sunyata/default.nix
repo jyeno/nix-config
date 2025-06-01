@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
@@ -11,7 +11,7 @@
 
   system.stateVersion = "24.05";
 
-  chaotic.mesa-git.enable = true;
+  chaotic.mesa-git.enable = false;
 
   local = {
     users.jyeno.enable = true;
@@ -22,6 +22,31 @@
     };
     desktop = {
       enablePams = true;
+      stylix = {
+        enable = true;
+        autoEnable = true;
+        image = ../../extras/wallpapers/dragon.jpg;
+        # polarity = "dark";
+        base16Scheme = "${inputs.nixpkgs.legacyPackages.x86_64-linux.base16-schemes}/share/themes/catppuccin-frappe.yaml";
+        fonts = {
+          monospace = {
+            package = inputs.nixpkgs.legacyPackages.x86_64-linux.nerd-fonts.jetbrains-mono;
+            name = "JetBrains Mono Nerd Font";
+          };
+          # sizes = {
+          #   terminal = 15;
+          #   desktop = 14;
+          #   applications = 14;
+          # };
+        };
+        targets = {
+          nvf.enable = true;
+          qt = {
+            enable = true;
+            platform = "qtct";
+          };
+        };
+      };
       graphics = {
         enable = true;
         # xkb = {};

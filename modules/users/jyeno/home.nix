@@ -33,6 +33,7 @@
     r2modman
     vesktop
     materialgram
+    ghostty
 
     # TODO optimize packages list
     # programming
@@ -86,30 +87,7 @@
       browserpass.enable = true;
     };
     desktop = {
-      theme = {
-        stylix = {
-          enable = true;
-          autoEnable = true;
-          image = ../../../extras/wallpapers/dragon.jpg;
-          # polarity = "dark";
-          base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-frappe.yaml";
-          fonts = {
-            monospace = {
-              package = pkgs.nerd-fonts.jetbrains-mono;
-              name = "JetBrains Mono Nerd Font";
-            };
-            sizes = {
-              terminal = 15;
-              desktop = 14;
-              applications = 14;
-            };
-          };
-          # targets = {
-          #   nvf.enable = true;
-          #   qt.enable = true;
-          # };
-        };
-      };
+      theme.stylix = {};
       chromium.enable = true;
       firefox.enable = true;
       ghostty.enable = true;

@@ -81,7 +81,6 @@ in {
         lookAndFeel = "org.kde.breezedark.desktop";
         iconTheme = "breeze-dark";
         theme = "breeze-dark";
-        # wallpaper = ../../../extras/wallpapers/dragon.jpg;
         cursor = {
           theme = "breeze_cursors";
           size = 24;
