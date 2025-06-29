@@ -68,58 +68,64 @@
       pkgs,
       ...
     }: {
-      options.local.users."_" = {
-        enable = lib.mkEnableOption "Enable user configuration";
-        homeConfig = lib.mkOption {
-          type = lib.types.attrs;
-          default = {};
-          description = "User home configuration";
-        };
-        keys = lib.mkOption {
-          type = with lib.types; listOf str;
-          default = [];
-          description = "ssh public keys";
-        };
-        shell = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.fish;
-          description = "user shell";
-        };
-        extraGroups = {
-          type = with lib.types; listOf str;
-          default = let
-            #TODO maybe wrong to let it here
-            ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
-          in
-            [
-              "wheel"
-              "video"
-              "audio"
-              "input"
-            ]
-            ++ ifTheyExist [
-              "network"
-              "seat"
-              "wireshark"
-              "i2c"
-              "mysql"
-              "docker"
-              "podman"
-              "git"
-              "libvirtd"
-              "deluge"
-              "gamemode"
-            ];
-          description = "List of user groups";
+      options.local.users = lib.mkOption {
+        default = {};
+        description = "user settings";
+        type = with lib.types; attrsOf (submodule {
+            options = {
+              enable = lib.mkEnableOption "Enable user configuration";
+              homeConfig = lib.mkOption {
+                type = lib.types.attrs;
+                default = {};
+                description = "User home configuration";
+              };
+              keys = lib.mkOption {
+                type = with lib.types; listOf str;
+                default = [];
+                description = "ssh public keys";
+              };
+              shell = lib.mkOption {
+                type = lib.types.package;
+                default = pkgs.fish;
+                description = "user shell";
+              };
+              extraGroups = {
+                type = with lib.types; listOf str;
+                default = let
+                  #TODO maybe wrong to let it here
+                  ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+                in
+                  [
+                    "wheel"
+                    "video"
+                    "audio"
+                    "input"
+                  ]
+                ++ ifTheyExist [
+                  "network"
+                  "seat"
+                  "wireshark"
+                  "i2c"
+                  "mysql"
+                  "docker"
+                  "podman"
+                  "git"
+                  "libvirtd"
+                  "deluge"
+                  "gamemode"
+                ];
+                description = "List of user groups";
+              };
+            };
+          });
         };
       };
-    };
     userModule = {
       config,
       pkgs,
       ...
     } @ moduleArgs: {
-      users.users = lib.traceVal (
+      users.users =
         mapAttrs
         (
           username: userConfig:
@@ -134,7 +140,7 @@
               openssh.authorizedKeys.keys = userConfig.keys;
             }
         )
-        config.local.users);
+        config.local.users;
       home-manager = {
         sharedModules =
           attrValues discoveredHomeModules
@@ -147,7 +153,7 @@
           ];
         # extraSpecialArgs = {inherit inputs outputs;};
         useGlobalPkgs = true;
-        users = lib.traceVal (
+        users =
           mapAttrs (
             username: userConfig:
               lib.optionals userConfig.enable
@@ -172,7 +178,7 @@
               in
                 lib.recursiveUpdate baseHomeConfig userConfig.homeConfig)
           )
-          config.local.users);
+          config.local.users;
       };
     };
   in {
@@ -214,7 +220,7 @@
               hostSpecificModules
               ++ attrValues discoveredNixosModules
               ++ [userOptionsModule]
-              ++ [ lib.traceVal hostData.mainConfig]
+              ++ [hostData.mainConfig]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
                 userModule

@@ -4,16 +4,16 @@
     ./disko.nix
   ];
 
-  networking = {
-    hostName = "marga";
-  };
+  # networking = {
+  #   hostName = "marga";
+  # };
 
   system.stateVersion = "24.05";
 
   local = {
     users.jyeno = {
       enable = true;
-      homeConfig = import ../../users/jyeno/home.nix;
+      homeConfig = import ../../extras/desktop/jyenohome.nix;
       keys = [
         (builtins.readFile ../../extras/pubkeys/id_jyeno.pub)
       ];
@@ -26,7 +26,7 @@
     desktop = {
       enable = true;
       enablePams = true;
-      stylix = import ../../extras/desktop/stylixWest.nix inputs;
+      stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
       graphics = {
         enable = true;
         # xkb = {};
