@@ -65,6 +65,7 @@
         vrr.enable = true;
         vkbasalt.enable = true;
         ntsync.enable = true;
+        wow64.enable = true;
         mangohud.enable = true;
         wayland.enable = true;
       };

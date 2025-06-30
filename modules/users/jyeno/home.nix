@@ -34,6 +34,10 @@
     vesktop
     materialgram
     ghostty
+    mumble
+    protontricks
+
+    nix-output-monitor
 
     # TODO optimize packages list
     # programming

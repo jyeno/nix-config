@@ -11,15 +11,6 @@ in {
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [kdePackages.qtstyleplugin-kvantum];
-    home.file.".local/share/konsole/${config.home.username}.profile".text = ''
-      [General]
-      Name=${config.home.username}
-      Parent=FALLBACK/
-
-      [Scrolling]
-      HistorySize=10000
-      ScrollFullPage=1
-    '';
     #monitor settings, TODO improve
     home.file.".config/kwinoutputconfig.json".text = builtins.toJSON [
       {
@@ -73,6 +64,24 @@ in {
       }
     ];
 
+    programs.konsole = {
+      enable = true;
+      defaultProfile = "${config.home.username}";
+      profiles."${config.home.username}".extraConfig = {
+        Scrolling = {
+          HistorySize = 100000;
+          ScrollFullPage = 1;
+        };
+      };
+      extraConfig = {
+        KonsoleWindow.RemoveWindowTitleBarAndFrame = true;
+        TabBar = {
+          NewTabBehavior = "PutNewTabAfterCurrentTab";
+          TabBarVisibility = "AlwaysHideTabBar";
+        };
+      };
+    };
+
     programs.plasma = {
       enable = true;
       workspace = {
@@ -98,6 +107,8 @@ in {
       panels = [
         {
           location = "bottom";
+          hiding = "autohide";
+          floating = false;
           widgets = [
             {
               kickoff = {
@@ -105,16 +116,16 @@ in {
                 icon = "nix-snowflake-white";
               };
             }
-            # {
-            #   pager.general = {
-            #     showWindowOutlines = true;
-            #     showApplicationIconsOnWindowOutlines = true;
-            #     showOnlyCurrentScreen = true;
-            #     navigationWrapsAround = true;
-            #     displayedText = "desktopNumber";
-            #     selectingCurrentVirtualDesktop = "doNothing";
-            #   };
-            # }
+            {
+              pager.general = {
+                showWindowOutlines = true;
+                showApplicationIconsOnWindowOutlines = true;
+                showOnlyCurrentScreen = true;
+                navigationWrapsAround = true;
+                displayedText = "desktopNumber";
+                selectingCurrentVirtualDesktop = "doNothing";
+              };
+            }
             {
               iconTasks = {
                 launchers = [
@@ -147,8 +158,6 @@ in {
             }
             "org.kde.plasma.showdesktop"
           ];
-          hiding = "none";
-          floating = false;
         }
       ];
 
@@ -217,14 +226,16 @@ in {
           dimAdminMode.enable = false;
           wobblyWindows.enable = false;
           minimization.animation = "off";
-          # minimization.animation = "magiclamp";
         };
         nightLight = {
-          enable = false;
-          location.latitude = "52";
-          location.longitude = "13";
-          mode = "location";
+          enable = true;
+          mode = "times";
           temperature.night = 2700;
+          transitionTime = 30;
+          time = {
+            morning = "06:30";
+            evening = "19:30";
+          };
         };
         titlebarButtons = {
           left = ["more-window-actions"];
@@ -239,6 +250,32 @@ in {
             "Desktop 3"
             "Desktop 4"
           ];
+        };
+        tiling = {
+          padding = 5;
+          layout = {
+            id = "cf5c25c2-4217-4193-add6-b5971cb543f2";
+            tiles = {
+              layoutDirection = "horizontal";
+              tiles = [
+                {
+                  width = 0.5;
+                }
+                {
+                  layoutDirection = "vertical";
+                  tiles = [
+                    {
+                      height = 0.5;
+                    }
+                    {
+                      height = 0.5;
+                    }
+                  ];
+                  width = 0.5;
+                }
+              ];
+            };
+          };
         };
       };
 
@@ -277,6 +314,30 @@ in {
         };
       };
 
+      input = {
+        keyboard = {
+          layouts = [
+            {
+              layout = "us";
+              variant = "intl";
+            }
+            {
+              displayName = "workmani";
+              layout = "us";
+              variant = "workman-intl";
+            }
+            {
+              displayName = "cl-dh";
+              layout = "us";
+              variant = "colemak_dh";
+            }
+          ];
+          options = ["ctrl:nocaps" "caps:ctrl_shifted_capslock" "grp:win_space_toggle"];
+          repeatDelay = 250;
+          repeatRate = 40;
+        };
+      };
+
       configFile = {
         baloofilerc."Basic Settings".Indexing-Enabled = false;
         # kwinrc.org.kde.kdecoration2.ButtonsOnLeft = "SF";
@@ -295,10 +356,7 @@ in {
         kwinrc.Windows.DelayFocusInterval = 0;
         kwinrc.Windows.FocusPolicy = "FocusFollowsMouse";
         kwinrc.Windows.NextFocusPrefersMouse = true;
-        kcminputrc = {
-          Keyboard.RepeatDelay = 300;
-          Mouse.XLbInptAccelProfileFlat = true;
-        };
+        kcminputrc.Mouse.XLbInptAccelProfileFlat = true;
         kded5rc.Module-device_automounter.autoload = false;
         kactivitymanagerdrc = {
           activities = {
@@ -327,30 +385,12 @@ in {
           };
           VideoSave.translatedScreencastsFolder = "Screencasts";
         };
-        kxkbrc.Layout = {
-          Use = true;
-          VariantList = "intl,workman-intl,colemak_dh";
-          Options = "ctrl:nocaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
-          ResetOldOptions = true;
-          ShowLayoutIndicator = true;
-          HighlightNonDefaultSettings = true;
-        };
         "flameshot/flameshot.ini".General = {
           showDesktopNotification = false;
           showStartupLaunchMessage = false;
           autoCloseIdleDaemon = true;
           disabledTrayIcon = true;
           saveLastRegion = true;
-        };
-        konsolerc = {
-          "Desktop Entry".DefaultProfile = "${config.home.username}.profile";
-          General.ConfigVersion = 1;
-          KonsoleWindow.RemoveWindowTitleBarAndFrame = true;
-          TabBar = {
-            NewTabBehavior = "PutNewTabAfterCurrentTab";
-            TabBarVisibility = "AlwaysHideTabBar";
-          };
-          UiSettings.ColorScheme = "";
         };
       };
 
