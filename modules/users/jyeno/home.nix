@@ -239,6 +239,7 @@
           ".mozilla/firefox/jyeno"
           ".local/share/materialgram"
           ".local/share/direnv"
+          ".local/share/fish"
           ".local/state/wireplumber"
           ".config/sops"
           # ".config/r2modman"
@@ -253,7 +254,6 @@
           ".cache/lm-studio"
         ];
         files = [
-          ".local/share/fish/fish_history"
           ".ssh/known_hosts"
           ".Passwords.kdbx"
         ];

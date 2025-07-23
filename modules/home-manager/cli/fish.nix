@@ -17,10 +17,14 @@ in {
         ls = "eza -al --color=always --group-directories-first --grid --icons";
         ll = "eza -l --color=always --group-directories-first --octal-permissions --icons";
         lt = "eza -aT --color=always --group-directories-first --icons";
-        tree = "eza -T --all --icons";
-        search = "fzf";
-        hw = "hwinfo --short";
-        top = "zfxtop";
+        tree = "eza -T --all --icons --git-ignore";
+        s = "fzf";
+        hw = "${lib.getExe pkgs.hwinfo} --short";
+        top = "${lib.getExe pkgs.zfxtop}";
+        ports = "${lib.getExe pkgs.unixtools.netstat} -tulanp";
+        serve = "python -m http.server";
+        nrs = "nixos-rebuild --ask-sudo-password switch --flake . &| ${lib.getExe pkgs.nix-output-monitor}";
+        ttm = "${lib.getExe pkgs.tt} -quotes en";
         q = "exit";
       };
       description = "Fish aliases";
@@ -49,6 +53,24 @@ in {
           src = colored-man-pages.src;
         }
         {
+          name = "async-prompt";
+          src = pkgs.fetchFromGitHub {
+            owner = "infused-kim";
+            repo = "fish-async-prompt";
+            rev = "07e107635e693734652b0709dd34166820f1e6ff";
+            sha256 = "y0fX+tpMSG6uOYS0J9fplbZKKyiebqgTgC130LVHZGw=";
+          };
+        }
+        {
+          name = "refresh-prompt";
+          src = pkgs.fetchFromGitHub {
+            owner = "infused-kim";
+            repo = "fish-refresh-prompt-on-cmd";
+            rev = "8f01915193ea6ad3b3339f70554732bc392a6465";
+            sha256 = "y0fX+tpMSG6uOYS0J9fplbZKKyiebqgTgC130LVHZGw=";
+          };
+        }
+        {
           name = "z";
           src = z.src;
         }
@@ -72,12 +94,21 @@ in {
           end
         end
 
+        function mkd
+          mkdir -p $argv[1]
+          cd $argv[1]
+        end
+
         function down
           aria2c (wl-paste)
         end
 
         function fish_user_key_bindings
           fish_vi_key_bindings
+        end
+
+        function fish_right_prompt_loading_indicator
+          echo (set_color '#aaa')' … '(set_color normal)
         end
 
         set fish_greeting
