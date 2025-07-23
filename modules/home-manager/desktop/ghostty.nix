@@ -16,9 +16,11 @@ in {
         mouse-hide-while-typing = true
         window-save-state = always
         gtk-titlebar = false
-        window-decoration = false
+        gtk-tabs-location = hidden
+        window-decoration = none
         shell-integration = fish
-        theme = catppuccin-mocha
+        term = xterm-256color
+        # theme = catppuccin-mocha
         # theme = GruvboxDarkHard
         copy-on-select = true
 
