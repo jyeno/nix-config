@@ -140,7 +140,7 @@
       mysql.enable = false;
       openssh.enable = true;
       pipewire.enable = true;
-      podman.enable = false;
+      podman.enable = true;
       postgres.enable = false;
       tlp.enable = false;
     };

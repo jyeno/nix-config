@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   service = config.local.service;
@@ -11,9 +12,11 @@ in {
   config = lib.mkIf cfg.enable {
     virtualisation.podman = {
       enable = lib.mkDefault true;
+      autoPrune.enable = true;
       dockerCompat = !dockerEnabled;
       dockerSocket.enable = !dockerEnabled;
       defaultNetwork.settings.dns_enabled = true;
+      extraPackages = [pkgs.podman-compose];
     };
   };
 }

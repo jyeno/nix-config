@@ -251,6 +251,7 @@
         ];
         directoriesSymlink = [
           ".local/share/Steam"
+          ".local/share/containers"
           ".cache/lm-studio"
         ];
         files = [
