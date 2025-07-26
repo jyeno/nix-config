@@ -10,7 +10,7 @@ in {
   options.local.users.jyeno = {
     enable = lib.mkEnableOption "Enable jyeno user";
     homeConfig = lib.mkOption {
-      type = lib.types.nullOr lib.types.attrs;
+      type = lib.types.attrs;
       default = import ./home.nix {inherit pkgs config;};
       description = "Home manager configuration";
     };
@@ -46,7 +46,7 @@ in {
       ];
     };
   };
-  config.home-manager.users = lib.mkIf (cfg.homeConfig != null) {
+  config.home-manager.users = lib.mkIf cfg.enable {
     jyeno = cfg.homeConfig;
   };
 }

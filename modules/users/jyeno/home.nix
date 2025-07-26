@@ -1,7 +1,9 @@
 {pkgs, ...}: {
   home.username = "jyeno";
   home.homeDirectory = "/home/jyeno";
+
   home.packages = with pkgs; [
+    #cli
     zip
     xz
     unzip
@@ -17,30 +19,25 @@
     gnused
     gnutar
     gawk
-    btop
     strace
     lsof
     lm_sensors
     usbutils
     pciutils
-    keepassxc
-    mangohud
-    pavucontrol
-    pamixer
     age
     spotdl
+    nix-output-monitor
+
+    #desktop
+    keepassxc
+    pavucontrol
+    pamixer
     lmstudio
     r2modman
     vesktop
     materialgram
     ghostty
     mumble
-    protontricks
-
-    nix-output-monitor
-
-    # TODO optimize packages list
-    # programming
     zeal-qt6
   ];
 
@@ -49,22 +46,7 @@
   systemd.user.startServices = "sd-switch";
   home.stateVersion = "24.05";
 
-  local.home = let
-    grimblast = pkgs.lib.getExe pkgs.grimblast;
-    steam = "/run/current-system/sw/bin/steam";
-    telegram = pkgs.lib.getExe pkgs.materialgram;
-    light = pkgs.lib.getExe pkgs.light;
-    foot = pkgs.lib.getExe' pkgs.foot "footclient";
-    pactl = pkgs.lib.getExe' pkgs.pulseaudio "pactl";
-    defaultApp = type: "${pkgs.lib.getExe pkgs.handlr-regex} launch ${type}";
-    terminal = pkgs.lib.getExe pkgs.ghostty;
-    pavucontrol = pkgs.lib.getExe pkgs.pavucontrol;
-    lockCmd = "${pkgs.lib.getExe pkgs.hyprlock} &";
-    clockFormat = "%a %d %b %R";
-    launcher = pkgs.lib.getExe pkgs.wofi;
-    cliphist = pkgs.lib.getExe pkgs.cliphist;
-    clipboard = "selected=$(${cliphist} list | ${launcher} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy";
-  in {
+  local.home = {
     cli = {
       fish = {
         enable = true;
@@ -90,7 +72,22 @@
       mpv.enable = true;
       browserpass.enable = true;
     };
-    desktop = {
+    desktop = let
+      grimblast = pkgs.lib.getExe pkgs.grimblast;
+      steam = "/run/current-system/sw/bin/steam";
+      telegram = pkgs.lib.getExe pkgs.materialgram;
+      light = pkgs.lib.getExe pkgs.light;
+      foot = pkgs.lib.getExe' pkgs.foot "footclient";
+      pactl = pkgs.lib.getExe' pkgs.pulseaudio "pactl";
+      defaultApp = type: "${pkgs.lib.getExe pkgs.handlr-regex} launch ${type}";
+      terminal = pkgs.lib.getExe pkgs.ghostty;
+      pavucontrol = pkgs.lib.getExe pkgs.pavucontrol;
+      lockCmd = "${pkgs.lib.getExe pkgs.hyprlock} &";
+      clockFormat = "%a %d %b %R";
+      launcher = pkgs.lib.getExe pkgs.wofi;
+      cliphist = pkgs.lib.getExe pkgs.cliphist;
+      clipboard = "selected=$(${cliphist} list | ${launcher} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy";
+    in {
       theme.stylix = {};
       chromium.enable = true;
       firefox.enable = true;
