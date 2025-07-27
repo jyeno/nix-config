@@ -45,11 +45,8 @@ in {
       enableSSHSupport = lib.mkDefault true;
     };
 
-    sops.secrets.root-password.neededForUsers = true;
-
-    users.mutableUsers = lib.mkDefault false;
-    users.users.root.hashedPasswordFile = config.sops.secrets.root-password.path;
     users.defaultUserShell = lib.mkIf cfg.fish.enable pkgs.fish;
+    users.mutableUsers = lib.mkDefault false;
   };
 
   imports = [

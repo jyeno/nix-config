@@ -10,7 +10,7 @@ in {
   options.local.gaming.steam = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = gaming.enable;
       description = "Enable steam configuration";
     };
     extraEnv = lib.mkOption {

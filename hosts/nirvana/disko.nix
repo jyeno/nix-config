@@ -21,6 +21,7 @@
             size = "100%";
             content = {
               type = "btrfs";
+              mountpoint = "/partition-root";
               extraArgs = ["-f"]; # Override existing partition
               # Subvolumes must set a mountpoint in order to be mounted,
               # unless their parent is mounted

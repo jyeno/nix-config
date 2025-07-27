@@ -70,6 +70,7 @@ in {
     };
   };
   config = {
+    #TODO solve it requiring a stylix configuration
     stylix = lib.optionals (cfg.theme.stylix != null) cfg.theme.stylix;
     home.pointerCursor = {
       x11.enable = lib.mkDefault true;

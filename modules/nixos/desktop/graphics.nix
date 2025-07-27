@@ -7,11 +7,7 @@
   cfg = config.local.desktop.graphics;
 in {
   options.local.desktop.graphics = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable graphics configuration";
-    };
+    enable = lib.mkEnableOption "Enable graphics configuration";
     amd-initrd = lib.mkEnableOption "Enable AMDGPU initrd configuration";
     xkb = lib.mkOption {
       type = lib.types.attrs;
@@ -28,9 +24,9 @@ in {
     hardware = {
       graphics = {
         enable = true;
-        enable32Bit = true;
+        enable32Bit = pkgs.system == "x86_64-linux";
       };
-      amdgpu.initrd.enable = lib.mkIf cfg.amd-initrd true;
+      amdgpu.initrd.enable = cfg.amd-initrd;
     };
 
     services.xserver = {

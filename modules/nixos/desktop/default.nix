@@ -18,6 +18,7 @@ in {
       waylock = {};
       hyprlock = {};
     };
+    #TODO solve it requiring a stylix configuration
     stylix = lib.optionals (cfg.stylix != null) cfg.stylix;
   };
   imports = [
