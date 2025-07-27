@@ -82,7 +82,10 @@
       ./modules/home-manager/misc/default.nix
     ];
     usersModules = [
+      ./modules/users/cassio/default.nix
+      ./modules/users/igorcafe/default.nix
       ./modules/users/jyeno/default.nix
+      ./modules/users/oliver/default.nix
     ];
     homeFlakeModules = [
       inputs.sops-nix.homeManagerModules.sops
@@ -94,7 +97,6 @@
     flakeModules = [
       chaotic.nixosModules.default
       impermanence.nixosModules.impermanence
-      stylix.nixosModules.stylix
       inputs.home-manager.nixosModules.default
       inputs.disko.nixosModules.default
       inputs.sops-nix.nixosModules.sops
@@ -115,7 +117,10 @@
           ++ [homeModule]
           ++ nixosModules
           ++ usersModules
-          ++ [./hosts/marga/default.nix];
+          ++ [
+            inputs.stylix.nixosModules.stylix
+            ./hosts/marga/default.nix
+          ];
       };
       sunyata = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
@@ -124,7 +129,10 @@
           ++ [homeModule]
           ++ nixosModules
           ++ usersModules
-          ++ [./hosts/sunyata/default.nix];
+          ++ [
+            inputs.stylix.nixosModules.stylix
+            ./hosts/sunyata/default.nix
+          ];
       };
       nirvana = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";

@@ -16,7 +16,6 @@ in {
     persistentDirectories = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
-        "/etc/nixos"
         "/etc/ssh"
         "/var/log"
         "/var/lib/nixos"
