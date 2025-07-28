@@ -8,6 +8,8 @@
     ./disko.nix
   ];
 
+  documentation.man.enable = false;
+
   networking = {
     # TODO put it on flake.nix
     hostName = "nirvana";
@@ -35,72 +37,15 @@
   networking.firewall.allowedTCPPorts = [22];
 
   local = {
-    users.cassio.enable = true;
-    users.igorcafe.enable = true;
-    users.jyeno = {
-      enable = true;
-      homeConfig = {
-        home.username = "jyeno";
-        home.homeDirectory = "/home/jyeno";
-
-        home.packages = with pkgs; [
-          #cli
-          zip
-          xz
-          unzip
-          p7zip
-          ripgrep
-          jq
-          eza
-          dnsutils
-          socat
-          nmap
-          file
-          which
-          gnused
-          gnutar
-          gawk
-          strace
-          lsof
-          lm_sensors
-          usbutils
-          pciutils
-          age
-          spotdl
-          nix-output-monitor
-        ];
-
-        programs.home-manager.enable = true;
-
-        systemd.user.startServices = "sd-switch";
-        home.stateVersion = "25.05";
-
-        local.home = {
-          cli = {
-            fish = {
-              enable = true;
-              starship.enable = true;
-            };
-            git.enable = true;
-            gpg.enable = true;
-            nvf.enable = true;
-            fd.enable = true;
-            fzf.enable = true;
-            aria2.enable = true;
-            bat.enable = true;
-            ssh.enable = true;
-            tmux.enable = true;
-            direnv.enable = true;
-            yt-dlp.enable = true;
-          };
-        };
-      };
-    };
-    users.oliver.enable = true;
+    # users.cassio.enable = true;
+    # users.igorcafe.enable = true;
+    # users.jyeno.enable = true;
+    users.user.enable = true;
+    # users.oliver.enable = true;
     cli = {
       enable = true;
       mtr = true;
-      gnuAgent = true;
+      # gnuAgent = true;
     };
     misc = {
       firewall = {
@@ -121,7 +66,7 @@
         hostKeys = [];
       };
       podman.enable = false;
-      docker.enable = true;
+      docker.enable = false;
     };
     tweaks = {
       # io-schedulers.enable = true;

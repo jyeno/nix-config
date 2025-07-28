@@ -27,16 +27,17 @@ in {
     };
 
     environment.variables.EDITOR = "nvim";
-    environment.systemPackages = with pkgs; [
-      # TODO put on an option
-      neovim
-      wget
-      git
-      gnumake
-      curl
-      libnotify
-      wl-clipboard
-    ];
+    #TODO add options to packages
+    # environment.systemPackages = with pkgs; [
+    #   # TODO put on an option
+    #   neovim
+    #   wget
+    #   git
+    #   gnumake
+    #   curl
+    #   libnotify
+    #   wl-clipboard
+    # ];
 
     programs.mtr.enable = cfg.mtr;
 

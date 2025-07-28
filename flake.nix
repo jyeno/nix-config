@@ -86,6 +86,7 @@
       ./modules/users/igorcafe/default.nix
       ./modules/users/jyeno/default.nix
       ./modules/users/oliver/default.nix
+      ./modules/users/user/default.nix
     ];
     homeFlakeModules = [
       inputs.sops-nix.homeManagerModules.sops

@@ -17,28 +17,23 @@
               mountOptions = ["fmask=0022" "dmask=0022" "noatime" "defaults"];
             };
           };
-          yaksha = {
+          root = {
             size = "100%";
             content = {
-              type = "btrfs";
-              mountpoint = "/partition-root";
-              extraArgs = ["-f"]; # Override existing partition
-              # Subvolumes must set a mountpoint in order to be mounted,
-              # unless their parent is mounted
-              subvolumes = {
-                "/rootfs" = {
-                  mountOptions = ["subvol=rootfs" "compress=zstd" "noatime"];
-                  mountpoint = "/";
-                };
-                "/home" = {
-                  mountOptions = ["subvol=home" "compress=zstd" "noatime"];
-                  mountpoint = "/home";
-                };
-                "/nix" = {
-                  mountOptions = ["subvol=nix" "compress=zstd" "noatime"];
-                  mountpoint = "/nix";
-                };
-              };
+              type = "filesystem";
+              format = "xfs";
+              mountpoint = "/";
+              mountOptions = [
+                "defaults"
+                "noatime"
+                "nodev"
+                "logbufs=8"
+                "logbsize=256k"
+                "largeio"
+                "inode64"
+                "swalloc"
+                "allocsize=131072k"
+              ];
             };
           };
         };
@@ -49,7 +44,7 @@
         fsType = "tmpfs";
         mountOptions = [
           "mode=755"
-          "size=8G"
+          "size=4G"
           "noatime"
           "defaults"
         ];
