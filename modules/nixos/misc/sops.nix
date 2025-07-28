@@ -18,8 +18,10 @@ in {
         keyFile = "/var/lib/sops-nix/keys.txt";
         generateKey = true;
       };
-      secrets.jyeno-password.neededForUsers = true; # TODO fix, it shouldnt be here
-      sops.secrets.root-password.neededForUsers = true;
+      secrets = {
+        jyeno-password.neededForUsers = true; # TODO fix, it shouldnt be here
+        root-password.neededForUsers = true;
+      };
     };
     users.users = {
       jyeno.hashedPasswordFile = config.sops.secrets.jyeno-password.path;
