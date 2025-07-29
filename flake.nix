@@ -43,10 +43,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # lix = {
-    #   url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    lix = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # my secrets repo1
     nix-secrets = {
@@ -61,7 +61,7 @@
     home-manager,
     impermanence,
     chaotic,
-    # lix,
+    lix,
     stylix,
     ...
   } @ inputs: let
@@ -101,7 +101,7 @@
       inputs.home-manager.nixosModules.default
       inputs.disko.nixosModules.default
       inputs.sops-nix.nixosModules.sops
-      # lix.nixosModules.default
+      lix.nixosModules.default
     ];
     homeModule = {
       home-manager.sharedModules = homeModules ++ homeFlakeModules;
