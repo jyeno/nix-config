@@ -6,6 +6,7 @@
   cfg = config.local.desktop;
 in {
   options.local.desktop = {
+    enable = lib.mkEnableOption "Enable desktop settings";
     enablePams = lib.mkEnableOption "Enable desktop root configuration";
     stylix = lib.mkOption {
       type = with lib; types.nullOr (types.attrsOf types.anything);
@@ -13,13 +14,12 @@ in {
       description = "stylix configuration";
     };
   };
-  config = {
+  config = lib.mkIf cfg.enable {
+    stylix = lib.optionals (cfg.stylix != null) cfg.stylix;
     security.pam.services = lib.mkIf cfg.enablePams {
       waylock = {};
       hyprlock = {};
     };
-    #TODO solve it requiring a stylix configuration
-    stylix = lib.optionals (cfg.stylix != null) cfg.stylix;
   };
   imports = [
     ./graphics.nix

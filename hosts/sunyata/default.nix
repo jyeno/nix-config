@@ -21,6 +21,7 @@
       gnuAgent = true;
     };
     desktop = {
+      enable = true;
       enablePams = true;
       stylix = {
         enable = true;

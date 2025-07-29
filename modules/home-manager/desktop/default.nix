@@ -17,6 +17,7 @@ in {
     ./riverwm.nix
   ];
   options.local.home.desktop = {
+    enable = lib.mkEnableOption "Enable desktop settingss";
     cursorTheme = {
       size = lib.mkOption {
         type = lib.types.int;
@@ -69,8 +70,7 @@ in {
       };
     };
   };
-  config = {
-    #TODO solve it requiring a stylix configuration
+  config = lib.mkIf cfg.enable {
     stylix = lib.optionals (cfg.theme.stylix != null) cfg.theme.stylix;
     home.pointerCursor = {
       x11.enable = lib.mkDefault true;

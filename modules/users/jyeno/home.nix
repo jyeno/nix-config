@@ -88,6 +88,7 @@
       cliphist = pkgs.lib.getExe pkgs.cliphist;
       clipboard = "selected=$(${cliphist} list | ${launcher} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy";
     in {
+      enable = true;
       theme.stylix = {};
       chromium.enable = true;
       firefox.enable = true;
