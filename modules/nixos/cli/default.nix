@@ -2,10 +2,13 @@
   config,
   lib,
   pkgs,
+  localLib,
   ...
 }: let
   cfg = config.local.cli;
 in {
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+
   options.local.cli = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -17,6 +20,18 @@ in {
       default = "Lat2-Terminus16";
       description = "Set console font";
     };
+    systemPackages = lib.mkOption {
+      type = with lib.types; listOf packages;
+      default = with pkgs; [
+        neovim
+        wget
+        git
+        gnumake
+        curl
+        libnotify
+      ];
+      description = "List of system-wide packages";
+    };
     mtr = lib.mkEnableOption "Enable MTR (traceroute) tooling";
     gnuAgent = lib.mkEnableOption "Enable GNU agent";
   };
@@ -27,17 +42,6 @@ in {
     };
 
     environment.variables.EDITOR = "nvim";
-    #TODO add options to packages
-    # environment.systemPackages = with pkgs; [
-    #   # TODO put on an option
-    #   neovim
-    #   wget
-    #   git
-    #   gnumake
-    #   curl
-    #   libnotify
-    #   wl-clipboard
-    # ];
 
     programs.mtr.enable = cfg.mtr;
 
@@ -46,11 +50,9 @@ in {
       enableSSHSupport = lib.mkDefault true;
     };
 
-    users.defaultUserShell = lib.mkIf cfg.fish.enable pkgs.fish;
-    users.mutableUsers = lib.mkDefault false;
+    users = {
+      defaultUserShell = lib.mkIf cfg.fish.enable pkgs.fish;
+      mutableUsers = lib.mkDefault false;
+    };
   };
-
-  imports = [
-    ./fish.nix
-  ];
 }

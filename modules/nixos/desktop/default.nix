@@ -1,10 +1,13 @@
 {
   config,
   lib,
+  localLib,
   ...
 }: let
   cfg = config.local.desktop;
 in {
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+
   options.local.desktop = {
     enable = lib.mkEnableOption "Enable desktop settings";
     enablePams = lib.mkEnableOption "Enable desktop root configuration";
@@ -21,12 +24,4 @@ in {
       hyprlock = {};
     };
   };
-  imports = [
-    ./graphics.nix
-    ./hyprland.nix
-    ./nvidia.nix
-    ./plasma.nix
-    ./riverwm.nix
-    ./wireshark.nix
-  ];
 }

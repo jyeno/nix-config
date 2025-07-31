@@ -1,79 +1,12 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
-  imports = [
-    ./hardware-configuration.nix
-    ./disko.nix
+{inputs, ...}: let
+  system = "aarch64-linux";
+  modules = [
+    inputs.chaotic.nixosModules.default
+    inputs.impermanence.nixosModules.impermanence
+    inputs.disko.nixosModules.default
+    inputs.sops-nix.nixosModules.sops
+    inputs.lix.nixosModules.default
   ];
-
-  documentation.man.enable = false;
-
-  networking = {
-    # TODO put it on flake.nix
-    hostName = "nirvana";
-    interfaces.eth0 = {
-      ipv4.addresses = [
-        {
-          # Use IP address configured in the Oracle Cloud web interface
-          address = "10.0.0.90";
-          prefixLength = 24;
-        }
-      ];
-      # Only "required" for IPv6, can be false if only IPv4 is needed
-      useDHCP = true;
-    };
-    # Note: you also need to configure open ports in the Oracle Cloud web interface
-    # (Virtual Cloud Network -> Security Lists -> Ingress Rules)
-    firewall = {
-      # (both optional)
-      logRefusedConnections = false;
-      rejectPackets = true;
-    };
-  };
-
-  system.stateVersion = "25.05";
-  networking.firewall.allowedTCPPorts = [22];
-
-  local = {
-    # users.cassio.enable = true;
-    # users.igorcafe.enable = true;
-    # users.jyeno.enable = true;
-    users.user.enable = true;
-    # users.oliver.enable = true;
-    cli = {
-      enable = true;
-      mtr = true;
-      # gnuAgent = true;
-    };
-    misc = {
-      firewall = {
-        enable = true;
-        nameservers = ["8.8.8.8" "1.1.1.1"];
-      };
-      boot.enable = true;
-      locale = {
-        enable = true;
-        timezone = "America/Sao_Paulo";
-      };
-      persistent.enable = false;
-    };
-    service = {
-      home-dns.enable = false;
-      openssh = {
-        enable = true;
-        hostKeys = [];
-      };
-      podman.enable = false;
-      docker.enable = false;
-    };
-    tweaks = {
-      # io-schedulers.enable = true;
-      nix = {
-        enable = true; # TODO change name
-        allowUnfree = true;
-      };
-    };
-  };
+in {
+  inherit system modules;
 }

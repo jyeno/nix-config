@@ -2,20 +2,13 @@
   config,
   lib,
   pkgs,
+  localLib,
   ...
 }: let
   cfg = config.local.home.desktop;
 in {
-  imports = [
-    ./chromium.nix
-    ./cliphist.nix
-    ./firefox.nix
-    ./ghostty.nix
-    ./zathura.nix
-    ./plasma.nix
-    ./hyprland.nix
-    ./riverwm.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+
   options.local.home.desktop = {
     enable = lib.mkEnableOption "Enable desktop settingss";
     cursorTheme = {

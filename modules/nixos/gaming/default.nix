@@ -2,10 +2,13 @@
   config,
   lib,
   pkgs,
+  localLib,
   ...
 }: let
   cfg = config.local.gaming;
 in {
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+
   options.local.gaming = {
     enable = lib.mkEnableOption "Enable gaming environment configuration";
     settings = {
@@ -63,11 +66,4 @@ in {
       "w /sys/kernel/mm/transparent_hugepage/shmem_enabled - - - - advise"
     ];
   };
-
-  imports = [
-    ./gamemode.nix
-    ./gamescope.nix
-    ./lact.nix
-    ./steam.nix
-  ];
 }

@@ -1,10 +1,13 @@
 {
   config,
   lib,
+  localLib,
   ...
 }: let
   cfg = config.local.misc;
 in {
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+
   options.local.misc = {
     firewall = {
       enable = lib.mkOption {
@@ -24,13 +27,4 @@ in {
     firewall.enable = cfg.firewall.enable;
     nameservers = cfg.firewall.nameservers;
   };
-
-  imports = [
-    ./boot.nix
-    ./locale.nix
-    ./persistent.nix
-    ./sops.nix
-    ./virtualisation.nix
-    ./zram.nix
-  ];
 }

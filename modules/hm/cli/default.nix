@@ -2,10 +2,13 @@
   config,
   lib,
   pkgs,
+  localLib,
   ...
 }: let
   cfg = config.local.home.cli;
 in {
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+
   options.local.home.cli = {
     aria2.enable = lib.mkEnableOption "Enable aria2";
     bat.enable = lib.mkEnableOption "Enable bat";
@@ -63,19 +66,6 @@ in {
     pass-secret-service.enable = lib.mkEnableOption "Enable pass secret service";
     direnv.enable = lib.mkEnableOption "Enable direnv";
   };
-
-  imports = [
-    ./fish.nix
-    ./git.nix
-    ./gpg.nix
-    ./mpd.nix
-    ./neomutt.nix
-    ./neovim.nix
-    ./newsboat.nix
-    ./nvf.nix
-    ./ssh.nix
-    ./tmux.nix
-  ];
 
   config.programs.aria2.enable = cfg.aria2.enable;
 

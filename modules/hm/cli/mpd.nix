@@ -37,8 +37,8 @@ in {
     # TODO add more options
     services.mpd = {
       enable = true;
-      musicDirectory = "${config.home.homeDirectory}/music";
-      playlistDirectory = "${config.home.homeDirectory}/music/playlists";
+      musicDirectory = "${config.home.homeDirectory}/Music";
+      playlistDirectory = "${config.home.homeDirectory}/Music/playlists";
       extraConfig = ''
         audio_output {
           type "pipewire"

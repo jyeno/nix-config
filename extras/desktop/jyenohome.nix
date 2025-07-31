@@ -1,7 +1,4 @@
 {pkgs, ...}: {
-  home.username = "jyeno";
-  home.homeDirectory = "/home/jyeno";
-
   home.packages = with pkgs; [
     #cli
     zip
@@ -41,11 +38,6 @@
     zeal-qt6
   ];
 
-  programs.home-manager.enable = true;
-
-  systemd.user.startServices = "sd-switch";
-  home.stateVersion = "24.05";
-
   local.home = {
     cli = {
       fish = {
@@ -74,7 +66,7 @@
     };
     desktop = let
       grimblast = pkgs.lib.getExe pkgs.grimblast;
-      steam = "/run/current-system/sw/bin/steam";
+      steam = pkgs.lib.getExe pkgs.steam;
       telegram = pkgs.lib.getExe pkgs.materialgram;
       light = pkgs.lib.getExe pkgs.light;
       foot = pkgs.lib.getExe' pkgs.foot "footclient";
@@ -99,7 +91,7 @@
       river.enable = false;
       hyprland = {
         enable = false;
-        wallpaperPath = ../../../extras/wallpapers/dragon.jpg;
+        # wallpaperPath = ../../../extras/wallpapers/dragon.jpg;
         #TODO only enable it if hdr is enabled
         extraConfig = ''
           monitor = DP-1, 3440x1440@165, 0x0, 1, bitdepth, 10, cm, hdr, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1
@@ -148,6 +140,7 @@
         gbar.enable = false;
         waybar.enable = false;
         yambar.enable = false;
+        #TODO remove from here
         ashell = {
           enable = false;
           config = let
@@ -233,7 +226,7 @@
         enable = true;
         directories = [
           ".gnupg"
-          "music"
+          "Music"
           ".mozilla/firefox/jyeno"
           ".local/share/materialgram"
           ".local/share/direnv"
@@ -253,7 +246,7 @@
           ".cache/lm-studio"
         ];
         files = [
-          ".ssh/known_hosts"
+          # ".ssh/known_hosts"
           ".Passwords.kdbx"
         ];
       };

@@ -26,17 +26,15 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    gBar = {
-      url = "github:scorpion-26/gBar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # gBar = {
+    #   url = "github:scorpion-26/gBar";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";
       submodules = true;
     };
-    hypr-contrib.url = "github:hyprwm/contrib";
-    hyprpicker.url = "github:hyprwm/hyprpicker";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -55,96 +53,174 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    impermanence,
-    chaotic,
-    lix,
-    stylix,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-    nixosModules = [
-      # TODO automatize the modules discovery
-      ./modules/nixos/cli
-      ./modules/nixos/desktop
-      ./modules/nixos/gaming
-      ./modules/nixos/misc
-      ./modules/nixos/service
-      ./modules/nixos/tweaks
-    ];
-    homeModules = [
-      ./modules/home-manager/cli/default.nix
-      ./modules/home-manager/desktop/default.nix
-      ./modules/home-manager/desktop/wlr/default.nix
-      ./modules/home-manager/misc/default.nix
-    ];
-    usersModules = [
-      ./modules/users/cassio/default.nix
-      ./modules/users/igorcafe/default.nix
-      ./modules/users/jyeno/default.nix
-      ./modules/users/oliver/default.nix
-      ./modules/users/user/default.nix
-    ];
-    homeFlakeModules = [
-      inputs.sops-nix.homeManagerModules.sops
-      inputs.nvf.homeManagerModules.default
-      inputs.impermanence.nixosModules.home-manager.impermanence
-      inputs.gBar.homeManagerModules.x86_64-linux.default
-      inputs.plasma-manager.homeManagerModules.plasma-manager
-    ];
-    flakeModules = [
-      chaotic.nixosModules.default
-      impermanence.nixosModules.impermanence
-      inputs.home-manager.nixosModules.default
-      inputs.disko.nixosModules.default
-      inputs.sops-nix.nixosModules.sops
-      lix.nixosModules.default
-    ];
-    homeModule = {
-      home-manager.sharedModules = homeModules ++ homeFlakeModules;
-      home-manager.extraSpecialArgs = {inherit inputs outputs;};
-      home-manager.useGlobalPkgs = true;
+  outputs = inputs: let
+    #     inherit (self) outputs;
+    inherit (builtins) attrValues mapAttrs;
+    inherit (inputs.nixpkgs) lib legacyPackages;
+    localLib = import ./lib {inherit inputs;};
+    discoveredHosts = localLib.mapHosts ./hosts;
+    # discoveredHosts = let hostsDir = builtins.path {path = ./hosts; name = "hosts";}; in localLib.mapHosts hostsDir;
+    discoveredNixosModules = localLib.discoverModules ./modules/nixos;
+    discoveredHomeModules = localLib.discoverModules ./modules/hm;
+    discoveredPackages = localLib.mapPackages ./pkgs;
+    userOptionsModule = {
+      config,
+      pkgs,
+      ...
+    }: {
+      options.local.users."_" = {
+        enable = lib.mkEnableOption "Enable user configuration";
+        homeConfig = lib.mkOption {
+          type = lib.types.attrs;
+          default = {};
+          description = "User home configuration";
+        };
+        keys = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = [];
+          description = "ssh public keys";
+        };
+        shell = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.fish;
+          description = "user shell";
+        };
+        extraGroups = {
+          type = with lib.types; listOf str;
+          default = let
+            #TODO maybe wrong to let it here
+            ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+          in
+            [
+              "wheel"
+              "video"
+              "audio"
+              "input"
+            ]
+            ++ ifTheyExist [
+              "network"
+              "seat"
+              "wireshark"
+              "i2c"
+              "mysql"
+              "docker"
+              "podman"
+              "git"
+              "libvirtd"
+              "deluge"
+              "gamemode"
+            ];
+          description = "List of user groups";
+        };
+      };
+    };
+    userModule = {
+      config,
+      pkgs,
+      ...
+    } @ moduleArgs: {
+      users.users = lib.traceVal (
+        mapAttrs
+        (
+          username: userConfig:
+            lib.optionals userConfig.enable
+            {
+              inherit username;
+              isNormalUser = lib.mkDefault true;
+              description = "user ${username}";
+              shell = userConfig.shell;
+              ignoreShellProgramCheck = lib.mkDefault true;
+              extraGroups = userConfig.extraGroups;
+              openssh.authorizedKeys.keys = userConfig.keys;
+            }
+        )
+        config.local.users);
+      home-manager = {
+        sharedModules =
+          attrValues discoveredHomeModules
+          ++ [
+            inputs.sops-nix.homeManagerModules.sops
+            inputs.nvf.homeManagerModules.default
+            inputs.impermanence.nixosModules.home-manager.impermanence
+            # inputs.gBar.homeManagerModules.x86_64-linux.default
+            inputs.plasma-manager.homeManagerModules.plasma-manager
+          ];
+        # extraSpecialArgs = {inherit inputs outputs;};
+        useGlobalPkgs = true;
+        users = lib.traceVal (
+          mapAttrs (
+            username: userConfig:
+              lib.optionals userConfig.enable
+              (let
+                # args = moduleArgs // {
+                #   inherit username;
+                # };
+                baseHomeConfig = {
+                  home.username = "${username}";
+                  home.homeDirectory = "/home/${username}";
+
+                  programs.home-manager.enable = true;
+                  home.packages = with pkgs; [
+                    neovim
+                    tmux
+                    git
+                  ];
+
+                  systemd.user.startServices = "sd-switch";
+                  home.stateVersion = "25.05";
+                };
+              in
+                lib.recursiveUpdate baseHomeConfig userConfig.homeConfig)
+          )
+          config.local.users);
+      };
     };
   in {
-    nixosConfigurations = {
-      # TODO optimize, mapping the hosts based on the contents of hosts/ dir
-      marga = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        modules =
-          flakeModules
-          ++ [homeModule]
-          ++ nixosModules
-          ++ usersModules
-          ++ [
-            inputs.stylix.nixosModules.stylix
-            ./hosts/marga/default.nix
-          ];
+    lib = localLib;
+    nixosModules =
+      discoveredNixosModules
+      // {
+        generateUsers = userModule;
       };
-      sunyata = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        modules =
-          flakeModules
-          ++ [homeModule]
-          ++ nixosModules
-          ++ usersModules
-          ++ [
-            inputs.stylix.nixosModules.stylix
-            ./hosts/sunyata/default.nix
-          ];
-      };
-      nirvana = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        specialArgs = {inherit inputs outputs;};
-        modules =
-          flakeModules
-          ++ [homeModule]
-          ++ nixosModules
-          ++ usersModules
-          ++ [./hosts/nirvana/default.nix];
-      };
-    };
+    homeManagerModules = discoveredHomeModules;
+    packages = localLib.forAllSystems (
+      system: let
+        pkgs = legacyPackages.${system};
+        mapPkgs = mapAttrs (name: path: pkgs.callPackage path {inherit system;});
+      in
+        mapPkgs discoveredPackages
+    );
+    nixosConfigurations =
+      mapAttrs (
+        hostname: hostData: let
+          hostAttrs = hostData.hostAttrs;
+          system = hostAttrs.system;
+          hostSpecificSpecialArgs = hostAttrs.specialArgs or {};
+          hostSpecificModules = hostAttrs.modules or [];
+          specialArgs =
+            {
+              inherit
+                hostname
+                inputs
+                localLib
+                system
+                ;
+            }
+            // hostSpecificSpecialArgs;
+        in
+          lib.nixosSystem {
+            inherit system specialArgs;
+            modules =
+              hostSpecificModules
+              ++ attrValues discoveredNixosModules
+              ++ [userOptionsModule]
+              ++ [ lib.traceVal hostData.mainConfig]
+              ++ [
+                inputs.home-manager.nixosModules.home-manager
+                userModule
+              ];
+          }
+      )
+      discoveredHosts;
   };
 }
