@@ -23,6 +23,10 @@ in {
       openssh = {
         enable = lib.mkDefault true;
         hostKeys = cfg.hostKeys;
+        settings = {
+          PermitRootLogin = "no";
+          PasswordAuthentication = false;
+        };
       };
       # TODO move
       fstrim.enable = true;
