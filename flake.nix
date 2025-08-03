@@ -174,9 +174,9 @@
             username: userConfig:
               lib.optionals (userConfig.enable && userConfig.home.enable)
               (let
-                # args = moduleArgs // {
-                #   inherit username;
-                # };
+                args = moduleArgs // {
+                  inherit username;
+                };
                 baseHomeConfig = {
                   home = {
                     inherit username;
@@ -195,7 +195,7 @@
                   systemd.user.startServices = "sd-switch";
                 };
               in
-                lib.recursiveUpdate baseHomeConfig userConfig.home.config)
+                lib.recursiveUpdate {inherit args;} baseHomeConfig userConfig.home.config)
           )
           config.local.users;
       };
