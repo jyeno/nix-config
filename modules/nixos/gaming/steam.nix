@@ -33,16 +33,14 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    nixpkgs.config.packageOverrides = pkgs: {
-      steam = pkgs.steam.override {
+    programs.steam = {
+      enable = lib.mkDefault true;
+      package = pkgs.steam.override {
         extraEnv = cfg.extraEnv;
         extraProfile = ''
           unset TZ
         '';
       };
-    };
-    programs.steam = {
-      enable = lib.mkDefault true;
       remotePlay.openFirewall = lib.mkDefault true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = lib.mkDefault true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = lib.mkDefault true;

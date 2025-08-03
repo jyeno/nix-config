@@ -11,15 +11,15 @@ in {
       systemd-boot = {
         enable = lib.mkDefault true;
         netbootxyz.enable = true;
-        extraEntries = ''
-        { "memtest86.conf" = '''
-          title Netboot_arm64
-          efi /efi/netboot_arm64.efi
-        '''; }
-      '';
-        extraFiles = ''
-        { "efi/netboot_arm64.efi" = "''${./netboot-arm64.efi}"; }
-      '';
+        extraEntries = {
+          "memtest86.conf" = ''
+            title netboot_arm64
+            efi /efi/netboot_arm64.efi
+          '';
+        };
+        extraFiles = {
+          "efi/netboot_arm64.efi" = ./netboot_arm64.efi;
+        };
       };
       efi.canTouchEfiVariables = lib.mkDefault true;
     };

@@ -10,4 +10,11 @@
   ];
 in {
   inherit system modules;
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = _: true;
+    };
+  };
 }

@@ -117,10 +117,7 @@
     };
     tweaks = {
       # io-schedulers.enable = true;
-      nix = {
-        enable = true; # TODO change name
-        allowUnfree = true;
-      };
+      nix.enable = true; # TODO change name
     };
   };
 }

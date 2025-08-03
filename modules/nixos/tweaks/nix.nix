@@ -7,14 +7,8 @@
 in {
   options.local.tweaks.nix = {
     enable = lib.mkEnableOption "Enable nix tweaks configuration";
-    allowUnfree = lib.mkEnableOption "Allow unfree software";
   };
   config = lib.mkIf cfg.enable {
-    nixpkgs.config = {
-      allowUnfree = cfg.allowUnfree;
-      allowUnfreePredicate = _: cfg.allowUnfree;
-    };
-
     nix = {
       optimise.automatic = lib.mkDefault true;
       settings = {

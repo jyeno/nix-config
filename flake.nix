@@ -54,7 +54,6 @@
   };
 
   outputs = inputs: let
-    #     inherit (self) outputs;
     inherit (builtins) attrValues mapAttrs;
     inherit (inputs.nixpkgs) lib legacyPackages;
     localLib = import ./lib {inherit inputs;};
@@ -158,8 +157,9 @@
         )
         config.local.users;
       home-manager = {
+        extraSpecialArgs = {inherit inputs moduleArgs;};
         sharedModules =
-          lib.traceVal (attrValues discoveredHomeModules)
+          attrValues discoveredHomeModules
           ++ [
             inputs.sops-nix.homeManagerModules.sops
             inputs.nvf.homeManagerModules.default
@@ -167,16 +167,12 @@
             # inputs.gBar.homeManagerModules.x86_64-linux.default
             inputs.plasma-manager.homeManagerModules.plasma-manager
           ];
-        # extraSpecialArgs = {inherit inputs outputs;};
         useGlobalPkgs = true;
         users =
           mapAttrs (
             username: userConfig:
               lib.optionals (userConfig.enable && userConfig.home.enable)
               (let
-                args = moduleArgs // {
-                  inherit username;
-                };
                 baseHomeConfig = {
                   home = {
                     inherit username;
@@ -195,7 +191,7 @@
                   systemd.user.startServices = "sd-switch";
                 };
               in
-                lib.recursiveUpdate {inherit args;} baseHomeConfig userConfig.home.config)
+                lib.recursiveUpdate baseHomeConfig userConfig.home.config)
           )
           config.local.users;
       };

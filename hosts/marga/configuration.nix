@@ -70,10 +70,7 @@
       chromium-policies.enable = true;
       fonts.enable = true;
       io-schedulers.enable = true;
-      nix = {
-        enable = true; # TODO change name
-        allowUnfree = true;
-      };
+      nix.enable = true; # TODO change name
     };
   };
 }
