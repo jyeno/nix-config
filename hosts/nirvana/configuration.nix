@@ -31,11 +31,12 @@
       # (both optional)
       logRefusedConnections = false;
       rejectPackets = true;
+      #allowedTCPPorts = [22];
     };
   };
 
+  security.sudo.wheelNeedsPassword = false;
   system.stateVersion = "25.05";
-  networking.firewall.allowedTCPPorts = [22];
 
   local = {
     users = {
@@ -53,8 +54,30 @@
       };
       jyeno = {
         enable = true;
-        homeConfig = {
-          local.cli = {
+        home.config = {
+          home.packages = with pkgs; [
+            zip
+            xz
+            unzip
+            ripgrep
+            jq
+            eza
+            dnsutils
+            socat
+            nmap
+            file
+            which
+            gnused
+            gnutar
+            gawk
+            strace
+            lsof
+            lm_sensors
+            pciutils
+            nix-output-monitor
+          ];
+
+          local.home.cli = {
             fish = {
               enable = true;
               starship.enable = true;
@@ -69,7 +92,6 @@
             ssh.enable = true;
             tmux.enable = true;
             direnv.enable = true;
-            yt-dlp.enable = true;
           };
         };
         keys = [
@@ -82,10 +104,10 @@
           (builtins.readFile ../../extras/pubkeys/id_oliver.pub)
         ];
       };
-      user = {
+      leonardohn = {
         enable = true;
         keys = [
-          (builtins.readFile ../../extras/pubkeys/id_user.pub)
+          (builtins.readFile ../../extras/pubkeys/id_leonardohn.pub)
         ];
       };
     };
@@ -110,9 +132,9 @@
       home-dns.enable = false;
       openssh = {
         enable = true;
-        hostKeys = [];
+        hostKeys = null;
       };
-      podman.enable = false;
+      podman.enable = true;
       docker.enable = false;
     };
     tweaks = {

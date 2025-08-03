@@ -8,7 +8,7 @@ in {
   options.local.service.openssh = {
     enable = lib.mkEnableOption "Enable ssh service";
     hostKeys = lib.mkOption {
-      type = with lib.types; listOf attrs;
+      type = with lib.types; nullOr (listOf attrs);
       default = [
         {
           path = "/persist/etc/ssh/ssh_host_ed25519_key";

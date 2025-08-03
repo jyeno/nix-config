@@ -58,7 +58,7 @@ in {
             owner = "infused-kim";
             repo = "fish-async-prompt";
             rev = "07e107635e693734652b0709dd34166820f1e6ff";
-            sha256 = "y0fX+tpMSG6uOYS0J9fplbZKKyiebqgTgC130LVHZGw=";
+            sha256 = "rE80IuJEqnqCIE93IzeT2Nder9j4fnhFEKx58HJUTPk=";
           };
         }
         {

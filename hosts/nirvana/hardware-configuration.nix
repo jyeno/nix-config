@@ -8,16 +8,16 @@
   ...
 }: {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
+    (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
   #TODO fix disko not working, using it for now
   boot = {
     initrd = {
       availableKernelModules = ["xhci_pci" "usbhid" "virtio_pci" "virtio_scsi"];
-      kernelModules = ["dm-snapshot"];
+      kernelModules = [];
     };
-    kernelPackages = pkgs.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = ["net.ifnames=0"];
     extraModulePackages = [];
     tmp = {
@@ -30,11 +30,11 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-label/root";
+      device = "/dev/disk/by-uuid/2ba400bb-3ec6-43a3-9661-0f2e5d109368";
       fsType = "xfs";
     };
     "/boot" = {
-      device = "/dev/disk/by-label/boot";
+      device = "/dev/disk/by-uuid/A77B-82BC";
       fsType = "vfat";
       options = [
         "defaults"
