@@ -9,4 +9,17 @@
   ];
 in {
   inherit system modules;
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+    overlays = [
+      (final: prev: {
+        x86 = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          #modules = [inputs.chaotic.nixosModules.default];
+          config.allowUnfree = true;
+        };
+      })
+    ];
+  };
 }

@@ -84,6 +84,17 @@
                   default = {};
                   description = "User home configuration";
                 };
+                sessionVariables = lib.mkOption {
+                  type = lib.types.attrs;
+                  default = {
+                    # Avoid unfree errors
+                    NIXPKGS_ALLOW_UNFREE = 1;
+                    # True color support
+                    TERM = "xterm-256color";
+                    COLORTERM = "truecolor";
+                  };
+                  description = "home env vars settings";
+                };
               };
               keys = lib.mkOption {
                 type = with lib.types; listOf str;
@@ -167,18 +178,21 @@
                 #   inherit username;
                 # };
                 baseHomeConfig = {
-                  home.username = "${username}";
-                  home.homeDirectory = "/home/${username}";
+                  home = {
+                    inherit username;
+                    homeDirectory = "/home/${username}";
+                    stateVersion = "25.05";
+
+                    packages = with pkgs; [
+                      neovim
+                      tmux
+                      git
+                    ];
+                    sessionVariables = userConfig.home.sessionVariables;
+                  };
 
                   programs.home-manager.enable = true;
-                  home.packages = with pkgs; [
-                    neovim
-                    tmux
-                    git
-                  ];
-
                   systemd.user.startServices = "sd-switch";
-                  home.stateVersion = "25.05";
                 };
               in
                 lib.recursiveUpdate baseHomeConfig userConfig.home.config)
@@ -208,6 +222,7 @@
           system = hostAttrs.system;
           hostSpecificSpecialArgs = hostAttrs.specialArgs or {};
           hostSpecificModules = hostAttrs.modules or [];
+          pkgs = hostAttrs.pkgs or inputs.nixpkgs.legacyPackages.${hostAttrs.system};
           specialArgs =
             {
               inherit
@@ -220,7 +235,7 @@
             // hostSpecificSpecialArgs;
         in
           lib.nixosSystem {
-            inherit system specialArgs;
+            inherit pkgs system specialArgs;
             modules =
               hostSpecificModules
               ++ attrValues discoveredNixosModules
