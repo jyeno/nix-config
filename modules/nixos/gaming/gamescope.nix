@@ -12,7 +12,7 @@ in {
   options.local.gaming.gamescope = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = gaming.enable;
       description = "Enable gamescope configuration";
     };
     realtimePriority = lib.mkOption {

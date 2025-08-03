@@ -5,7 +5,7 @@
     inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.default
     inputs.sops-nix.nixosModules.sops
-    inputs.lix.nixosModules.default
+    # inputs.lix.nixosModules.default
     inputs.stylix.nixosModules.stylix
   ];
 in {

@@ -4,12 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.gaming.gamemode;
+  gaming = config.local.gaming;
+  cfg = gaming.gamemode;
 in {
   options.local.gaming.gamemode = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = gaming.enable;
       description = "Enable gamemode configuration";
     };
     enableNotifications = lib.mkEnableOption "Enable notifications on the startup and end of execution";

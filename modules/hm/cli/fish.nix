@@ -20,7 +20,7 @@ in {
         tree = "eza -T --all --icons --git-ignore";
         s = "fzf";
         hw = "${lib.getExe pkgs.hwinfo} --short";
-        top = "${lib.getExe pkgs.zfxtop}";
+        top = "${lib.getExe pkgs.htop}";
         ports = "${lib.getExe pkgs.unixtools.netstat} -tulanp";
         serve = "python -m http.server";
         nrs = "nixos-rebuild --ask-sudo-password switch --flake . &| ${lib.getExe pkgs.nix-output-monitor}";

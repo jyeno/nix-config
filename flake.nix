@@ -61,148 +61,9 @@
     discoveredNixosModules = localLib.discoverModules ./modules/nixos;
     discoveredHomeModules = localLib.discoverModules ./modules/hm;
     discoveredPackages = localLib.mapPackages ./pkgs;
-    userOptionsModule = {
-      config,
-      pkgs,
-      ...
-    }: {
-      options.local.users = lib.mkOption {
-        default = {};
-        description = "user settings";
-        type = with lib.types; attrsOf (submodule {
-            options = {
-              enable = lib.mkEnableOption "Enable user configuration";
-              home = {
-                enable = lib.mkOption {
-                  type = lib.types.bool;
-                  default = true;
-                  description = "Enable home manager for user";
-                };
-                config = lib.mkOption {
-                  type = lib.types.attrs;
-                  default = {};
-                  description = "User home configuration";
-                };
-                sessionVariables = lib.mkOption {
-                  type = lib.types.attrs;
-                  default = {
-                    # Avoid unfree errors
-                    NIXPKGS_ALLOW_UNFREE = 1;
-                    # True color support
-                    TERM = "xterm-256color";
-                    COLORTERM = "truecolor";
-                  };
-                  description = "home env vars settings";
-                };
-              };
-              keys = lib.mkOption {
-                type = with lib.types; listOf str;
-                default = [];
-                description = "ssh public keys";
-              };
-              shell = lib.mkOption {
-                type = lib.types.package;
-                default = pkgs.fish;
-                description = "user shell";
-              };
-              extraGroups = lib.mkOption {
-                type = with lib.types; listOf str;
-                default = let
-                  #TODO maybe wrong to let it here
-                  ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
-                in
-                  [
-                    "wheel"
-                    "video"
-                    "audio"
-                    "input"
-                  ]
-                ++ ifTheyExist [
-                  "network"
-                  "seat"
-                  "wireshark"
-                  "i2c"
-                  "mysql"
-                  "docker"
-                  "podman"
-                  "git"
-                  "libvirtd"
-                  "deluge"
-                  "gamemode"
-                ];
-                description = "List of user groups";
-              };
-            };
-          });
-        };
-      };
-    userModule = {
-      config,
-      pkgs,
-      ...
-    } @ moduleArgs: {
-      users.users =
-        mapAttrs
-        (
-          username: userConfig:
-            lib.optionals userConfig.enable
-            {
-              isNormalUser = true;
-              description = "user ${username}";
-              shell = userConfig.shell;
-              ignoreShellProgramCheck = lib.mkDefault true;
-              extraGroups = userConfig.extraGroups;
-              openssh.authorizedKeys.keys = userConfig.keys;
-            }
-        )
-        config.local.users;
-      home-manager = {
-        extraSpecialArgs = {inherit inputs moduleArgs;};
-        sharedModules =
-          attrValues discoveredHomeModules
-          ++ [
-            inputs.sops-nix.homeManagerModules.sops
-            inputs.nvf.homeManagerModules.default
-            inputs.impermanence.nixosModules.home-manager.impermanence
-            # inputs.gBar.homeManagerModules.x86_64-linux.default
-            inputs.plasma-manager.homeManagerModules.plasma-manager
-          ];
-        useGlobalPkgs = true;
-        users =
-          mapAttrs (
-            username: userConfig:
-              lib.optionals (userConfig.enable && userConfig.home.enable)
-              (let
-                baseHomeConfig = {
-                  home = {
-                    inherit username;
-                    homeDirectory = "/home/${username}";
-                    stateVersion = "25.05";
-
-                    packages = with pkgs; [
-                      neovim
-                      tmux
-                      git
-                    ];
-                    sessionVariables = userConfig.home.sessionVariables;
-                  };
-
-                  programs.home-manager.enable = true;
-                  systemd.user.startServices = "sd-switch";
-                };
-              in
-                lib.recursiveUpdate baseHomeConfig userConfig.home.config)
-          )
-          config.local.users;
-      };
-    };
   in {
     lib = localLib;
-    nixosModules =
-      discoveredNixosModules
-      // {
-        generateUsers = userModule;
-      };
+    nixosModules = discoveredNixosModules;
     homeManagerModules = discoveredHomeModules;
     packages = localLib.forAllSystems (
       system: let
@@ -235,12 +96,12 @@
             modules =
               hostSpecificModules
               ++ attrValues discoveredNixosModules
-              ++ [userOptionsModule]
-              ++ [hostData.mainConfig]
-              # ++ [ ./hosts/marga/configuration.nix ]
+              ++ [ ./lib/mkUserOptions.nix ]
+              # ++ [hostData.mainConfig]
+              ++ [ ./hosts/marga/configuration.nix ]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
-                userModule
+                ./lib/mkUserModule.nix
               ];
           }
       )
