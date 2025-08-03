@@ -11,20 +11,46 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = ["dm-snapshot"];
-  boot.kernelPackages = pkgs.linuxPackages;
-  boot.kernelParams = ["net.ifnames=0"];
-  boot.extraModulePackages = [];
+  #TODO fix disko not working, using it for now
+  boot = {
+    initrd = {
+      availableKernelModules = ["xhci_pci" "usbhid" "virtio_pci" "virtio_scsi"];
+      kernelModules = ["dm-snapshot"];
+    };
+    kernelPackages = pkgs.linuxPackages;
+    kernelParams = ["net.ifnames=0"];
+    extraModulePackages = [];
+    tmp = {
+      useTmpfs = true;
+      tmpfsSize = "8G";
+    };
+  };
 
-  fileSystems."/".neededForBoot = true;
-  # fileSystems."/persist/home".neededForBoot = true;
+  # fileSystems."/".neededForBoot = true;
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/root";
+      fsType = "xfs";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "vfat";
+      options = [
+        "defaults"
+        "nodev"
+        "noexec"
+        "nosuid"
+        "dmask=0077"
+        "fmask=0077"
+      ];
+    };
+  };
 
   swapDevices = [];
 
   networking.useDHCP = true; # lib.mkDefault true;
   # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp15s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

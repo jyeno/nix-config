@@ -5,7 +5,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./disko.nix
+    # ./disko.nix TODO fix not working
   ];
 
   documentation.man.enable = false;
@@ -27,6 +27,7 @@
     # Note: you also need to configure open ports in the Oracle Cloud web interface
     # (Virtual Cloud Network -> Security Lists -> Ingress Rules)
     firewall = {
+      enable = false;
       # (both optional)
       logRefusedConnections = false;
       rejectPackets = true;
