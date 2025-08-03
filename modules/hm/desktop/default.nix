@@ -7,7 +7,17 @@
 }: let
   cfg = config.local.home.desktop;
 in {
-  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+  imports = [
+    ./chromium.nix
+    ./cliphist.nix
+    ./firefox.nix
+    ./ghostty.nix
+    ./zathura.nix
+    ./plasma.nix
+    ./hyprland.nix
+    ./riverwm.nix
+  ];
 
   options.local.home.desktop = {
     enable = lib.mkEnableOption "Enable desktop settingss";

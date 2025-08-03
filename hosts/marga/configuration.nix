@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{inputs, pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
@@ -13,7 +13,7 @@
   local = {
     users.jyeno = {
       enable = true;
-      homeConfig = import ../../extras/desktop/jyenohome.nix;
+      home.config = import ../../extras/desktop/jyenohome.nix {inherit pkgs;};
       keys = [
         (builtins.readFile ../../extras/pubkeys/id_jyeno.pub)
       ];

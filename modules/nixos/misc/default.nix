@@ -6,7 +6,15 @@
 }: let
   cfg = config.local.misc;
 in {
-  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+  imports = [
+    ./boot.nix
+    ./locale.nix
+    ./persistent.nix
+    ./sops.nix
+    ./virtualisation.nix
+    ./zram.nix
+  ];
 
   options.local.misc = {
     firewall = {

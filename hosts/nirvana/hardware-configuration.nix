@@ -13,11 +13,11 @@
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = ["dm-snapshot"];
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-server;
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.kernelParams = ["net.ifnames=0"];
   boot.extraModulePackages = [];
 
-  # fileSystems."/persist".neededForBoot = true;
+  fileSystems."/".neededForBoot = true;
   # fileSystems."/persist/home".neededForBoot = true;
 
   swapDevices = [];

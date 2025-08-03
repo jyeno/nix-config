@@ -59,7 +59,6 @@
     inherit (inputs.nixpkgs) lib legacyPackages;
     localLib = import ./lib {inherit inputs;};
     discoveredHosts = localLib.mapHosts ./hosts;
-    # discoveredHosts = let hostsDir = builtins.path {path = ./hosts; name = "hosts";}; in localLib.mapHosts hostsDir;
     discoveredNixosModules = localLib.discoverModules ./modules/nixos;
     discoveredHomeModules = localLib.discoverModules ./modules/hm;
     discoveredPackages = localLib.mapPackages ./pkgs;
@@ -74,10 +73,17 @@
         type = with lib.types; attrsOf (submodule {
             options = {
               enable = lib.mkEnableOption "Enable user configuration";
-              homeConfig = lib.mkOption {
-                type = lib.types.attrs;
-                default = {};
-                description = "User home configuration";
+              home = {
+                enable = lib.mkOption {
+                  type = lib.types.bool;
+                  default = true;
+                  description = "Enable home manager for user";
+                };
+                config = lib.mkOption {
+                  type = lib.types.attrs;
+                  default = {};
+                  description = "User home configuration";
+                };
               };
               keys = lib.mkOption {
                 type = with lib.types; listOf str;
@@ -89,7 +95,7 @@
                 default = pkgs.fish;
                 description = "user shell";
               };
-              extraGroups = {
+              extraGroups = lib.mkOption {
                 type = with lib.types; listOf str;
                 default = let
                   #TODO maybe wrong to let it here
@@ -131,8 +137,7 @@
           username: userConfig:
             lib.optionals userConfig.enable
             {
-              inherit username;
-              isNormalUser = lib.mkDefault true;
+              isNormalUser = true;
               description = "user ${username}";
               shell = userConfig.shell;
               ignoreShellProgramCheck = lib.mkDefault true;
@@ -143,7 +148,7 @@
         config.local.users;
       home-manager = {
         sharedModules =
-          attrValues discoveredHomeModules
+          lib.traceVal (attrValues discoveredHomeModules)
           ++ [
             inputs.sops-nix.homeManagerModules.sops
             inputs.nvf.homeManagerModules.default
@@ -156,7 +161,7 @@
         users =
           mapAttrs (
             username: userConfig:
-              lib.optionals userConfig.enable
+              lib.optionals (userConfig.enable && userConfig.home.enable)
               (let
                 # args = moduleArgs // {
                 #   inherit username;
@@ -176,7 +181,7 @@
                   home.stateVersion = "25.05";
                 };
               in
-                lib.recursiveUpdate baseHomeConfig userConfig.homeConfig)
+                lib.recursiveUpdate baseHomeConfig userConfig.home.config)
           )
           config.local.users;
       };
@@ -221,6 +226,7 @@
               ++ attrValues discoveredNixosModules
               ++ [userOptionsModule]
               ++ [hostData.mainConfig]
+              # ++ [ ./hosts/marga/configuration.nix ]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
                 userModule

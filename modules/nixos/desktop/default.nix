@@ -6,7 +6,15 @@
 }: let
   cfg = config.local.desktop;
 in {
-  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
+  imports = [
+    ./graphics.nix
+    ./hyprland.nix
+    ./nvidia.nix
+    ./plasma.nix
+    ./riverwm.nix
+    ./wireshark.nix
+  ];
 
   options.local.desktop = {
     enable = lib.mkEnableOption "Enable desktop settings";
