@@ -10,33 +10,8 @@
   ];
 
   documentation.man.enable = false;
-
-  networking = {
-    # TODO put it on flake.nix
-    hostName = hostname;
-    interfaces.eth0 = {
-      ipv4.addresses = [
-        {
-          # Use IP address configured in the Oracle Cloud web interface
-          address = "10.0.0.90";
-          prefixLength = 24;
-        }
-      ];
-      # Only "required" for IPv6, can be false if only IPv4 is needed
-      useDHCP = true;
-    };
-    # Note: you also need to configure open ports in the Oracle Cloud web interface
-    # (Virtual Cloud Network -> Security Lists -> Ingress Rules)
-    firewall = {
-      enable = false;
-      # (both optional)
-      logRefusedConnections = false;
-      rejectPackets = true;
-      #allowedTCPPorts = [22];
-    };
-  };
-
   security.sudo.wheelNeedsPassword = false;
+
   system.stateVersion = "25.05";
 
   local = {
@@ -118,9 +93,36 @@
       # gnuAgent = true;
     };
     misc = {
-      firewall = {
-        enable = true;
+      networking = {
+        hostName = hostname;
         nameservers = ["8.8.8.8" "1.1.1.1"];
+        interfaces.eth0 = {
+          ipv4.addresses = [
+            {
+              address = "10.0.0.90";
+              prefixLength = 24;
+            }
+          ];
+          useDHCP = true;
+        };
+        firewall = {
+          enable = true;
+          allowedTCPPorts = [22];
+          allowedTCPPortRanges = [
+            {
+              from = 25500;
+              to = 25599;
+            }
+          ];
+          allowedUDPPortRanges = [
+            {
+              from = 25500;
+              to = 25599;
+            }
+          ];
+          logRefusedConnections = false;
+          rejectPackets = true;
+        };
       };
       boot.enable = true;
       locale = {
@@ -128,12 +130,13 @@
         timezone = "America/Sao_Paulo";
       };
       persistent.enable = false;
+      sops.enable = false;
     };
     service = {
       home-dns.enable = false;
       openssh = {
         enable = true;
-        hostKeys = null;
+        hostKeys = [];
       };
       podman.enable = true;
       docker.enable = false;

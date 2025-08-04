@@ -8,7 +8,7 @@ in {
   options.local.service.openssh = {
     enable = lib.mkEnableOption "Enable ssh service";
     hostKeys = lib.mkOption {
-      type = with lib.types; nullOr (listOf attrs);
+      type = with lib.types; listOf attrs;
       default = [
         {
           path = "/persist/etc/ssh/ssh_host_ed25519_key";
@@ -22,7 +22,7 @@ in {
     services = {
       openssh = {
         enable = lib.mkDefault true;
-        hostKeys = cfg.hostKeys;
+        hostKeys = lib.optionals (builtins.length cfg.hostKeys > 0) cfg.hostKeys;
         settings = {
           PermitRootLogin = "no";
           PasswordAuthentication = false;
@@ -30,6 +30,7 @@ in {
       };
       # TODO move
       fstrim.enable = true;
+      bpftune.enable = true;
     };
   };
 }

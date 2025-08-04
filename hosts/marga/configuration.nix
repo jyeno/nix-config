@@ -9,10 +9,6 @@
     ./disko.nix
   ];
 
-  networking = {
-    hostName = hostname;
-  };
-
   system.stateVersion = "24.05";
 
   local = {
@@ -53,9 +49,10 @@
       gamescope.enable = false;
     };
     misc = {
-      firewall = {
-        enable = true;
-        # nameservers = [];
+      networking = {
+        hostName = hostname;
+        firewall.enable = true;
+        nameservers = ["127.0.0.1" "1.1.1.1"];
       };
       boot.enable = true;
       locale.enable = true;
