@@ -1,13 +1,17 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  hostname,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
   ];
 
-  # networking = {
-  # TODO put it on flake.nix
-  # hostName = "sunyata";
-  # };
+  networking = {
+    hostName = hostname;
+  };
 
   system.stateVersion = "24.05";
 
@@ -16,7 +20,7 @@
   local = {
     users.jyeno = {
       enable = true;
-      homeConfig = import ../../extras/desktop/jyenohome.nix;
+      home.config = import ../../extras/desktop/jyenohome.nix {inherit pkgs;};
       keys = [
         (builtins.readFile ../../extras/pubkeys/id_jyeno.pub)
       ];
@@ -29,7 +33,7 @@
     desktop = {
       enable = true;
       enablePams = true;
-      stylix = import ../../extras/desktop/stylixWest.nix inputs;
+      stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
       graphics = {
         enable = true;
         # xkb = {};
@@ -64,7 +68,7 @@
         hdrSdrContentNits = 250;
         sdrGamutWideness = 0.5;
       };
-      # lact = import ../../extras/desktop/lactcfg.nix;
+      lact = import ../../extras/desktop/lactcfg.nix;
     };
     misc = {
       firewall = {

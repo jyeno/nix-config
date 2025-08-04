@@ -1,5 +1,6 @@
 {
   inputs,
+  hostname,
   pkgs,
   ...
 }: {
@@ -12,7 +13,7 @@
 
   networking = {
     # TODO put it on flake.nix
-    hostName = "nirvana";
+    hostName = hostname;
     interfaces.eth0 = {
       ipv4.addresses = [
         {

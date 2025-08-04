@@ -27,7 +27,7 @@ in {
   home-manager = {
     extraSpecialArgs = {inherit inputs moduleArgs;};
     sharedModules =
-      lib.traceVal (attrValues discoveredHomeModules)
+      attrValues discoveredHomeModules
       ++ [ #TODO consider if it should be here, and where to put instead
         inputs.sops-nix.homeManagerModules.sops
         inputs.nvf.homeManagerModules.default

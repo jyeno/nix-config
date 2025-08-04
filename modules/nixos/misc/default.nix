@@ -11,6 +11,7 @@ in {
     ./boot.nix
     ./locale.nix
     ./persistent.nix
+    # ./networking.nix
     ./sops.nix
     ./virtualisation.nix
     ./zram.nix

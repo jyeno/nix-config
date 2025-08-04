@@ -1,12 +1,17 @@
-{inputs, pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  hostname,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
   ];
 
-  # networking = {
-  #   hostName = "marga";
-  # };
+  networking = {
+    hostName = hostname;
+  };
 
   system.stateVersion = "24.05";
 

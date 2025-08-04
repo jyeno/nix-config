@@ -118,6 +118,7 @@ in {
         set -g man_underline -u 93a1a1
 
         direnv hook fish | source
+        starship init fish | source
       '';
       description = "Fish interative startup shell init script";
     };
@@ -155,8 +156,8 @@ in {
         };
 
         nix_shell = {
-          symbol = "<U+F2DC>";
-          format = "[$symbol$name]($style) ";
+          symbol = "";
+          format = "[$symbol]($style) ";
           style = "bright-purple bold";
         };
       };

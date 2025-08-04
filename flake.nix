@@ -96,9 +96,9 @@
             modules =
               hostSpecificModules
               ++ attrValues discoveredNixosModules
-              ++ [ ./lib/mkUserOptions.nix ]
+              ++ [./lib/mkUserOptions.nix]
               # ++ [hostData.mainConfig]
-              ++ [ ./hosts/marga/configuration.nix ]
+              ++ [./hosts/sunyata/configuration.nix]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
                 ./lib/mkUserModule.nix
