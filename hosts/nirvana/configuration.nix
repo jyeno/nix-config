@@ -12,6 +12,28 @@
   documentation.man.enable = false;
   security.sudo.wheelNeedsPassword = false;
 
+  services.xonotic = {
+    enable = true;
+    settings = {
+      port = 25598;
+      hostname = "Nordeste do Sul (Gameplays)";
+      sv_motd = "cabouse";
+      sv_public = 1;
+    };
+    prependConfig = ''
+      exec ruleset-overkill.cfg
+    '';
+    appendConfig = ''
+      bot_number 0
+      g_powerups 0
+      g_pickup_items 0
+
+      sv_curl_defaulturl "http://dl.xonotic.fps.gratis/"
+      sv_vote_gametype 1
+      sv_weaponstats_file "http://www.xonotic.org/weaponbalance/"
+    '';
+  };
+
   system.stateVersion = "25.05";
 
   local = {

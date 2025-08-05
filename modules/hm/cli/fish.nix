@@ -19,8 +19,7 @@ in {
         lt = "eza -aT --color=always --group-directories-first --icons";
         tree = "eza -T --all --icons --git-ignore";
         s = "fzf";
-        hw = "${lib.getExe pkgs.hwinfo} --short";
-        top = "${lib.getExe pkgs.htop}";
+        top = "${lib.getExe pkgs.btop}";
         ports = "${lib.getExe pkgs.unixtools.netstat} -tulanp";
         serve = "python -m http.server";
         nrs = "nixos-rebuild --ask-sudo-password switch --flake . &| ${lib.getExe pkgs.nix-output-monitor}";
@@ -99,10 +98,6 @@ in {
           cd $argv[1]
         end
 
-        function down
-          aria2c (wl-paste)
-        end
-
         function fish_user_key_bindings
           fish_vi_key_bindings
         end
@@ -116,9 +111,6 @@ in {
         set -g man_bold -o green
         set -g man_standout -b black 93a1a1
         set -g man_underline -u 93a1a1
-
-        direnv hook fish | source
-        starship init fish | source
       '';
       description = "Fish interative startup shell init script";
     };
@@ -137,6 +129,8 @@ in {
     # TODO add more options
     programs.starship = {
       enable = cfg.starship.enable;
+      enableFishIntegration = lib.mkDefault true;
+      enableTransience =  lib.mkDefault true;
       settings = {
         add_newline = false;
 
