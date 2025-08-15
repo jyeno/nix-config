@@ -7,13 +7,7 @@
 }: let
   cfg = config.local.gaming;
 in {
-  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
-  imports = [
-    ./gamemode.nix
-    ./gamescope.nix
-    ./lact.nix
-    ./steam.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 
   options.local.gaming = {
     enable = lib.mkEnableOption "Enable gaming environment configuration";

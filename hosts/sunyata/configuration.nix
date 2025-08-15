@@ -12,6 +12,7 @@
   system.stateVersion = "24.05";
 
   chaotic.mesa-git.enable = false;
+  chaotic.hdr.specialisation.enable = false;
 
   local = {
     users.jyeno = {

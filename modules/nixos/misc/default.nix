@@ -6,15 +6,7 @@
 }: let
   cfg = config.local.misc;
 in {
-  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
-  imports = [
-    ./boot.nix
-    ./locale.nix
-    ./persistent.nix
-    ./sops.nix
-    ./virtualisation.nix
-    ./zram.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 
   options.local.misc = {
     networking = lib.mkOption {

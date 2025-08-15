@@ -64,7 +64,6 @@
   in {
     lib = localLib;
     nixosModules = discoveredNixosModules;
-    homeManagerModules = discoveredHomeModules;
     packages = localLib.forAllSystems (
       system: let
         pkgs = legacyPackages.${system};
@@ -77,7 +76,7 @@
         hostname: hostData: let
           hostAttrs = hostData.hostAttrs;
           system = hostAttrs.system;
-          hostSpecificSpecialArgs = hostAttrs.specialArgs or {};
+          hostSpecificSpecialArgs = lib.recursiveUpdate (hostAttrs.specialArgs or {}) {inherit discoveredHomeModules;};
           hostSpecificModules = hostAttrs.modules or [];
           pkgs = hostAttrs.pkgs or inputs.nixpkgs.legacyPackages.${hostAttrs.system};
           specialArgs =
@@ -95,7 +94,7 @@
             inherit pkgs system specialArgs;
             modules =
               hostSpecificModules
-              ++ attrValues discoveredNixosModules
+              ++ (attrValues discoveredNixosModules)
               ++ [./lib/mkUserOptions.nix]
               # ++ [hostData.mainConfig]
               ++ [./hosts/sunyata/configuration.nix]

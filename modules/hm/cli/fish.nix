@@ -23,6 +23,7 @@ in {
         ports = "${lib.getExe pkgs.unixtools.netstat} -tulanp";
         serve = "python -m http.server";
         nrs = "nixos-rebuild --ask-sudo-password switch --flake . &| ${lib.getExe pkgs.nix-output-monitor}";
+        nrt = "nixos-rebuild --ask-sudo-password test --flake . &| ${lib.getExe pkgs.nix-output-monitor}";
         ttm = "${lib.getExe pkgs.tt} -quotes en";
         q = "exit";
       };
@@ -130,7 +131,7 @@ in {
     programs.starship = {
       enable = cfg.starship.enable;
       enableFishIntegration = lib.mkDefault true;
-      enableTransience =  lib.mkDefault true;
+      enableTransience = lib.mkDefault true;
       settings = {
         add_newline = false;
 

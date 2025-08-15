@@ -7,10 +7,7 @@
 }: let
   cfg = config.local.cli;
 in {
-  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
-  imports = [
-    ./fish.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 
   options.local.cli = {
     enable = lib.mkOption {

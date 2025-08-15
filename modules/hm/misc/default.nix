@@ -1,7 +1,8 @@
 {
-  # lib,
-  # localLib,
-# }: {
+  lib,
+  localLib,
+  ...
+}: {
   # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
   imports = [
     ./persistent.nix
