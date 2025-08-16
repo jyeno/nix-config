@@ -18,13 +18,18 @@
       port = 25598;
       hostname = "Nordeste do Sul (Gameplays)";
       sv_motd = "cabouse";
-      sv_public = 1;
+      #sv_public = 1;
+
+      # configor cafe
+      sv_public = 0;
+      skill = 3;
+      g_grappling_hook = 1;
     };
     prependConfig = ''
       exec ruleset-overkill.cfg
     '';
     appendConfig = ''
-      bot_number 0
+      bot_number 5
       g_powerups 0
       g_pickup_items 0
 
@@ -54,9 +59,7 @@
         enable = true;
         home.config = {
           home.packages = with pkgs; [
-            zip
             xz
-            unzip
             ripgrep
             jq
             eza
@@ -65,13 +68,8 @@
             nmap
             file
             which
-            gnused
             gnutar
-            gawk
             strace
-            lsof
-            lm_sensors
-            pciutils
             nix-output-monitor
           ];
 
@@ -117,6 +115,7 @@
     misc = {
       networking = {
         hostName = hostname;
+        domain = "privatedns.org";
         nameservers = ["8.8.8.8" "1.1.1.1"];
         interfaces.eth0 = {
           ipv4.addresses = [
