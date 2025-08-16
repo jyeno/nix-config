@@ -32,21 +32,17 @@
         enable = true;
         # xkb = {};
       };
-      hyprland.enable = false;
-      river.enable = false;
-      nvidia.enable = false;
+      nvidia.enable = true;
       plasma.enable = true;
-      wireshark.enable = false;
     };
     gaming = {
       enable = true;
       settings = {
-        vkbasalt.enable = true;
+        vkbasalt.enable = false;
         ntsync.enable = true;
         mangohud.enable = true;
       };
       gamemode.enableNotifications = true;
-      gamescope.enable = false;
     };
     misc = {
       networking = {

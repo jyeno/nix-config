@@ -96,8 +96,7 @@
               hostSpecificModules
               ++ (attrValues discoveredNixosModules)
               ++ [./lib/mkUserOptions.nix]
-              # ++ [hostData.mainConfig]
-              ++ [./hosts/sunyata/configuration.nix]
+              ++ [hostData.mainConfig]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
                 ./lib/mkUserModule.nix

@@ -59,24 +59,6 @@
     in
       lib.listToAttrs allPotentialPackages;
 
-  mapUsers = dir: let
-    userDirs = scanPaths dir "directory";
-  in
-    lib.mapAttrs (
-      username: _: let
-        userDir = dir + "/${username}";
-        defaultNixPath = "${userDir}/default.nix";
-        homeNixPath = "${userDir}/home.nix";
-      in
-        if lib.pathExists defaultNixPath && lib.pathExists homeNixPath
-        then {
-          defaultNixPath = defaultNixPath;
-          homeConfigPath = homeNixPath;
-        }
-        else throw "User directory ${userDir} must contain both default.nix and home.nix"
-    )
-    userDirs;
-
   mapHosts = dir: let
     hostDirs = scanPaths dir "directory";
   in
@@ -84,7 +66,7 @@
       hostname: _: let
         hostDir = dir + "/${hostname}";
         defaultNixPath = "${hostDir}/default.nix";
-        configNixPath = "${hostDir}/configuration.nix";
+        configNixPath = "${builtins.toString dir}/${hostname}/configuration.nix";
       in
         if lib.pathExists defaultNixPath && lib.pathExists configNixPath
         then {
@@ -108,7 +90,6 @@ in {
     scanPaths
     discoverModules
     mapPackages
-    mapUsers
     mapHosts
     forAllSystems
     ;

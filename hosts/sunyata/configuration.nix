@@ -35,11 +35,7 @@
         enable = true;
         # xkb = {};
       };
-      hyprland.enable = false;
-      river.enable = false;
-      nvidia.enable = false;
       plasma.enable = true;
-      wireshark.enable = false;
     };
     gaming = {
       enable = true;
@@ -47,7 +43,7 @@
         hdr.enable = true;
         rt.enable = true;
         vrr.enable = true;
-        vkbasalt.enable = true;
+        vkbasalt.enable = false;
         ntsync.enable = true;
         wow64.enable = true;
         mangohud.enable = true;
@@ -85,13 +81,9 @@
       docker.enable = false;
       home-dns.enable = true;
       iwd.enable = true;
-      jenkins.enable = false;
-      mysql.enable = false;
       openssh.enable = true;
       pipewire.enable = true;
       podman.enable = true;
-      postgres.enable = false;
-      tlp.enable = false;
     };
     tweaks = {
       chromium-policies.enable = true;
