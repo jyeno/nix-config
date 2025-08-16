@@ -11,17 +11,11 @@ in {
   options.local.desktop = {
     enable = lib.mkEnableOption "Enable desktop settings";
     enablePams = lib.mkEnableOption "Enable desktop root configuration";
-    stylix = lib.mkOption {
-      type = with lib.types; attrsOf anything;
-      default = {};
-      description = "stylix configuration";
-    };
   };
-  config = lib.mkIf (cfg.enable && cfg.stylix != {}) {
+  config = lib.mkIf (cfg.enable) {
     security.pam.services = lib.mkIf cfg.enablePams {
       waylock = {};
       hyprlock = {};
     };
-    stylix = cfg.stylix;
   };
 }

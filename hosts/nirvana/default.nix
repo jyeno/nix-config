@@ -2,18 +2,18 @@
   system = "aarch64-linux";
   modules = [
     inputs.chaotic.nixosModules.default
-    # inputs.impermanence.nixosModules.impermanence
+    inputs.impermanence.nixosModules.impermanence
     # inputs.disko.nixosModules.default
-    # inputs.sops-nix.nixosModules.sops
+    inputs.sops-nix.nixosModules.sops
     # inputs.lix.nixosModules.default
   ];
   specialArgs = {
     homeSpecificModules = [
-      # inputs.sops-nix.homeManagerModules.sops
+      inputs.sops-nix.homeManagerModules.sops
       inputs.nvf.homeManagerModules.default
-      # inputs.impermanence.nixosModules.home-manager.impermanence
+      inputs.impermanence.nixosModules.home-manager.impermanence
       # inputs.gBar.homeManagerModules.x86_64-linux.default
-      # inputs.plasma-manager.homeManagerModules.plasma-manager
+      inputs.plasma-manager.homeManagerModules.plasma-manager
     ];
   };
 in {

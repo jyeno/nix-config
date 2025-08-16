@@ -70,7 +70,6 @@
       pkgs.lib.mkMerge [
         {
           enable = true;
-          stylix = {};
           chromium.enable = true;
           firefox.enable = true;
           ghostty.enable = true;

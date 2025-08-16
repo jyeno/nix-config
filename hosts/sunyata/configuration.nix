@@ -14,6 +14,8 @@
   chaotic.mesa-git.enable = false;
   chaotic.hdr.specialisation.enable = false;
 
+  stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
+
   local = {
     users.jyeno = {
       enable = true;
@@ -30,7 +32,6 @@
     desktop = {
       enable = true;
       enablePams = true;
-      stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
       graphics = {
         enable = true;
         # xkb = {};

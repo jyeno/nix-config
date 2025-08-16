@@ -21,7 +21,6 @@ in {
     ./tmux.nix
   ];
 
-
   options.local.home.cli = {
     aria2.enable = lib.mkEnableOption "Enable aria2";
     bat.enable = lib.mkEnableOption "Enable bat";

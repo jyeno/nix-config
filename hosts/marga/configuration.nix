@@ -11,6 +11,8 @@
 
   system.stateVersion = "24.05";
 
+  stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
+
   local = {
     users.jyeno = {
       enable = true;
@@ -27,7 +29,6 @@
     desktop = {
       enable = true;
       enablePams = true;
-      stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
       graphics = {
         enable = true;
         # xkb = {};

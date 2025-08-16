@@ -26,7 +26,7 @@ in {
     config.local.users;
   home-manager = {
     extraSpecialArgs = {inherit inputs moduleArgs;};
-    sharedModules = homeSpecificModules ++ attrValues discoveredHomeModules;
+    sharedModules = homeSpecificModules ++ (attrValues discoveredHomeModules);
     useGlobalPkgs = true;
     users =
       mapAttrs (
