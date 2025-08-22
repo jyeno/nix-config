@@ -28,6 +28,7 @@ in {
     extraSpecialArgs = {inherit inputs moduleArgs;};
     sharedModules = homeSpecificModules ++ (attrValues discoveredHomeModules);
     useGlobalPkgs = true;
+    backupFileExtension = "backup";
     users =
       mapAttrs (
         username: userConfig:

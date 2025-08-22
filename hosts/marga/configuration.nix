@@ -60,6 +60,7 @@
     service = {
       bluetooth.enable = true;
       home-dns.enable = true;
+      glance.enable = true;
       iwd.enable = true;
       openssh.enable = true;
       pipewire.enable = true;

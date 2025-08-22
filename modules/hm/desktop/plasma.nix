@@ -129,7 +129,7 @@ in {
             {
               iconTasks = {
                 launchers = [
-                  "applications:org.kde.konsole.desktop"
+                  "applications:com.mitchellh.ghostty.desktop"
                   "applications:steam.desktop"
                   "applications:io.github.kukuruzka165.materialgram.desktop"
                   "applications:chromium-browser.desktop"

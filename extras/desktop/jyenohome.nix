@@ -72,6 +72,7 @@
           enable = true;
           chromium.enable = true;
           firefox.enable = true;
+          qutebrowser.enable = true;
           ghostty.enable = true;
           zathura.enable = true;
           cliphist.enable = true;
@@ -87,6 +88,7 @@
           "Music"
           ".mozilla/firefox/jyeno"
           ".local/share/materialgram"
+          ".local/share/qutebrowser"
           ".local/share/direnv"
           ".local/share/fish"
           ".local/state/wireplumber"
@@ -95,6 +97,7 @@
           # ".config/r2modmanPlus-local"
           ".config/chromium"
           ".config/vesktop"
+          ".config/qutebrowser/greasemonkey"
           ".password-store"
           ".nixos"
         ];
@@ -104,7 +107,7 @@
           ".cache/lm-studio"
         ];
         files = [
-          # ".ssh/known_hosts"
+          ".ssh/known_hosts"
           ".Passwords.kdbx"
         ];
       };

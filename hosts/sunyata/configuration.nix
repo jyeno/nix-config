@@ -81,6 +81,7 @@
       bluetooth.enable = true;
       docker.enable = false;
       home-dns.enable = true;
+      glance.enable = true;
       iwd.enable = true;
       openssh.enable = true;
       pipewire.enable = true;

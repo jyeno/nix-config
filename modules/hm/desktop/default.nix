@@ -12,6 +12,7 @@
     ./ghostty.nix
     ./zathura.nix
     ./plasma.nix
+    ./qutebrowser.nix
     ./hyprland.nix
     ./riverwm.nix
   ];

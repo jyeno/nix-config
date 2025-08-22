@@ -33,7 +33,7 @@ in {
           notes.neorg = {
             enable = true;
             treesitter.enable = true;
-            treesitter.norgPackage = pkgs.vimPlugins.nvim-treesitter.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-norg;
+            # treesitter.norgPackage = pkgs.vimPlugins.nvim-treesitter.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-norg;
           };
 
           languages = {

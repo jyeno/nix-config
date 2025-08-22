@@ -16,15 +16,19 @@ in {
 
     programs.ssh = {
       enable = true;
-      addKeysToAgent = "1h";
+      addKeysToAgent = "4h";
       matchBlocks = {
-        "openwrt" = {
+        openwrt = {
           hostname = "192.168.1.0";
           user = "root";
         };
-        "alph" = {
+        alph = {
           hostname = "192.168.0.248";
           user = "root";
+        };
+        nirvana = {
+          hostname = "nirvana.jyeno.cc";
+          user = "jyeno";
         };
       };
     };

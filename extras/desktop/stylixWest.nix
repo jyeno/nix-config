@@ -3,7 +3,7 @@
   autoEnable = true;
   image = ../wallpapers/dragon.jpg;
   # polarity = "dark";
-  base16Scheme = "${inputs.nixpkgs.legacyPackages.x86_64-linux.base16-schemes}/share/themes/catppuccin-frappe.yaml";
+  base16Scheme = "${inputs.nixpkgs.legacyPackages.x86_64-linux.base16-schemes}/share/themes/da-one-sea.yaml";
   fonts = {
     monospace = {
       package = inputs.nixpkgs.legacyPackages.x86_64-linux.nerd-fonts.jetbrains-mono;
