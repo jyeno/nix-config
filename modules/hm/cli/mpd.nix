@@ -4,6 +4,7 @@
   ...
 }: let
   cfg = config.local.home.cli.mpd;
+  homeDir = config.home.homeDirectory;
 in {
   options.local.home.cli.mpd = {
     enable = lib.mkEnableOption "Enable MPD server";
@@ -37,8 +38,8 @@ in {
     # TODO add more options
     services.mpd = {
       enable = true;
-      musicDirectory = "${config.home.homeDirectory}/Music";
-      playlistDirectory = "${config.home.homeDirectory}/Music/playlists";
+      musicDirectory = "${homeDir}/Music";
+      playlistDirectory = "${homeDir}/Music/playlists";
       extraConfig = ''
         audio_output {
           type "pipewire"

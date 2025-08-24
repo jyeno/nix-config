@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.local.home.desktop.plasma;
+  username = config.home.username;
 in {
   options.local.home.desktop.plasma = {
     enable = lib.mkEnableOption "Enable plasma configuration";
@@ -66,8 +67,8 @@ in {
 
     programs.konsole = {
       enable = true;
-      defaultProfile = "${config.home.username}";
-      profiles."${config.home.username}".extraConfig = {
+      defaultProfile = "${username}";
+      profiles."${username}".extraConfig = {
         Scrolling = {
           HistorySize = 100000;
           ScrollFullPage = 1;
@@ -106,8 +107,9 @@ in {
 
       panels = [
         {
-          location = "bottom";
+          location = "left";
           hiding = "autohide";
+          height = 50;
           floating = false;
           widgets = [
             {
@@ -117,22 +119,12 @@ in {
               };
             }
             {
-              pager.general = {
-                showWindowOutlines = true;
-                showApplicationIconsOnWindowOutlines = true;
-                showOnlyCurrentScreen = true;
-                navigationWrapsAround = true;
-                displayedText = "desktopNumber";
-                selectingCurrentVirtualDesktop = "doNothing";
-              };
-            }
-            {
               iconTasks = {
                 launchers = [
                   "applications:com.mitchellh.ghostty.desktop"
                   "applications:steam.desktop"
                   "applications:io.github.kukuruzka165.materialgram.desktop"
-                  "applications:chromium-browser.desktop"
+                  "applications:org.qutebrowser.qutebrowser.desktop"
                 ];
                 behavior.showTasks = {
                   onlyInCurrentScreen = true;

@@ -2,11 +2,9 @@
   config,
   pkgs,
   inputs,
-  discoveredHomeModules,
-  homeSpecificModules,
   ...
 } @ moduleArgs: let
-  inherit (builtins) attrValues mapAttrs;
+  inherit (builtins) mapAttrs;
   inherit (pkgs) lib;
 in {
   users.users =
@@ -26,7 +24,6 @@ in {
     config.local.users;
   home-manager = {
     extraSpecialArgs = {inherit inputs moduleArgs;};
-    sharedModules = homeSpecificModules ++ (attrValues discoveredHomeModules);
     useGlobalPkgs = true;
     backupFileExtension = "backup";
     users =

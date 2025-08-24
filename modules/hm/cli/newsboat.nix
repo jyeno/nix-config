@@ -36,7 +36,6 @@ in {
       enable = lib.mkDefault true;
       autoReload = true;
       extraConfig = cfg.extraConfig;
-      # TODO substitute it for a parser of the urls given by the option
       urls = let
         url-tags = url: tags: {
           url = url;
@@ -75,7 +74,6 @@ in {
         (url-tags "https://akrzemi1.wordpress.com/feed/" ["cpp" "blog"])
         (url-tags "https://isocpp.org/blog/rss/category/articles-books" ["cpp" "group" "blog"])
         (url-tags "https://isocpp.org/blog/rss/category/news" ["cpp" "group" "blog"])
-        (url-tags "https://www.youtube.com/feeds/videos.xml?channel_id=UCSyG9ph5BJSmPRyzc_eGC4g" ["youtube" "libertarian"])
         (url-tags "https://www.orbit.fm/bookbytes/feed.rss" ["podcast"])
         (url-tags "http://feeds.feedburner.com/misesaudiobooks" ["podcast" "libertarian"])
         (url-tags "http://feeds.soundcloud.com/users/soundcloud:users:239787249/sounds.rss" ["podcast"])

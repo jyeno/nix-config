@@ -76,7 +76,7 @@
         hostname: hostData: let
           hostAttrs = hostData.hostAttrs;
           system = hostAttrs.system;
-          hostSpecificSpecialArgs = lib.recursiveUpdate (hostAttrs.specialArgs or {}) {inherit discoveredHomeModules;};
+          hostSpecificSpecialArgs = hostAttrs.specialArgs or {};
           hostSpecificModules = hostAttrs.modules or [];
           pkgs = hostAttrs.pkgs or inputs.nixpkgs.legacyPackages.${hostAttrs.system};
           specialArgs =
@@ -95,11 +95,14 @@
             modules =
               hostSpecificModules
               ++ (attrValues discoveredNixosModules)
-              ++ [./lib/mkUserOptions.nix]
+              ++ [./modules/common/mkUserOptions.nix]
               ++ [hostData.mainConfig]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
-                ./lib/mkUserModule.nix
+                {
+                  home-manager.sharedModules = (specialArgs.homeSpecificModules or []) ++ (attrValues discoveredHomeModules);
+                }
+                ./modules/common/mkUserModule.nix
               ];
           }
       )

@@ -5,6 +5,11 @@
   ...
 }: let
   cfg = config.local.home.desktop.river;
+  chromium = lib.getExe config.programs.chromium.package;
+  playerctl = lib.getExe' config.services.playerctld.package "playerctl";
+  playerctld = lib.getExe' config.services.playerctld.package "playerctld";
+  wofi = lib.getExe config.programs.wofi.package;
+  cliphist = lib.getExe config.services.cliphist.package;
 in {
   options.local.home.desktop.river = {
     enable = lib.mkEnableOption "Enable riverwm configuration";
@@ -111,11 +116,6 @@ in {
           pactl = lib.getExe' pkgs.pulseaudio "pactl";
           # notify-send = lib.getExe' pkgs.libnotify "notify-send";
           defaultApp = type: "${lib.getExe pkgs.handlr-regex} launch ${type}";
-          chromium = lib.getExe config.programs.chromium.package;
-          playerctl = lib.getExe' config.services.playerctld.package "playerctl";
-          playerctld = lib.getExe' config.services.playerctld.package "playerctld";
-          wofi = lib.getExe config.programs.wofi.package;
-          cliphist = lib.getExe config.services.cliphist.package;
           wlopm = lib.getExe pkgs.wlopm;
 
           keybind = mode: keys: cmd: {

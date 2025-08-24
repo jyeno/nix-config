@@ -4,6 +4,7 @@
   ...
 }: let
   cfg = config.local.home.misc.persistent;
+  username = config.home.username;
   symlinkDirs =
     builtins.map (dir: {
       directory = dir;
@@ -34,7 +35,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.persistence."/persist/home/${config.home.username}" = {
+    home.persistence."/persist/home/${username}" = {
       directories = cfg.directories ++ symlinkDirs;
       files = cfg.files;
       allowOther = true;

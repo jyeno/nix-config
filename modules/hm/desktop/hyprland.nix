@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.local.home.desktop.hyprland;
+  playerctldEnabled = config.services.playerctld.enable;
 in {
   options.local.home.desktop.hyprland = {
     enable = lib.mkEnableOption "Enable hyprland configuration";
@@ -228,10 +229,10 @@ in {
             ]
             ++ (
               let
-                playerctl = lib.getExe' config.services.playerctld.package "playerctl";
-                playerctld = lib.getExe' config.services.playerctld.package "playerctld";
+                playerctl = lib.getExe' pkgs.playerctl "playerctl";
+                playerctld = lib.getExe' pkgs.playerctl "playerctld";
               in
-                lib.optionals config.services.playerctld.enable [
+                lib.optionals playerctldEnabled [
                   # Media control
                   ", XF86AudioNext, exec, ${playerctl} next"
                   ", XF86AudioPrev, exec, ${playerctl} previous"
@@ -243,39 +244,28 @@ in {
                 ]
             )
             # Screen lock
-            ++ (
-              let
-                swaylock = lib.getExe config.programs.swaylock.package;
-              in
-                lib.optionals config.programs.swaylock.enable [
-                  ", XF86Launch5, exec, ${swaylock} -S --grace 2"
-                  ", XF86Launch4, exec, ${swaylock} -S --grace 2"
-                  "$mainMod, backspace, exec, ${swaylock} -S --grace 2"
-                ]
-            )
-            ++
-            # Notification manager
-            (
-              let
-                makoctl = lib.getExe' config.services.mako.package "makoctl";
-              in
-                lib.optionals config.services.mako.enable [
-                  "$mainMod, W, exec,${makoctl} dismiss"
-                  "$mainMod SHIFT, W, exec,${makoctl} restore"
-                ]
-            )
+            # ++ (
+            #   let
+            #     swaylock = lib.getExe config.programs.swaylock.package;
+            #   in
+            #     lib.optionals config.programs.swaylock.enable [
+            #       ", XF86Launch5, exec, ${swaylock} -S --grace 2"
+            #       ", XF86Launch4, exec, ${swaylock} -S --grace 2"
+            #       "$mainMod, backspace, exec, ${swaylock} -S --grace 2"
+            #     ]
+            # )
             # Launchers
-            ++ (
-              let
-                wofi = lib.getExe config.programs.wofi.package;
-                cliphist = lib.getExe config.services.cliphist.package;
-              in
-                lib.optionals config.programs.wofi.enable [
-                  "$mainMod, D, exec, ${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-                  "$mainMod, X, exec, ${wofi} -S run"
-                  "$mainMod, C, exec, selected=$(${cliphist} list | ${wofi} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy"
-                ]
-            )
+            # ++ (
+            #   let
+            #     wofi = lib.getExe config.programs.wofi.package;
+            #     cliphist = lib.getExe config.services.cliphist.package;
+            #   in
+            #     lib.optionals config.programs.wofi.enable [
+            #       "$mainMod, D, exec, ${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
+            #       "$mainMod, X, exec, ${wofi} -S run"
+            #       "$mainMod, C, exec, selected=$(${cliphist} list | ${wofi} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy"
+            #     ]
+            # )
           );
       };
     };
