@@ -138,7 +138,7 @@ in {
             {
               digitalClock = {
                 time = {
-                  showSeconds = "always";
+                  # showSeconds = "always";
                   format = "24h";
                 };
                 calendar = {

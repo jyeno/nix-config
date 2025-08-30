@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   hostname,
   ...
@@ -11,7 +10,7 @@
 
   system.stateVersion = "24.05";
 
-  stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
+  stylix = import ../../extras/desktop/stylixWest.nix {inherit pkgs;};
 
   local = {
     users.jyeno = {

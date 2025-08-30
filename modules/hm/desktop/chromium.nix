@@ -22,7 +22,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.chromium = {
       enable = lib.mkDefault true;
-      package = pkgs.ungoogled-chromium.override {enableWideVine = true;};
+      package = pkgs.ungoogled-chromium;
       # commandLineArgs = cfg.cmdArgs; #TODO figure out why it errors out
       commandLineArgs = [
         "--enable-features=AcceleratedVideoEncoder,WebUIDarkMode,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoDecodeLinuxGL,VaapiIgnoreDriverChecks,webgpu,webgl2,rasterization,video_encode,video_decode,webgl,gpu_compositing,2d_canvas"

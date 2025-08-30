@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   hostname,
   ...
@@ -14,7 +13,7 @@
   chaotic.mesa-git.enable = false;
   chaotic.hdr.specialisation.enable = false;
 
-  stylix = import ../../extras/desktop/stylixWest.nix {inherit inputs;};
+  stylix = import ../../extras/desktop/stylixWest.nix {inherit pkgs;};
 
   local = {
     users.jyeno = {
@@ -41,7 +40,7 @@
     gaming = {
       enable = true;
       settings = {
-        hdr.enable = true;
+        hdr.enable = false;
         rt.enable = true;
         vrr.enable = true;
         vkbasalt.enable = false;

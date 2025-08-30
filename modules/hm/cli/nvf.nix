@@ -15,11 +15,6 @@ in {
       enable = lib.mkDefault true;
       settings = {
         vim = {
-          # theme = lib.mkDefault {
-          #   enable = true;
-          #   name = "catppuccin";
-          #   style = "mocha";
-          # };
           viAlias = true;
           vimAlias = true;
           lsp.enable = true;
@@ -33,29 +28,21 @@ in {
           notes.neorg = {
             enable = true;
             treesitter.enable = true;
-            # treesitter.norgPackage = pkgs.vimPlugins.nvim-treesitter.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-norg;
           };
 
           languages = {
             enableTreesitter = true;
+            enableFormat = true;
 
             nix.enable = true;
             zig.enable = true;
             clang.enable = true;
-
-            # custom lsps
-            java = {
-              lsp = {
-                enable = true;
-                package = ["jdt-language-server" "-data" "~/.cache/jdtls/workspace"];
-              };
-            };
-            # qmlls = {
-            #   lsp = {
-            #     enable = true;
-            #     package = [ "qmlls" ];
-            #   };
-            # };
+            sql.enable = true;
+            qml.enable = true;
+            rust.enable = true;
+            markdown.enable = true;
+            elixir.enable = true;
+            java.enable = false;
           };
 
           startPlugins = with pkgs.vimPlugins; [
@@ -63,10 +50,6 @@ in {
             vim-vinegar
             nvim-surround
             vim-commentary
-          ];
-          extraPackages = with pkgs; [
-            jdt-language-server
-            qt6.qtdeclarative
           ];
 
           undoFile.enable = true;

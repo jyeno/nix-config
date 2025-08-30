@@ -1,13 +1,16 @@
-{inputs, ...}: {
+{
+  pkgs,
+  ...
+}: {
   enable = true;
   autoEnable = true;
   image = ../wallpapers/dragon.jpg;
   # polarity = "dark";
-  base16Scheme = "${inputs.nixpkgs.legacyPackages.x86_64-linux.base16-schemes}/share/themes/da-one-sea.yaml";
+  base16Scheme = "${pkgs.base16-schemes}/share/themes/da-one-sea.yaml";
   fonts = {
     monospace = {
-      package = inputs.nixpkgs.legacyPackages.x86_64-linux.nerd-fonts.jetbrains-mono;
-      name = "JetBrains Mono Nerd Font";
+      package = pkgs.nerd-fonts.iosevka;
+      name = "Iosevka NFM";
     };
     # sizes = {
     #   terminal = 15;
@@ -18,8 +21,8 @@
   targets = {
     nvf.enable = true;
     qt = {
-      enable = true;
-      # platform = "qtct";
+      enable = true; # TODO change this back to kde6
+      platform = pkgs.lib.mkForce "lxqt";
     };
   };
 }
