@@ -11,9 +11,9 @@ in {
       type = lib.types.attrs;
       default = {
         co = "checkout";
-        cip = "commit -p -m";
         unstage = "reset HEAD --";
-        ci = "commit";
+        cm = "commit";
+        cmm = "commit -p -m";
         st = "status -s";
         br = "branch";
         fp = "fetch -p";
@@ -47,11 +47,11 @@ in {
           editor = "nvim";
         };
         url = {
-          "ssh://git@gitlab.com:" = {
-            insteadOf = "gitlab";
+          "https://gitlab.com/" = {
+            insteadOf = "gl:";
           };
-          "ssh://git@github.com:" = {
-            insteadOf = "github";
+          "https://github.com/" = {
+            insteadOf = "gh:";
           };
         };
         pull.rebase = lib.mkDefault false;
