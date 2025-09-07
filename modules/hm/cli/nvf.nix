@@ -13,7 +13,7 @@ in {
     enableTreesitter = lib.mkEnableOption "Enable treesitter integration" // {default = true;};
     enableFormat = lib.mkEnableOption "Enable format files" // {default = true;};
     enableUndoFile = lib.mkEnableOption "Enable undofile" // {default = true;};
-    lsp = lib.mkEnableOption "Enable lsp integration" // {default = true;};
+    enableLsp = lib.mkEnableOption "Enable lsp integration" // {default = true;};
     languages = lib.mkOption {
       type = lib.types.attrs;
       default = {
@@ -91,7 +91,7 @@ in {
           git.enable = lib.mkDefault true; # git-signs, vim-fugitive, git-conflict
 
           notes.neorg = {
-            enable = cfg.neorg;
+            enable = cfg.enableNeorg;
             treesitter.enable = cfg.enableTreesitter;
           };
 
