@@ -10,8 +10,13 @@
 
   system.stateVersion = "24.05";
 
-  chaotic.mesa-git.enable = false;
-  chaotic.hdr.specialisation.enable = false;
+  chaotic = {
+    mesa-git.enable = false;
+    hdr = {
+      enable = true;
+      specialisation.enable = false;
+    };
+  };
 
   stylix = import ../../extras/desktop/stylixWest.nix {inherit pkgs;};
 
@@ -40,12 +45,12 @@
     gaming = {
       enable = true;
       settings = {
-        hdr.enable = false;
+        hdr.enable = true;
         rt.enable = true;
         vrr.enable = true;
         vkbasalt.enable = false;
         ntsync.enable = true;
-        wow64.enable = true;
+        # wow64.enable = true;
         mangohud.enable = true;
         wayland.enable = true;
       };

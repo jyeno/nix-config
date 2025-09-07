@@ -44,8 +44,6 @@ in {
       ++ (lib.optionals cfg.settings.hdr.enable [pkgs.gamescope-wsi])
       ++ (lib.optionals cfg.settings.vkbasalt.enable [pkgs.vkbasalt]);
 
-    chaotic.hdr.enable = cfg.settings.hdr.enable;
-
     systemd.tmpfiles.rules = lib.mkIf cfg.settings.rt.enable [
       "w /proc/sys/kernel/sched_autogroup_enabled - - - - 1"
       "w /proc/sys/kernel/sched_cfs_bandwidth_slice_us - - - - 3000"
