@@ -14,7 +14,7 @@
       inputs.nvf.homeManagerModules.default
       inputs.impermanence.nixosModules.home-manager.impermanence
       # inputs.gBar.homeManagerModules.x86_64-linux.default
-      inputs.plasma-manager.homeManagerModules.plasma-manager
+      inputs.plasma-manager.homeModules.plasma-manager
     ];
   };
 in {

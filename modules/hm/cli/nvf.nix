@@ -65,7 +65,7 @@ in {
       description = "nvf lua str config";
     };
     startPlugins = lib.mkOption {
-      type = with lib.types; listOf packages;
+      type = with lib.types; listOf package;
       default = with pkgs.vimPlugins; [
         vim-gitgutter
         vim-vinegar

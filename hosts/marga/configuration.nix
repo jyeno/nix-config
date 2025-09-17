@@ -32,7 +32,7 @@
         enable = true;
         # xkb = {};
       };
-      nvidia.enable = true;
+      nvidia.enable = false;
       plasma.enable = true;
     };
     gaming = {
