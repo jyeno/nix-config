@@ -14,12 +14,11 @@
   launcher = lib.getExe pkgs.wofi;
   cliphist = lib.getExe pkgs.cliphist;
   clipboard = "selected=$(${cliphist} list | ${launcher} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy";
+  keybind = mod: key: cmd: "${mod}, ${key}, exec, ${cmd}";
 in {
   river.enable = false;
   hyprland = {
     enable = false;
-    # wallpaperPath = ../../../extras/wallpapers/dragon.jpg;
-    #TODO only enable it if hdr is enabled
     extraConfig = ''
       monitor = DP-1, 3440x1440@165, 0x0, 1, bitdepth, 10, cm, hdr, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1
     '';
@@ -32,26 +31,25 @@ in {
     binds = {
       config = [
         # Program bindings
-        "$mainMod, Return, exec, ${foot} sh -c 'tmux at -t 0 || tmux'"
-        "$mainMod ALT, Return, exec, ${terminal}"
-        # "$mainMod, Return, exec, ${defaultApp "x-scheme-handler/terminal"}"
-        "$mainMod, e, exec, ${defaultApp "text/plain"}"
-        "$mainMod, b, exec, ${defaultApp "x-scheme-handler/https"}"
-        "$mainMod, s, exec, ${steam}"
-        "$mainMod, t, exec, ${telegram}"
+        (keybind "$mainMod" "Return" "${foot} sh -c 'tmux at -t 0 || tmux'")
+        (keybind "$mainMod ALT" "Return" "${terminal}")
+        # (keybind "$mainMod" "Return" "${defaultApp "x-scheme-handler/terminal"}")
+        (keybind "$mainMod" "e" "${defaultApp "text/plain"}")
+        (keybind "$mainMod" "b" "${defaultApp "x-scheme-handler/https"}")
+        (keybind "$mainMod" "s" "${steam}")
+        (keybind "$mainMod" "t" "${telegram}")
         # Brightness control (only works if the system has lightd)
-        ", XF86MonBrightnessUp, exec, ${light} -A 10"
-        ", XF86MonBrightnessDown, exec, ${light} -U 10"
+        (keybind "" "XF86MonBrightnessUp" "${light} -A 10")
+        (keybind "" "XF86MonBrightnessDown" "${light} -U 10")
         # Volume
-        ", XF86AudioRaiseVolume, exec, ${pactl} set-sink-volume @DEFAULT_SINK@ +5%"
-        ", XF86AudioLowerVolume, exec, ${pactl} set-sink-volume @DEFAULT_SINK@ -5%"
-        ", XF86AudioMute, exec, ${pactl} set-sink-mute @DEFAULT_SINK@ toggle"
-        "SHIFT, XF86AudioMute, exec, ${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
-        ", XF86AudioMicMute, exec, ${pactl} set-source-mute @DEFAULT_SOURCE@ toggle"
+        (keybind "" "XF86AudioRaiseVolume" "${pactl} set-sink-volume @DEFAULT_SINK@ +5%")
+        (keybind "" "XF86AudioLowerVolume" "${pactl} set-sink-volume @DEFAULT_SINK@ -5%")
+        (keybind "" "XF86AudioMute" "${pactl} set-sink-mute @DEFAULT_SINK@ toggle")
+        (keybind "SHIFT" "XF86AudioMute" "${pactl} set-source-mute @DEFAULT_SOURCE@ toggle")
+        (keybind "" "XF86AudioMicMute" "${pactl} set-source-mute @DEFAULT_SOURCE@ toggle")
         # Screenshotting
-        ", Print, exec, ${grimblast} --notify copy output"
-        "$mainMod, Print, exec, ${grimblast} --notify copy area"
-        # To OCR
+        (keybind "" "Print" "${grimblast} --notify copy output")
+        (keybind "$mainMod" "Print" "${grimblast} --notify copy area")
       ];
       enableCycleWorkspaces = true;
       enableExtraBinds = true;
@@ -70,7 +68,7 @@ in {
   #  #TODO use the new hm module instead
   #  ashell = {
   #    enable = false;
-  #    config = let
+  #    settings = let
   #      textCap = 150;
   #      fontName = "Comic Sans MS"; # TODO change
   #      backgroundColor = "#1e1e2e";

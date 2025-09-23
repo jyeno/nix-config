@@ -9,11 +9,6 @@
 in {
   options.local.home.desktop.hyprland = {
     enable = lib.mkEnableOption "Enable hyprland configuration";
-    wallpaperPath = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "wallpaper set location";
-    };
     extraConfig = lib.mkOption {
       type = lib.types.str;
       default = "";
@@ -53,8 +48,6 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.file.".wallpaper".source = cfg.wallpaperPath;
-
     home.packages = with pkgs; [
       swaybg
       grimblast
@@ -68,22 +61,15 @@ in {
 
       extraConfig = cfg.extraConfig;
       settings = {
-        exec = [
-          (
-            lib.optionals (! builtins.isNull cfg.wallpaperPath)
-            "${lib.getExe pkgs.swaybg} -i ~/.wallpaper --mode fill"
-          )
-        ];
-
         input = {
           kb_layout = cfg.keyboard.layout;
           kb_variant = cfg.keyboard.variant;
           kb_options = cfg.keyboard.options;
-          follow_mouse = 1;
-          touchpad.natural_scroll = false;
-          sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
-          repeat_delay = 300;
-          repeat_rate = 50;
+          follow_mouse = lib.mkDefault 1;
+          touchpad.natural_scroll = lib.mkDefault false;
+          sensitivity = lib.mkDefault 0; # -1.0 - 1.0, 0 means no modification.
+          repeat_delay = lib.mkDefault 300;
+          repeat_rate = lib.mkDefault 50;
         };
 
         general = {

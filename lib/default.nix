@@ -13,8 +13,7 @@
     else
       builtins.readDir dir
       |> lib.filterAttrs (n: t: (lib.hasSuffix ".nix" n && n != "default.nix") || t == "directory")
-      |> lib.mapAttrs (name: _: import "${builtins.toString dir}/${name}")
-    ;
+      |> lib.mapAttrs (name: _: import "${builtins.toString dir}/${name}");
 
   mapPackages = dir:
     if !lib.pathExists dir
@@ -23,11 +22,10 @@
       builtins.readDir dir
       |> lib.filterAttrs (n: t: (lib.hasSuffix ".nix" n && n != "default.nix") || t == "directory")
       |> lib.mapAttrsToList (name: _: {
-          name = lib.removeSuffix ".nix" name; #TODO maybe have a file- or module- to distinguish
-          value = dir + "/${name}";
-        })
-      |> lib.listToAttrs
-    ;
+        name = lib.removeSuffix ".nix" name;
+        value = dir + "/${name}";
+      })
+      |> lib.listToAttrs;
 
   mapHosts = dir:
     scanPaths dir "directory"
@@ -43,16 +41,15 @@
           mainConfig = configNixPath;
         }
         else throw "Host directory ${hostDir} must contain both default.nix and configuration.nix"
-      )
-    ;
+    );
 
   forAllSystems = f:
     map (system: {
       name = system;
       value = f system;
-    }) inputs.nixpkgs.lib.systems.flakeExposed
+    })
+    inputs.nixpkgs.lib.systems.flakeExposed
     |> lib.listToAttrs;
-
 in {
   inherit
     scanPaths
