@@ -13,7 +13,7 @@
   chaotic = {
     mesa-git.enable = false;
     hdr = {
-      enable = true;
+      enable = false;
       specialisation.enable = false;
     };
   };
@@ -45,7 +45,7 @@
     gaming = {
       enable = true;
       settings = {
-        hdr.enable = true;
+        hdr.enable = false;
         rt.enable = true;
         vrr.enable = true;
         vkbasalt.enable = false;
@@ -56,7 +56,7 @@
       };
       gamemode.enableNotifications = true;
       gamescope = {
-        enable = false;
+        enable = true;
         outputWidth = 3440;
         outputHeight = 1440;
         nestedRefresh = 165;
@@ -90,6 +90,26 @@
       openssh.enable = true;
       pipewire.enable = true;
       podman.enable = true;
+      wivrn = {
+        enable = true;
+        defaultRuntime = true;
+        autoStart = true;
+        xrizer = false;
+        json = {
+          bitrate = 80000000; # Mb/s
+          encoders = [
+            {
+              encoder = "vaapi";
+              codec = "h265";
+              width = 1.0;
+              height = 1.0;
+              offset_x = 0.0;
+              offset_y = 0.0;
+            }
+          ];
+          # application = [ pkgs.wlx-overlay-s ];
+        };
+      };
     };
     tweaks = {
       chromium-policies.enable = true;
