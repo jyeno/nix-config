@@ -9,83 +9,31 @@
 in {
   options.local.home.desktop.plasma = {
     enable = lib.mkEnableOption "Enable plasma configuration";
-  };
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [kdePackages.qtstyleplugin-kvantum];
-    #monitor settings, TODO improve
-    home.file.".config/kwinoutputconfig.json".text = builtins.toJSON [
-      {
-        data = [
-          {
-            allowSdrSoftwareBrightness = true;
-            autoRotation = "InTabletMode";
-            brightness = 1;
-            colorPowerTradeoff = "PreferEfficiency";
-            colorProfileSource = "sRGB";
-            connectorName = "DP-3";
-            edidHash = "b3e79804fc4869bddefc8ec3849f2628";
-            edidIdentifier = "ICB 13312 0 22 2022 0";
-            highDynamicRange = true;
-            iccProfilePath = "";
-            mode = {
-              height = 1440;
-              refreshRate = 165001;
-              width = 3440;
-            };
-            overscan = 0;
-            rgbRange = "Automatic";
-            scale = 1;
-            sdrBrightness = 250;
-            sdrGamutWideness = 0;
-            transform = "Normal";
-            vrrPolicy = "Automatic";
-            wideColorGamut = true;
-          }
-        ];
-        name = "outputs";
-      }
-      {
-        data = [
-          {
-            lidClosed = false;
-            outputs = [
-              {
-                enabled = true;
-                outputIndex = 0;
-                position = {
-                  x = 0;
-                  y = 0;
-                };
-                priority = 0;
-              }
-            ];
-          }
-        ];
-        name = "setups";
-      }
-    ];
-
-    programs.konsole = {
-      enable = true;
-      defaultProfile = "${username}";
-      profiles."${username}".extraConfig = {
-        Scrolling = {
-          HistorySize = 100000;
-          ScrollFullPage = 1;
-        };
-      };
-      extraConfig = {
-        KonsoleWindow.RemoveWindowTitleBarAndFrame = true;
-        TabBar = {
+    konsole = {
+      enable = lib.mkEnableOption "Enable konsole";
+      removeTitleBarAndFrame = lib.mkEnableOption "Enable konsole";
+      tabBarConfig = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
           NewTabBehavior = "PutNewTabAfterCurrentTab";
           TabBarVisibility = "AlwaysHideTabBar";
         };
+        description = "konsole tabbar settings";
+      };
+      profileConfig = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
+          Scrolling = {
+            HistorySize = 100000;
+            ScrollFullPage = 1;
+          };
+        };
+        description = "konsole default user settings";
       };
     };
-
-    programs.plasma = {
-      enable = true;
-      workspace = {
+    workspace = lib.mkOption {
+      type = lib.types.attrs;
+      default = {
         clickItemTo = "select";
         colorScheme = "BreezeDark";
         lookAndFeel = "org.kde.breezedark.desktop";
@@ -96,16 +44,65 @@ in {
           size = 24;
         };
       };
-
-      kscreenlocker.autoLock = true;
-
-      hotkeys.commands."launch-ghostty" = {
-        name = "Launch Ghostty";
-        key = "Meta+Return";
-        command = "${lib.getExe pkgs.ghostty}";
+      description = "plasma workspace settings";
+    };
+    powerdevil = lib.mkOption {
+      type = lib.types.attrs;
+      default = {
+        AC = {
+          autoSuspend = {
+            action = "nothing";
+          };
+          dimDisplay.enable = true;
+          powerProfile = "performance";
+          turnOffDisplay.idleTimeout = "never";
+        };
+        battery = {
+          autoSuspend = {
+            action = "sleep";
+            idleTimeout = 600;
+          };
+          whenSleepingEnter = "standby";
+          dimDisplay = {
+            idleTimeout = 300;
+          };
+          powerProfile = "powerSaving";
+          turnOffDisplay = {
+            idleTimeout = 600;
+          };
+        };
+        lowBattery = {
+          whenLaptopLidClosed = "shutDown";
+          powerProfile = "powerSaving";
+        };
+        batteryLevels = {
+          criticalLevel = 3;
+          lowLevel = 10;
+          criticalAction = "shutDown";
+        };
       };
-
-      panels = [
+      description = "powerdevil settings";
+    };
+    hotkeys = lib.mkOption {
+      type = lib.types.attrs;
+      default = {
+        "launch-ghostty" = {
+          name = "Launch Ghostty";
+          key = "Meta+Return";
+          command = "${lib.getExe pkgs.ghostty}";
+        };
+        "reload-plasma" = {
+          name = "Reload Plasma";
+          key = "Meta+Shift+K";
+          command = "${pkgs.systemd}/bin/systemctl --user restart plasma-plasmashell";
+          logs.enabled = false;
+        };
+      };
+      description = "hotkey commands settings";
+    };
+    panels = lib.mkOption {
+      type = with lib.types; listOf attrs;
+      default = [
         {
           location = "left";
           hiding = "autohide";
@@ -152,8 +149,11 @@ in {
           ];
         }
       ];
-
-      window-rules = [
+      description = "plasma panels settings";
+    };
+    window-rules = lib.mkOption {
+      type = with lib.types; listOf attrs;
+      default = [
         {
           description = "Plasma Desktop Workspace";
           match.window-class = {
@@ -177,49 +177,22 @@ in {
           };
         }
       ];
-
-      # powerdevil = lib.mkOptionals config.local.laptop {
-      #   AC = {
-      #     autoSuspend = {
-      #       action = "nothing";
-      #     };
-      #     dimDisplay.enable = false;
-      #     powerProfile = "performance";
-      #     turnOffDisplay.idleTimeout = "never";
-      #   };
-      #   battery = {
-      #     autoSuspend = {
-      #       action = "sleep";
-      #       idleTimeout = 600;
-      #     };
-      #     whenSleepingEnter = "standby";
-      #     dimDisplay = {
-      #       idleTimeout = 300;
-      #     };
-      #     powerProfile = "powerSaving";
-      #     turnOffDisplay = {
-      #       idleTimeout = 600;
-      #     };
-      #   };
-      #   lowBattery = {
-      #     whenLaptopLidClosed = "shutDown";
-      #     powerProfile = "powerSaving";
-      #   };
-      #   batteryLevels = {
-      #     criticalLevel = 3;
-      #     lowLevel = 10;
-      #     criticalAction = "shutDown";
-      #   };
-      # };
-
-      kwin = {
-        effects = {
+      description = "kwin window rules list";
+    };
+    kwin = {
+      effects = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
           blur.enable = false;
           dimAdminMode.enable = false;
           wobblyWindows.enable = false;
           minimization.animation = "off";
         };
-        nightLight = {
+        description = "effect settings";
+      };
+      nightLight = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
           enable = true;
           mode = "times";
           temperature.night = 2700;
@@ -229,21 +202,19 @@ in {
             evening = "19:30";
           };
         };
-        titlebarButtons = {
+        description = "night light settings";
+      };
+      titlebarButtons = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
           left = ["more-window-actions"];
           right = ["keep-above-windows" "minimize" "maximize" "close"];
         };
-        virtualDesktops = {
-          number = 4;
-          rows = 1;
-          names = [
-            "Desktop 1"
-            "Desktop 2"
-            "Desktop 3"
-            "Desktop 4"
-          ];
-        };
-        tiling = {
+        description = "title bar buttons settings";
+      };
+      tiling = lib.mkOption {
+        type = lib.types.attrs;
+        default = {
           padding = 5;
           layout = {
             id = "cf5c25c2-4217-4193-add6-b5971cb543f2";
@@ -269,6 +240,39 @@ in {
             };
           };
         };
+        description = "tiling settings";
+      };
+      virtualDesktops = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = ["Desktop 1" "Desktop 2" "Desktop 3" "Desktop 4"];
+        description = "list of virtual desktop names";
+      };
+    };
+  };
+  config = lib.mkIf cfg.enable {
+    programs.konsole = {
+      enable = cfg.konsole.enable;
+      defaultProfile = "${username}";
+      profiles."${username}".extraConfig = cfg.konsole.profileConfig;
+      extraConfig = {
+        KonsoleWindow.RemoveWindowTitleBarAndFrame = cfg.RemoveWindowTitleBarAndFrame;
+        TabBar = cfg.konsole.tabBarConfig;
+      };
+    };
+
+    programs.plasma = {
+      enable = true;
+      inherit (cfg) workspace panels window-rules powerdevil;
+      kscreenlocker.autoLock = lib.mkDefault true;
+      hotkeys.commands = cfg.hotkeys;
+
+      kwin = {
+        inherit (cfg.kwin) effects nightLight titlebarButtons tiling;
+        virtualDesktops = {
+          number = builtins.length cfg.kwin.virtualDesktops;
+          rows = 1;
+          names = cfg.kwin.virtualDesktops;
+        };
       };
 
       shortcuts = {
@@ -293,16 +297,9 @@ in {
           "Switch Window Up" = "Meta+K";
         };
         mediacontrol.playpausemedia = "Media Play\tCtrl+Alt+D";
-        plasmashell."manage activities" = "none";
-        plasmashell."switch to next activity" = "Meta+Tab";
-      };
-
-      hotkeys.commands = {
-        "reload-plasma" = {
-          name = "Reload Plasma";
-          key = "Meta+Shift+K";
-          command = "${pkgs.systemd}/bin/systemctl --user restart plasma-plasmashell";
-          logs.enabled = false;
+        plasmashell = {
+          "manage activities" = "none";
+          "switch to next activity" = "Meta+Tab";
         };
       };
 
@@ -314,7 +311,7 @@ in {
               variant = "intl";
             }
             {
-              displayName = "workmani";
+              displayName = "wk";
               layout = "us";
               variant = "workman-intl";
             }
@@ -330,24 +327,32 @@ in {
         };
       };
 
-      configFile = {
+      configFile = lib.mkDefault {
         baloofilerc."Basic Settings".Indexing-Enabled = false;
         # kwinrc.org.kde.kdecoration2.ButtonsOnLeft = "SF";
-        kwinrc.Desktops.Number = {
-          value = 4;
-          immutable = true;
-        };
         PlasmaDiscoverUpdates.Global.RequiredNotificationInterval = -1;
         plasmashellrc."Notification Messages".klipperClearHistoryAskAgain = false;
-        ksmserverrc.General.loginMode = "emptySession";
-        ksmserverrc.General.shutdownType = 2;
-        kwinrc.MouseBindings.CommandActiveTitlebar2 = "Minimize";
-        kwinrc.MouseBindings.CommandAllWheel = "Maximize/Restore";
-        kwinrc.MouseBindings.CommandInactiveTitlebar2 = "Minimize";
-        kwinrc.MouseBindings.CommandTitlebarWheel = "Previous/Next Desktop";
-        kwinrc.Windows.DelayFocusInterval = 0;
-        kwinrc.Windows.FocusPolicy = "FocusFollowsMouse";
-        kwinrc.Windows.NextFocusPrefersMouse = true;
+        ksmserverrc.General = {
+          loginMode = "emptySession";
+          shutdownType = 2;
+        };
+        kwinrc = {
+          Desktops.Number = lib.mkDefault {
+            value = builtins.length cfg.kwin.virtualDesktops;
+            immutable = true;
+          };
+          MouseBindings = {
+            CommandActiveTitlebar2 = "Minimize";
+            CommandAllWheel = "Maximize/Restore";
+            CommandInactiveTitlebar2 = "Minimize";
+            CommandTitlebarWheel = "Previous/Next Desktop";
+          };
+          Windows = {
+            DelayFocusInterval = 0;
+            FocusPolicy = "FocusFollowsMouse";
+            NextFocusPrefersMouse = true;
+          };
+        };
         kcminputrc.Mouse.XLbInptAccelProfileFlat = true;
         kded5rc.Module-device_automounter.autoload = false;
         kactivitymanagerdrc = {
@@ -387,9 +392,11 @@ in {
       };
 
       dataFile = {
-        "dolphin/view_properties/global/.directory"."Dolphin"."SortRole" = "modificationtime";
-        "dolphin/view_properties/global/.directory"."Dolphin"."ViewMode" = 1;
-        "dolphin/view_properties/global/.directory"."Settings"."HiddenFilesShown" = true;
+        "dolphin/view_properties/global/.directory" = {
+          "Dolphin"."SortRole" = "modificationtime";
+          "Dolphin"."ViewMode" = 1;
+          "Settings"."HiddenFilesShown" = true;
+        };
       };
     };
   };

@@ -35,7 +35,59 @@
     materialgram
     ghostty
     mumble
-    zeal-qt6
+    zeal
+  ];
+
+  home.file.".config/kwinoutputconfig.json".text = builtins.toJSON [
+    {
+      data = [
+        {
+          allowSdrSoftwareBrightness = true;
+          autoRotation = "InTabletMode";
+          brightness = 1;
+          colorPowerTradeoff = "PreferEfficiency";
+          colorProfileSource = "sRGB";
+          connectorName = "DP-3";
+          edidHash = "b3e79804fc4869bddefc8ec3849f2628";
+          edidIdentifier = "ICB 13312 0 22 2022 0";
+          highDynamicRange = true;
+          iccProfilePath = "";
+          mode = {
+            height = 1440;
+            refreshRate = 165001;
+            width = 3440;
+          };
+          overscan = 0;
+          rgbRange = "Automatic";
+          scale = 1;
+          sdrBrightness = 250;
+          sdrGamutWideness = 0;
+          transform = "Normal";
+          vrrPolicy = "Automatic";
+          wideColorGamut = true;
+        }
+      ];
+      name = "outputs";
+    }
+    {
+      data = [
+        {
+          lidClosed = false;
+          outputs = [
+            {
+              enabled = true;
+              outputIndex = 0;
+              position = {
+                x = 0;
+                y = 0;
+              };
+              priority = 0;
+            }
+          ];
+        }
+      ];
+      name = "setups";
+    }
   ];
 
   local.home = {
