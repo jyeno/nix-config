@@ -55,7 +55,27 @@
       fzf.enable = true;
       aria2.enable = true;
       bat.enable = true;
-      ssh.enable = true;
+      ssh = {
+        enable = true;
+        ed25519Pubkey = builtins.readFile ../pubkeys/id_jyeno.pub;
+        matchBlocks = {
+          "*" = {
+            addKeysToAgent = "4h";
+          };
+          openwrt = {
+            hostname = "192.168.1.1";
+            user = "root";
+          };
+          alph = {
+            hostname = "192.168.1.248";
+            user = "root";
+          };
+          nirvana = {
+            hostname = "nirvana.jyeno.cc";
+            user = "jyeno";
+          };
+        };
+      };
       tmux.enable = true;
       direnv.enable = true;
       pass.enable = true;
@@ -98,6 +118,7 @@
           ".config/chromium"
           ".config/vesktop"
           ".config/qutebrowser/greasemonkey"
+          ".config/wivrn"
           ".password-store"
           ".nixos"
         ];

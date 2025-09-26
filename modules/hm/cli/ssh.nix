@@ -7,30 +7,35 @@
 in {
   options.local.home.cli.ssh = {
     enable = lib.mkEnableOption "Enable SSH user configuration";
+    matchBlocks = lib.mkOption {
+      type = lib.types.attrs;
+      default = {};
+      description = "ssh matchBlocks";
+    };
+    ed25519Pubkey = lib.mkOption {
+      type = with lib.types; str;
+      default = "";
+      description = "user ed25519 pubkey";
+    };
+    rsaPubkey = lib.mkOption {
+      type = with lib.types; str;
+      default = "";
+      description = "user rsa pubkey";
+    };
   };
   config = lib.mkIf cfg.enable {
-    # TODO add more options
-    home.file.".ssh/id_ed25519.pub".source = ../../../extras/pubkeys/id_jyeno.pub;
+    home.file.".ssh/id_ed25519.pub" = lib.mkIf (cfg.ed25519Pubkey != "") {
+      text = cfg.ed25519Pubkey;
+    };
+    home.file.".ssh/id_rsa.pub" = lib.mkIf (cfg.rsaPubkey != "") {
+      text = cfg.rsaPubkey;
+    };
 
     services.ssh-agent.enable = true;
 
     programs.ssh = {
       enable = true;
-      addKeysToAgent = "4h";
-      matchBlocks = {
-        openwrt = {
-          hostname = "192.168.1.0";
-          user = "root";
-        };
-        alph = {
-          hostname = "192.168.0.248";
-          user = "root";
-        };
-        nirvana = {
-          hostname = "nirvana.jyeno.cc";
-          user = "jyeno";
-        };
-      };
+      inherit (cfg) matchBlocks;
     };
   };
 }

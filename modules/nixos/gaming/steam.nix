@@ -23,6 +23,7 @@ in {
         PROTON_USE_WOW64 = gaming.settings.wow64.enable;
         PROTON_ENABLE_HDR = gaming.settings.hdr.enable;
         PROTON_ENABLE_WAYLAND = gaming.settings.wayland.enable;
+        PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = true; #temp
       };
       description = lib.literalExpression "Env vars to insert into steam package environment";
     };

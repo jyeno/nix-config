@@ -96,7 +96,7 @@
         autoStart = true;
         xrizer = false;
         json = {
-          bitrate = 80000000; # Mb/s
+          bitrate = 100000000; # Mb/s
           encoders = [
             {
               encoder = "vaapi";

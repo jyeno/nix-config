@@ -41,7 +41,7 @@ in {
       enable = true;
       openFirewall = lib.mkDefault true;
       highPriority = lib.mkDefault true;
-      steam.importOXRRuntimes = lib.mkDefault true; # Sets ‘PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES’ system-wide
+      # steam.importOXRRuntimes = lib.mkDefault true; # Sets ‘PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES’ system-wide
       inherit (cfg) defaultRuntime autoStart;
 
       config = {
