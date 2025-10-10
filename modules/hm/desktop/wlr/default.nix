@@ -16,7 +16,7 @@ in {
     ./ashell.nix
     ./fnott.nix
     ./foot.nix
-    ./gbar.nix
+    # ./gbar.nix
     ./hypridle.nix
     ./hyprlock.nix
     ./waybar.nix

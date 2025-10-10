@@ -61,7 +61,7 @@
           scale = 1;
           sdrBrightness = 250;
           sdrGamutWideness = 0;
-          transform = "Normal";
+          transform = "Instant";
           vrrPolicy = "Automatic";
           wideColorGamut = true;
         }

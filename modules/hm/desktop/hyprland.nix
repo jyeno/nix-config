@@ -52,13 +52,13 @@ in {
       swaybg
       grimblast
       hyprpicker
-      hyprlock
       hyprland-qtutils
+      wl-clipboard
     ];
 
     wayland.windowManager.hyprland = {
       enable = lib.mkDefault true;
-
+      systemd.enable = true;
       extraConfig = cfg.extraConfig;
       settings = {
         input = {
@@ -68,8 +68,8 @@ in {
           follow_mouse = lib.mkDefault 1;
           touchpad.natural_scroll = lib.mkDefault false;
           sensitivity = lib.mkDefault 0; # -1.0 - 1.0, 0 means no modification.
-          repeat_delay = lib.mkDefault 300;
-          repeat_rate = lib.mkDefault 50;
+          repeat_delay = lib.mkDefault 250;
+          repeat_rate = lib.mkDefault 40;
         };
 
         general = {
@@ -78,8 +78,6 @@ in {
           gaps_in = 0;
           gaps_out = 0;
           border_size = 2;
-          "col.active_border" = "rgba(ccccffee) rgba(aacc99ee) 270deg";
-          "col.inactive_border" = "rgba(595959aa)";
           no_border_on_floating = true;
         };
 
@@ -91,7 +89,7 @@ in {
           animate_manual_resizes = false;
           enable_swallow = true;
           focus_on_activate = true;
-          vrr = false;
+          vrr = true;
         };
 
         dwindle = {
@@ -121,7 +119,7 @@ in {
           # steam in ws2
           "tile, title:^(Steam)$"
           "float, class:^(steam)$"
-          "workspace 3 silent, class:^(steam)$"
+          "workspace 2 silent, class:^(steam)$"
           # idle inhibit while watching videos
           "idleinhibit focus, class:^(mpv|.*exe)$"
           "idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$"
@@ -241,17 +239,17 @@ in {
             #     ]
             # )
             # Launchers
-            # ++ (
-            #   let
-            #     wofi = lib.getExe config.programs.wofi.package;
-            #     cliphist = lib.getExe config.services.cliphist.package;
-            #   in
-            #     lib.optionals config.programs.wofi.enable [
-            #       "$mainMod, D, exec, ${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-            #       "$mainMod, X, exec, ${wofi} -S run"
-            #       "$mainMod, C, exec, selected=$(${cliphist} list | ${wofi} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy"
-            #     ]
-            # )
+            ++ (
+              let
+                wofi = lib.getExe config.programs.wofi.package;
+                cliphist = lib.getExe config.services.cliphist.package;
+              in
+                lib.optionals config.programs.wofi.enable [
+                  "$mainMod, D, exec, ${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
+                  "$mainMod, X, exec, ${wofi} -S run"
+                  "$mainMod, C, exec, selected=$(${cliphist} list | ${wofi} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy"
+                ]
+            )
           );
       };
     };

@@ -15,7 +15,7 @@
     ./qutebrowser.nix
     ./hyprland.nix
     ./riverwm.nix
+    ./wlr
   ];
-
   options.local.home.desktop.enable = lib.mkEnableOption "Enable desktop settingss";
 }

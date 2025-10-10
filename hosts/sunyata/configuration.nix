@@ -41,6 +41,7 @@
         # xkb = {};
       };
       plasma.enable = true;
+      hyprland.enable = true;
     };
     gaming = {
       enable = true;
@@ -56,7 +57,7 @@
       };
       gamemode.enableNotifications = true;
       gamescope = {
-        enable = true;
+        enable = false;
         outputWidth = 3440;
         outputHeight = 1440;
         nestedRefresh = 165;

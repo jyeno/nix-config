@@ -7,6 +7,11 @@
 in {
   options.local.home.desktop.wlr.ashell = {
     enable = lib.mkEnableOption "Enable ashell configuration";
+    target = lib.mkOption {
+      type = lib.types.str;
+      default = "hyprland-session.target";
+      description = "target wayland session";
+    };
     settings = lib.mkOption {
       type = lib.types.attrs;
       default = {};
@@ -16,7 +21,10 @@ in {
   config = lib.mkIf cfg.enable {
     programs.ashell = {
       enable = true;
-      systemd.enable = lib.mkDefault true;
+      systemd = {
+        enable = lib.mkDefault true;
+        target = cfg.target;
+      };
       inherit (cfg) settings;
     };
   };

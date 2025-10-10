@@ -262,6 +262,8 @@ in {
 
     programs.plasma = {
       enable = true;
+      overrideConfig = lib.mkDefault true;
+      immutableByDefault = lib.mkDefault true;
       inherit (cfg) workspace panels window-rules powerdevil;
       kscreenlocker.autoLock = lib.mkDefault true;
       hotkeys.commands = cfg.hotkeys;

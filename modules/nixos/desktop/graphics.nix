@@ -48,6 +48,8 @@ in {
           obs-vkcapture
         ];
       })
+      pkgs.lsfg-vk
+      pkgs.lsfg-vk-ui
     ];
   };
 }
