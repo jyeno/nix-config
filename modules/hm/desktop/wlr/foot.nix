@@ -26,7 +26,6 @@ in {
       in {
         main = {
           term = "foot";
-          font = "JetBrainsMono Nerd Font:size=11";
           shell = "${fish}";
           # pad = "15x15";
           notify = "${notify-send} -a \${app-id} -i \${app-id} \${title} \${body}";
@@ -47,27 +46,6 @@ in {
         };
 
         mouse.hide-when-typing = "yes";
-
-        colors = {
-          foreground = "cccccc"; #white
-          background = "2d2d2d"; # black
-          regular0 = "2d2d2d"; # black
-          regular1 = "f2777a"; # red
-          regular2 = "99cc99"; # green
-          regular3 = "ffcc66"; # yellow
-          regular4 = "6699cc"; # blue
-          regular5 = "cc99cc"; # magenta
-          regular6 = "66cccc"; # cyan
-          regular7 = "cccccc"; # white
-          bright0 = "999999"; # bright black
-          bright1 = "f2777a"; # bright red
-          bright2 = "99cc99"; # bright green
-          bright3 = "ffcc66"; # bright yellow
-          bright4 = "6699cc"; # bright blue
-          bright5 = "cc99cc"; # bright magenta
-          bright6 = "66cccc"; # bright cyan
-          bright7 = "ffffff"; # bright white
-        };
 
         cursor = {
           style = "underline";

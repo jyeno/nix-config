@@ -16,7 +16,6 @@ in {
       settings = {
         main = {
           notification-margin = 5;
-          background = "2d2d2dff";
           default-timeout = 5;
           anchor = "top-left";
           min-width = 360;

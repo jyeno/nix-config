@@ -28,7 +28,6 @@
     #desktop
     keepassxc
     pavucontrol
-    pamixer
     lmstudio
     r2modman
     vesktop

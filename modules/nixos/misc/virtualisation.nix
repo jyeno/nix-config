@@ -22,11 +22,7 @@ in {
     virtualisation = {
       libvirtd = {
         enable = lib.mkDefault true;
-        qemu = {
-          swtpm.enable = true;
-          ovmf.enable = true;
-          ovmf.packages = [pkgs.OVMFFull.fd];
-        };
+        qemu.swtpm.enable = true;
       };
       spiceUSBRedirection.enable = true;
     };
