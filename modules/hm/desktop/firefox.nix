@@ -17,13 +17,12 @@ in {
       # package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true;}) {});
       profiles.jyeno = {
         bookmarks = {};
-        # TODO figure out why there are errors when calling the inputs.firefox-addons
-        # extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
-        #   ublock-origin
-        #   augmented-steam
-        #   sidebery
-        #   browserpass
-        # ];
+        extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
+          ublock-origin
+          augmented-steam
+          sidebery
+          browserpass
+        ];
         search.engines = {
           "Nix Packages" = {
             urls = [
@@ -56,158 +55,236 @@ in {
           };
         };
         settings = {
-          "app.shield.optoutstudies.enabled" = false;
-          "app.normandy.enabled" = false;
-          "app.normandy.api_url" = "";
+          app = {
+            shield.optoutstudies.enabled = false;
+            normandy = {
+              enabled = false;
+              api_url = "";
+            };
+          };
 
-          "beacon.enabled" = false;
+          beacon.enabled = false;
 
-          "browser.startup.homepage" = "https://start.duckduckgo.com";
-          "browser.search.separatePrivateDefault.ui.enabled" = true;
-          "browser.urlbar.update2.engineAliasRefresh" = true;
-          "browser.search.suggest.enabled" = false;
-          "browser.urlbar.suggest.quicksuggest.sponsored" = false;
-          "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
-          "browser.formfill.enable" = false;
-          "browser.privatebrowsing.forceMediaMemoryCache" = true;
-          "browser.sessionstore.interval" = 60000;
-          "browser.download.start_downloads_in_tmp_dir" = true;
-          "browser.helperApps.deleteTempFileOnExit" = true;
-          "browser.uitour.enabled" = false;
-          "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-          "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-          "browser.newtabpage.activity-stream.telemetry" = false;
-          "browser.newtabpage.activity-stream.feeds.topsites" = false;
-          "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-          "browser.ping-centre.telemetry" = false;
-          "browser.contentblocking.category" = "strict";
-          "browser.download.animateNotifications" = false;
-          "browser.download.always_ask_before_handling_new_types" = true;
-          "browser.download.manager.addToRecentDocs" = false;
-          "browser.send_pings" = false;
-          "browser.sessionstore.privacy_level" = 2;
-          "browser.safebrowsing.downloads.remote.enabled" = false;
-          "browser.pocket.enabled" = false;
-          "browser.xul.error_pages.expert_bad_cert" = true;
-          "browser.download.open_pdf_attachments_inline" = true;
-          "browser.bookmarks.openInTabClosesMenu" = false;
-          "browser.menu.showViewImageInfo" = true;
-          "browser.cache.jsbc_compression_level" = 3;
+          browser = {
+            startup.homepage = "https://start.duckduckgo.com";
+            search = {
+              separatePrivateDefault.ui.enabled = true;
+              suggest.enabled = false;
+            };
+            urlbar = {
+              update2.engineAliasRefresh = true;
+              suggest.quicksuggest = {
+                sponsored = false;
+                nonsponsored = false;
+              };
+            };
+            formfill.enable = false;
+            privatebrowsing.forceMediaMemoryCache = true;
+            sessionstore.interval = 60000;
+            download.start_downloads_in_tmp_dir = true;
+            helperApps.deleteTempFileOnExit = true;
+            uitour.enabled = false;
+            activity-stream = {
+              feeds = {
+                telemetry = false;
+                topsites = false;
+                section.topstories = false;
+              };
+              showSponsoredTopSites = false;
+              telemetry = false;
+            };
+            ping-centre.telemetry = false;
+            contentblocking.category = "strict";
+            download = {
+              animateNotifications = false;
+              always_ask_before_handling_new_types = true;
+              manager.addToRecentDocs = false;
+              open_pdf_attachments_inline = true;
+            };
+            send_pings = false;
+            sessionstore.privacy_level = 2;
+            safebrowsing.downloads.remote.enabled = false;
+            pocket.enabled = false;
+            xul.error_pages.expert_bad_cert = true;
+            bookmarks.openInTabClosesMenu = false;
+            menu.showViewImageInfo = true;
+            cache.jsbc_compression_level = 3;
+          };
 
-          "cookiebanners.service.mode" = 1;
-          "cookiebanners.service.mode.privateBrowsing" = 1;
+          cookiebanners.service = {
+            mode = 1;
+            privateBrowsing = 1;
+          };
 
-          "content.notify.interval" = 100000;
+          content.notify.interval = 100000;
 
-          "datareporting.policy.dataSubmissionEnabled" = false;
-          "datareporting.healthreport.uploadEnabled" = false;
+          datareporting = {
+            policy.dataSubmissionEnabled = false;
+            healthreport.uploadEnabled = false;
+          };
 
-          "dom.enable_web_task_scheduling" = true;
-          "dom.event.clipboardevents.enabled" = true;
-          "dom.security.https_first" = true;
-          "dom.security.https_first_schemeless" = true;
-          "dom.security.sanitizer.enabled" = true;
+          dom = {
+            enable_web_task_scheduling = true;
+            event.clipboardevents.enabled = true;
+            security = {
+              https_first = true;
+              https_first_schemeless = true;
+              sanitizer.enabled = true;
+            };
+          };
 
-          "extensions.postDownloadThirdPartyPrompt" = false;
-          "extensions.pocket.enabled" = false;
+          extensions = {
+            postDownloadThirdPartyPrompt = false;
+            pocket.enabled = false;
+          };
 
-          "full-screen-api.transition-duration.enter" = "0 0";
-          "full-screen-api.transition-duration.leave" = "0 0";
-          "full-screen-api.warning.delay" = -1;
-          "full-screen-api.warning.timeout" = 0;
+          full-screen-api = {
+            transition-duration = {
+              enter = "0 0";
+              leave = "0 0";
+            };
+            warning = {
+              delay = -1;
+              timeout = 0;
+            };
+          };
 
-          "fission.autostart" = true;
+          fission.autostart = true;
 
-          "findbar.highlightAll" = true;
+          findbar.highlightAll = true;
 
-          "geo.provider.network.url" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
+          geo.provider.network.url = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
 
-          "gfx.canvas.accelerated.cache-items" = 4096;
-          "gfx.canvas.accelerated.cache-size" = 512;
-          "gfx.content.skia-font-cache-size" = 20;
-          "gfx.webrender.all" = true;
+          gfx = {
+            canvas.accelerated = {
+              cache-items = 4096;
+              cache-size = 512;
+            };
+            content.skia-font-cache-size = 20;
+            webrender.all = true;
+          };
 
-          "image.mem.decode_bytes_at_a_time" = 32768;
+          image.mem.decode_bytes_at_a_time = 32768;
 
-          "layout.css.grid-template-masonry-value.enabled" = true;
-          "layout.css.has-selector.enabled" = true;
-          "layout.word_select.eat_space_to_next_word" = false;
+          layout = {
+            css = {
+              grid-template-masonry-value.enabled = true;
+              has-selector.enabled = true;
+            };
+            word_select.eat_space_to_next_word = false;
+          };
 
-          "loop.enabled" = false;
+          loop.enabled = false;
 
-          "media.memory_cache_max_size" = 65536;
-          "media.cache_readahead_limit" = 7200;
-          "media.cache_resume_threshold" = 3600;
-          "media.navigator.enabled" = false;
-          "media.peerconnection.ice.proxy_only_if_behind_proxy" = true;
-          "media.peerconnection.ice.default_address_only" = true;
+          media = {
+            memory_cache_max_size = 65536;
+            cache_readahead_limit = 7200;
+            cache_resume_threshold = 3600;
+            navigator.enabled = false;
+            peerconnection.ice = {
+              proxy_only_if_behind_proxy = true;
+              default_address_only = true;
+            };
+          };
 
-          "network.cookie.cookiehardware-video-decoding,enabled" = true;
-          "network.IDN_show_punycode" = true;
-          "network.http.referer.XOriginTrimmingPolicy" = 2;
-          "network.prefetch-next" = false;
-          "network.predictor.enabled" = false;
-          "network.cookie.sameSite.noneRequiresSecure" = true;
-          "network.http.max-connections" = 1800;
-          "network.http.max-persistent-connections-per-server" = 10;
-          "network.http.max-urgent-start-excessive-connections-per-host" = 5;
-          "network.http.pacing.requests.enabled" = false;
-          "network.dns.disablePrefetch" = true;
-          "network.dnsCacheExpiration" = 3600;
-          "network.dns.max_high_priority_threads" = 8;
-          "network.ssl_tokens_cache_capacity" = 10240;
+          network = {
+            cookie.cookiehardware-video-decoding.enabled = true;
+            IDN_show_punycode = true;
+            prefetch-next = false;
+            predictor.enabled = false;
+            cookie.sameSite.noneRequiresSecure = true;
+            http = {
+              referer.XOriginTrimmingPolicy = 2;
+              max-connections = 1800;
+              max-persistent-connections-per-server = 10;
+              max-urgent-start-excessive-connections-per-host = 5;
+              pacing.requests.enabled = false;
+            };
+            dns = {
+              disablePrefetch = true;
+              max_high_priority_threads = 8;
+            };
+            dnsCacheExpiration = 3600;
+            ssl_tokens_cache_capacity = 10240;
+          };
 
-          "permissions.default.desktop-notification" = 2;
-          "permissions.default.geo" = 2;
-          "permissions.manager.defaultsUrl" = "";
+          permissions = {
+            default = {
+              desktop-notification = 2;
+              geo = 2;
+            };
+            manager.defaultsUrl = "";
+          };
 
-          "pdfjs.enableScripting" = false;
+          pdfjs.enableScripting = false;
 
-          "privacy.trackingprotection.fingerprinting.enable" = true;
-          "privacy.trackingprotection.cryptomining.enable" = true;
-          "privacy.trackingprotection.enable" = true;
-          "privacy.history.custom" = true;
-          "privacy.userContext.ui.enabled" = true;
+          privacy = {
+            trackingprotection = {
+              fingerprinting.enable = true;
+              cryptomining.enable = true;
+              enable = true;
+            };
+            history.custom = true;
+            userContext.ui.enabled = true;
+          };
 
-          "reader.parse-on-load.enabled" = false;
-          "reader.parse-on-load.force-enabled" = false;
+          reader.parse-on-load = {
+            enabled = false;
+            force-enabled = false;
+          };
 
-          "security.dialog_enable_delay" = false;
-          "security.OCSP.enabled" = 0;
-          "security.remote_settings.crlite_filters.enabled" = true;
-          "security.pki.crlite_mode" = 2;
-          "security.ssl.treat_unsafe_negotiation_as_broken" = true;
-          "security.tls.enable_0rtt_data" = false;
-          "security.insecure_connection_text.enabled" = true;
-          "security.insecure_connection_text.pbmode.enabled" = true;
-          "security.mixed_content.block_display_content" = true;
-          "security.mixed_content.upgrade_display_content" = true;
-          "security.mixed_content.upgrade_display_content.image" = true;
+          security = {
+            dialog_enable_delay = false;
+            OCSP.enabled = 0;
+            remote_settings.crlite_filters.enabled = true;
+            pki.crlite_mode = 2;
+            ssl.treat_unsafe_negotiation_as_broken = true;
+            tls.enable_0rtt_data = false;
+            insecure_connection_text = {
+              enabled = true;
+              pbmode.enabled = true;
+            };
+            mixed_content = {
+              block_display_content = true;
+              # upgrade_display_content = true;
+              upgrade_display_content.image = true;
+            };
+          };
 
-          "toolkit.telemetry.archive.enabled" = false;
-          "toolkit.telemetry.bhrPing.enabled" = false;
-          "toolkit.telemetry.enabled" = false;
-          "toolkit.telemetry.server" = "data:,";
-          "toolkit.telemetry.coverage.opt-out" = true;
-          "toolkit.telemetry.firstShutdownPing.enabled" = false;
-          "toolkit.telemetry.hybridContent.enabled" = false;
-          "toolkit.telemetry.newProfilePing.enabled" = false;
-          "toolkit.telemetry.reportingpolicy.firstRun" = false;
-          "toolkit.telemetry.shutdownPingSender.enabled" = false;
-          "toolkit.telemetry.unified" = false;
-          "toolkit.telemetry.updatePing.enabled" = false;
-          "toolkit.coverage.opt-out" = true;
-          "toolkit.coverage.endpoint.base" = "";
+          toolkit = {
+            telemetry = {
+              enabled = false;
+              server = "data:,";
+              archive.enabled = false;
+              bhrPing.enabled = false;
+              coverage.opt-out = true;
+              firstShutdownPing.enabled = false;
+              hybridContent.enabled = false;
+              newProfilePing.enabled = false;
+              reportingpolicy.firstRun = false;
+              shutdownPingSender.enabled = false;
+              unified = false;
+              updatePing.enabled = false;
+            };
+            coverage = {
+              opt-out = true;
+              endpoint.base = "";
+            };
+          };
 
-          "urlclassifier.trackingSkipURLs" = "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com";
-          "urlclassifier.features.socialtracking.skipURLs" = "*.instagram.com, *.twitter.com, *.twimg.com";
+          urlclassifier = {
+            trackingSkipURLs = "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com";
+            features.socialtracking.skipURLs = "*.instagram.com, *.twitter.com, *.twimg.com";
+          };
 
-          "webgl.disabled" = false;
+          webgl.disabled = false;
 
-          "webchannel.allowObject.urlWhitelist" = "";
+          webchannel.allowObject.urlWhitelist = "";
 
-          "widget.use-xdg-desktop-portal.file-picker" = 1;
-          "widget.use-xdg-desktop-portal.mime-handler" = 1;
+          widget.use-xdg-desktop-portal = {
+            file-picker = 1;
+            mime-handler = 1;
+          };
         };
       };
     };

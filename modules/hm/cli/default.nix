@@ -78,40 +78,47 @@ in {
     pass-secret-service.enable = lib.mkEnableOption "Enable pass secret service";
     direnv.enable = lib.mkEnableOption "Enable direnv";
   };
-
-  config.programs.aria2.enable = cfg.aria2.enable;
-
-  config.programs.bat.enable = cfg.bat.enable;
-
-  config.programs.fzf.enable = cfg.fzf.enable;
-
-  config.programs.fd.enable = cfg.fd.enable;
-
-  config.programs.browserpass = {
-    enable = cfg.browserpass.enable;
-    browsers = cfg.browserpass.browsers;
+  config.programs = {
+    aria2 = lib.mkIf cfg.aria2.enable {
+      enable = true;
+    };
+    bat = lib.mkIf cfg.bat.enable {
+      enable = true;
+    };
+    fzf = lib.mkIf cfg.fzf.enable {
+      enable = true;
+    };
+    fd = lib.mkIf cfg.fd.enable {
+      enable = true;
+    };
+    browserpass = lib.mkIf cfg.browserpass.enable {
+      enable = true;
+      browsers = cfg.browserpass.browsers;
+    };
+    mpv = lib.mkIf cfg.mpv.enable {
+      enable = true;
+      scripts = cfg.mpv.scripts;
+    };
+    yt-dlp = lib.mkIf cfg.yt-dlp.enable {
+      enable = true;
+      settings = cfg.yt-dlp.settings;
+    };
+    password-store = lib.mkIf cfg.pass.enable {
+      enable = true;
+      package = cfg.pass.package;
+    };
+    direnv = lib.mkIf cfg.direnv.enable {
+      enable = true;
+      nix-direnv.enable = lib.mkDefault true;
+    };
   };
 
-  config.services.playerctld.enable = cfg.playerctl.enable;
-
-  config.programs.mpv = {
-    enable = cfg.mpv.enable;
-    scripts = cfg.mpv.scripts;
-  };
-
-  config.programs.yt-dlp = {
-    enable = cfg.yt-dlp.enable;
-    settings = cfg.yt-dlp.settings;
-  };
-
-  config.programs.password-store = {
-    enable = cfg.pass.enable;
-    package = cfg.pass.package;
-  };
-  config.services.pass-secret-service.enable = cfg.pass-secret-service.enable;
-
-  config.programs.direnv = {
-    enable = cfg.direnv.enable;
-    nix-direnv.enable = lib.mkDefault true;
+  config.services = {
+    pass-secret-service = lib.mkIf cfg.pass-secret-service.enable {
+      enable = true;
+    };
+    playerctld = lib.mkIf cfg.playerctl.enable {
+      enable = true;
+    };
   };
 }

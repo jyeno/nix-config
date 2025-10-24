@@ -69,12 +69,12 @@ in {
       settings = let
         textCap = 150;
       in {
-        logLevel = "error";
+        log_level = "error";
         outputs = "All";
         position = "Bottom";
-        appLauncherCmd = launcher;
-        clipboardCmd = clipboard;
-        truncateTitleAfterLength = textCap;
+        app_launcher_cmd = launcher;
+        clipboard_cmd = clipboard;
+        truncate_title_after_length = textCap;
         modules = {
           left = [
             "AppLauncher"
@@ -89,29 +89,29 @@ in {
           ];
         };
         workspaces = {
-          visibilityMode = "All";
-          enableWorkspaceFilling = false;
+          visibility_mode = "All";
+          enable_workspace_filling = false;
         };
         system = {
-          cpuWarnThreshold = 60;
-          cpuAlertThreshold = 80;
-          memWarnThreshold = 70;
-          memAlertThreshold = 85;
-          tempWarnThreshold = 60;
-          tempAlertThreshold = 80;
+          cpu_warn_threshold = 60;
+          cpu_alert_threshold = 80;
+          mem_warn_threshold = 70;
+          mem_alert_threshold = 85;
+          temp_warn_threshold = 60;
+          temp_alert_threshold = 80;
         };
 
         clock.format = clockFormat;
 
-        mediaPlayer.maxTitleLength = textCap;
+        media_player.max_title_length = textCap;
 
         settings = {
-          lockCmd = lockCmd;
-          audioSinksMoreCmd = "${pavucontrol} -t 3";
-          audioSourcesMoreCmd = "${pavucontrol} -t 4";
-          wifiMoreCmd = "${terminal} --command=iwctl";
-          vpnMoreCmd = "${terminal} --command=iwctl";
-          bluetoothMoreCmd = "${terminal} --command=bluetoothctl";
+          lock_cmd = lockCmd;
+          audio_sinks_more_cmd = "${pavucontrol} -t 3";
+          audio_sources_more_cmd = "${pavucontrol} -t 4";
+          wifi_more_cmd = "${terminal} --command=iwctl";
+          vpn_more_cmd = "${terminal} --command=iwctl";
+          bluetooth_more_cmd = "${terminal} --command=bluetoothctl";
         };
 
         appearance = {

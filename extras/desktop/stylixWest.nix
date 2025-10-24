@@ -11,6 +11,7 @@
   };
   targets = {
     nvf.enable = true;
+    # firefox.profileNames = [ "jyeno" ];
     qt = {
       enable = true;
       platform = pkgs.lib.mkForce "kde";
