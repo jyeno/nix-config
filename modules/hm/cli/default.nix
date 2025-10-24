@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  localLib,
+  # localLib,
   ...
 }: let
   cfg = config.local.home.cli;

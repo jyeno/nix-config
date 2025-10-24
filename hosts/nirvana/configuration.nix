@@ -78,7 +78,10 @@
               enable = true;
               starship.enable = true;
             };
-            git.enable = true;
+            git = {
+              enable = true;
+              delta.enable = true;
+            };
             gpg.enable = true;
             nvf.enable = true;
             fd.enable = true;

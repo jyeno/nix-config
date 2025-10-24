@@ -39,7 +39,7 @@ in {
       wayland.enable = true;
     };
 
-    environment.systemPackages = lib.mkDefault [
+    environment.systemPackages = [
       (pkgs.wrapOBS {
         plugins = with pkgs.obs-studio-plugins; [
           obs-backgroundremoval
