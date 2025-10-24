@@ -10,6 +10,11 @@
 
   system.stateVersion = "24.05";
 
+  services.libinput = {
+    enable = true;
+    mouse.accelProfile = "flat";
+  };
+
   chaotic = {
     mesa-git.enable = false;
     hdr = {
@@ -49,7 +54,7 @@
         hdr.enable = false;
         rt.enable = true;
         vrr.enable = true;
-        vkbasalt.enable = false;
+        vkbasalt.enable = true;
         ntsync.enable = true;
         # wow64.enable = true;
         mangohud.enable = true;
@@ -92,7 +97,7 @@
       pipewire.enable = true;
       podman.enable = true;
       wivrn = {
-        enable = true;
+        enable = false;
         defaultRuntime = true;
         autoStart = true;
         xrizer = false;
