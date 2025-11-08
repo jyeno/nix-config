@@ -4,7 +4,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     impermanence.url = "github:nix-community/impermanence";
-    nvf.url = "github:notashelf/nvf/v0.8";
+    nvf.url = "github:notashelf/nvf";
+    # nvf.url = "github:notashelf/nvf/v0.8";
     plasma-manager.url = "github:nix-community/plasma-manager/trunk";
 
     disko = {
