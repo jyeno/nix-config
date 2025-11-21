@@ -15,10 +15,15 @@
     mouse.accelProfile = "flat";
   };
 
+  services.xserver.desktopManager.gnome.enable = false;
+  services.gnome.core-os-services.enable = false;
+  systemd.user.services.orca.enable = false;
+  services.gnome.at-spi2-core.enable = false;
+
   chaotic = {
     mesa-git.enable = false;
     hdr = {
-      enable = false;
+      enable = true;
       specialisation.enable = false;
     };
   };
@@ -51,7 +56,7 @@
     gaming = {
       enable = true;
       settings = {
-        hdr.enable = false;
+        hdr.enable = true;
         rt.enable = true;
         vrr.enable = true;
         vkbasalt.enable = true;

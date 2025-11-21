@@ -327,6 +327,18 @@ in {
           repeatDelay = 250;
           repeatRate = 40;
         };
+        mice = [
+          {
+            acceleration = 0.5;
+            vendorId = "1d57";
+            productId = "fa65";
+            name = "LXDDZ 2.4G 8K HS Receiver ";
+            accelerationProfile = "none";
+            scrollSpeed = 1;
+            naturalScroll = false;
+            enable = true;
+          }
+        ];
       };
 
       configFile = lib.mkDefault {
