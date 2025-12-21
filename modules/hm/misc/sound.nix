@@ -15,7 +15,7 @@ in {
       enable = true;
       preset = "mic_sound_filter";
     };
-    home.file.".config/easyeffects/input/mic_sound_filter.json".source = ./mic_sound_filter.json;
+    home.file.".config/easyeffects/input/mic_sound_filter.json".source = ../../../extras/desktop/mic_sound_filter.json;
     home.packages = [
       pkgs.deepfilternet
     ];

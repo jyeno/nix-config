@@ -15,11 +15,6 @@
     mouse.accelProfile = "flat";
   };
 
-  services.xserver.desktopManager.gnome.enable = false;
-  services.gnome.core-os-services.enable = false;
-  systemd.user.services.orca.enable = false;
-  services.gnome.at-spi2-core.enable = false;
-
   chaotic = {
     mesa-git.enable = false;
     hdr = {
@@ -59,7 +54,7 @@
         hdr.enable = true;
         rt.enable = true;
         vrr.enable = true;
-        vkbasalt.enable = true;
+        vkbasalt.enable = false;
         ntsync.enable = true;
         # wow64.enable = true;
         mangohud.enable = true;
