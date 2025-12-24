@@ -24,10 +24,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # gBar = {
-    #   url = "github:scorpion-26/gBar";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";
@@ -38,10 +34,6 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # lix = {
-    #   url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     # my secrets repo1
     nix-secrets = {
@@ -55,7 +47,7 @@
     inherit (inputs.nixpkgs) lib legacyPackages;
     localLib = import ./lib {inherit inputs;};
     discoveredHosts = localLib.mapHosts ./hosts;
-    discoveredNixosModules = localLib.discoverModules ./modules/nixos;
+    discoveredNixosModules = with localLib; (discoverModules ./modules/nixos) // (discoverModules ./modules/common);
     discoveredHomeModules = localLib.discoverModules ./modules/hm;
     discoveredPackages = localLib.mapPackages ./pkgs;
   in {
@@ -92,14 +84,13 @@
             modules =
               hostSpecificModules
               ++ (attrValues discoveredNixosModules)
-              ++ [./modules/common/mkUserOptions.nix]
               ++ [hostData.mainConfig]
               ++ [
                 inputs.home-manager.nixosModules.home-manager
                 {
+                  local.generateUsers = true;
                   home-manager.sharedModules = (specialArgs.homeSpecificModules or []) ++ (attrValues discoveredHomeModules);
                 }
-                ./modules/common/mkUserModule.nix
               ];
           }
       )

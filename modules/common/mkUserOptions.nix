@@ -1,10 +1,9 @@
 {
   config,
   pkgs,
+  lib,
   ...
-}: let
-  inherit (pkgs) lib;
-in {
+}: {
   options.local.users = lib.mkOption {
     default = {};
     description = "user settings";
