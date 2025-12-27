@@ -50,6 +50,34 @@
     })
     inputs.nixpkgs.lib.systems.flakeExposed
     |> lib.listToAttrs;
+
+  genHosts = args: hosts:
+    builtins.mapAttrs (
+      hostname: hostData: let
+        hostAttrs = hostData.hostAttrs;
+        system = hostAttrs.system;
+        hostSpecificSpecialArgs = hostAttrs.specialArgs or {};
+        hostSpecificModules = hostAttrs.modules or [];
+        homeSpecificModules = hostAttrs.homeModules or [];
+        pkgs = hostAttrs.pkgs or inputs.nixpkgs.legacyPackages.${system};
+        specialArgs = args.specialArgs // hostSpecificSpecialArgs // {inherit hostname system;};
+      in
+        lib.nixosSystem {
+          inherit pkgs system specialArgs;
+          modules =
+            hostSpecificModules
+            ++ (builtins.attrValues args.discoveredNixosModules)
+            ++ [hostData.mainConfig]
+            ++ [
+              inputs.home-manager.nixosModules.home-manager
+              {
+                home-manager.sharedModules = homeSpecificModules ++ (builtins.attrValues args.discoveredHomeModules);
+                local.generateUsers = true;
+              }
+            ];
+        }
+    )
+    hosts;
 in {
   inherit
     scanPaths
@@ -57,5 +85,6 @@ in {
     mapPackages
     mapHosts
     forAllSystems
+    genHosts
     ;
 }

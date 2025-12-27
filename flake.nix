@@ -43,7 +43,6 @@
   };
 
   outputs = inputs: let
-    inherit (builtins) attrValues mapAttrs;
     inherit (inputs.nixpkgs) lib legacyPackages;
     localLib = import ./lib {inherit inputs;};
     discoveredHosts = localLib.mapHosts ./hosts;
@@ -53,47 +52,19 @@
   in {
     lib = localLib;
     nixosModules = discoveredNixosModules;
+    homeModules = discoveredHomeModules;
     packages = localLib.forAllSystems (
       system: let
         pkgs = legacyPackages.${system};
-        mapPkgs = mapAttrs (name: path: pkgs.callPackage path {inherit system;});
+        mapPkgs = builtins.mapAttrs (name: path: pkgs.callPackage path {inherit system;});
       in
         mapPkgs discoveredPackages
     );
     nixosConfigurations =
-      mapAttrs (
-        hostname: hostData: let
-          hostAttrs = hostData.hostAttrs;
-          system = hostAttrs.system;
-          hostSpecificSpecialArgs = hostAttrs.specialArgs or {};
-          hostSpecificModules = hostAttrs.modules or [];
-          pkgs = hostAttrs.pkgs or inputs.nixpkgs.legacyPackages.${hostAttrs.system};
-          specialArgs =
-            {
-              inherit
-                hostname
-                inputs
-                localLib
-                system
-                ;
-            }
-            // hostSpecificSpecialArgs;
-        in
-          lib.nixosSystem {
-            inherit pkgs system specialArgs;
-            modules =
-              hostSpecificModules
-              ++ (attrValues discoveredNixosModules)
-              ++ [hostData.mainConfig]
-              ++ [
-                inputs.home-manager.nixosModules.home-manager
-                {
-                  local.generateUsers = true;
-                  home-manager.sharedModules = (specialArgs.homeSpecificModules or []) ++ (attrValues discoveredHomeModules);
-                }
-              ];
-          }
-      )
+      localLib.genHosts {
+        specialArgs = {inherit inputs localLib;};
+        inherit discoveredNixosModules discoveredHomeModules;
+      }
       discoveredHosts;
   };
 }
