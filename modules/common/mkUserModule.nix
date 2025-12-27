@@ -2,9 +2,8 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
-} @ moduleArgs: let
+}: let
   inherit (builtins) mapAttrs;
   genUsers = config.local.generateUsers;
 in {
@@ -30,7 +29,6 @@ in {
       config.local.users;
 
     home-manager = {
-      extraSpecialArgs = {inherit inputs moduleArgs;};
       useGlobalPkgs = true;
       backupFileExtension = "backup";
       users =

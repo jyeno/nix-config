@@ -1,12 +1,7 @@
 {
   lib,
-  # localLib,
+  localLib,
   ...
 }: {
-  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
-  imports = [
-    ./persistent.nix
-    ./sops.nix
-    ./sound.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 }

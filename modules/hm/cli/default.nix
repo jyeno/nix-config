@@ -2,24 +2,12 @@
   config,
   lib,
   pkgs,
-  # localLib,
+  localLib,
   ...
 }: let
   cfg = config.local.home.cli;
 in {
-  # imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
-  imports = [
-    ./fish.nix
-    ./git.nix
-    ./gpg.nix
-    ./mpd.nix
-    ./neomutt.nix
-    ./neovim.nix
-    ./newsboat.nix
-    ./nvf.nix
-    ./ssh.nix
-    ./tmux.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 
   options.local.home.cli = {
     aria2.enable = lib.mkEnableOption "Enable aria2";

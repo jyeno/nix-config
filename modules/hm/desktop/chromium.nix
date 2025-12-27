@@ -36,55 +36,55 @@ in {
         {
           # ublock origin
           id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-          crxPath = ./chromium_extensions/ublock_origin.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/ublock_origin.crx;
           version = "1.62.0";
         }
         {
           # browser pass
           id = "naepdomgkenhinolocfifgehidddafch";
-          crxPath = ./chromium_extensions/browser_pass.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/browser_pass.crx;
           version = "3.9.0";
         }
         {
           # automa
           id = "infppggnoaenmfagbfknfkancpbljcca";
-          crxPath = ./chromium_extensions/automa.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/automa.crx;
           version = "1.29.8";
         }
         {
           # augmented steam
           id = "dnhpnfgdlenaccegplpojghhmaamnnfp";
-          crxPath = ./chromium_extensions/augmented_steam.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/augmented_steam.crx;
           version = "4.2.1";
         }
         {
           # tamper monkey
           id = "dhdgffkkebhmkfjojejmpbldmpobfkfo";
-          crxPath = ./chromium_extensions/tamper_monkey.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/tamper_monkey.crx;
           version = "5.3.3";
         }
         {
           # ttv lol pro
           id = "bpaoeijjlplfjbagceilcgbkcdjbomjd";
-          crxPath = ./chromium_extensions/ttv_lol_pro.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/ttv_lol_pro.crx;
           version = "2.4.0";
         }
         {
           # link map
           id = "jappgmhllahigjolfpgbjdfhciabdnde";
-          crxPath = ./chromium_extensions/link_map.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/link_map.crx;
           version = "1.1.7";
         }
         {
           # vimium
           id = "dbepggeogbaibhgnhhndojpepiihcmeb";
-          crxPath = ./chromium_extensions/vimium.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/vimium.crx;
           version = "2.2.0";
         }
         {
           # noscript
           id = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
-          crxPath = ./chromium_extensions/noscript.crx;
+          crxPath = ../../../extras/desktop/chromium_extensions/noscript.crx;
           version = "12.1.1";
         }
       ];

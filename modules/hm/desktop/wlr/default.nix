@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  pkgs,
+  localLib,
   ...
 }: let
   cfg = config.local.home.desktop.wlr;
@@ -11,18 +11,7 @@ in {
     enable = lib.mkEnableOption "Enable wayland user configuration files";
     imv.enable = lib.mkEnableOption "Enable imv";
   };
-
-  imports = [
-    ./ashell.nix
-    ./fnott.nix
-    ./foot.nix
-    # ./gbar.nix
-    ./hypridle.nix
-    ./hyprlock.nix
-    ./waybar.nix
-    ./wofi.nix
-    ./yambar.nix
-  ];
+  imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 
   config = lib.mkIf cfg.enable {
     programs.imv.enable = cfg.imv.enable;

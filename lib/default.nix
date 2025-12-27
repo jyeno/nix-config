@@ -71,7 +71,10 @@
             ++ [
               inputs.home-manager.nixosModules.home-manager
               {
-                home-manager.sharedModules = homeSpecificModules ++ (builtins.attrValues args.discoveredHomeModules);
+                home-manager = {
+                  extraSpecialArgs = specialArgs;
+                  sharedModules = homeSpecificModules ++ (builtins.attrValues args.discoveredHomeModules);
+                };
                 local.generateUsers = true;
               }
             ];

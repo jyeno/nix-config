@@ -43,7 +43,7 @@
   };
 
   outputs = inputs: let
-    inherit (inputs.nixpkgs) lib legacyPackages;
+    inherit (inputs.nixpkgs) legacyPackages;
     localLib = import ./lib {inherit inputs;};
     discoveredHosts = localLib.mapHosts ./hosts;
     discoveredNixosModules = with localLib; (discoverModules ./modules/nixos) // (discoverModules ./modules/common);
