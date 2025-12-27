@@ -8,6 +8,7 @@
 in {
   options.local.home.desktop.chromium = {
     enable = lib.mkEnableOption "Enable chromium configuration";
+    # TODO add extensions downloader based on the id and version specificied
     cmdArgs = {
       type = lib.types.listOf lib.types.str;
       default = [

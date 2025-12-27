@@ -13,7 +13,26 @@
     else
       builtins.readDir dir
       |> lib.filterAttrs (n: t: (lib.hasSuffix ".nix" n && n != "default.nix") || t == "directory")
-      |> lib.mapAttrs (name: _: import "${builtins.toString dir}/${name}");
+      |> lib.mapAttrs (n: _: import "${builtins.toString dir}/${n}")
+      |> lib.filterAttrs (n: module: let
+        dummyModule = module {
+          pkgs = {};
+          config = {};
+          localLib = {};
+          inherit lib inputs;
+        };
+        inherit (builtins) hasAttr head tail;
+        countAttrs = attrs: m:
+          if (attrs == [])
+          then 0
+          else if (hasAttr (head attrs) m)
+          then 1 + countAttrs (tail attrs) m
+          else 0 + countAttrs (tail attrs) m;
+
+        # TODO be stricter with config attr, only allow if it contains only _type == "if"
+        isModuleValid = m: builtins.length (builtins.attrNames m) == countAttrs ["options" "config" "imports"] m;
+      in
+        lib.asserts.assertMsg (isModuleValid dummyModule) "invalid ${builtins.toString dir}/${n} module");
 
   mapPackages = dir:
     if !lib.pathExists dir
@@ -68,10 +87,11 @@
             hostSpecificModules
             ++ (builtins.attrValues args.discoveredNixosModules)
             ++ [hostData.mainConfig]
-            ++ [
+            ++ lib.optionals args.genUsers [
               inputs.home-manager.nixosModules.home-manager
               {
                 home-manager = {
+                  # TODO move to a better place
                   extraSpecialArgs = specialArgs;
                   sharedModules = homeSpecificModules ++ (builtins.attrValues args.discoveredHomeModules);
                 };

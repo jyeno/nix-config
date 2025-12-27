@@ -64,6 +64,7 @@
       localLib.genHosts {
         specialArgs = {inherit inputs localLib;};
         inherit discoveredNixosModules discoveredHomeModules;
+        genUsers = true;
       }
       discoveredHosts;
   };
