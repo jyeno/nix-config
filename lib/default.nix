@@ -1,38 +1,18 @@
 {inputs}: let
   lib = inputs.nixpkgs.lib;
   scanPaths = dir: type:
-    if !lib.pathExists dir
-    then {}
-    else
-      builtins.readDir dir
-      |> lib.filterAttrs (n: t: t == type);
+    lib.optionalAttrs (lib.pathExists dir)
+    dir
+    |> builtins.readDir
+    |> lib.filterAttrs (n: t: t == type);
 
   discoverModules = dir:
-    if !lib.pathExists dir
-    then {}
-    else
-      builtins.readDir dir
-      |> lib.filterAttrs (n: t: (lib.hasSuffix ".nix" n && n != "default.nix") || t == "directory")
-      |> lib.mapAttrs (n: _: import "${builtins.toString dir}/${n}")
-      |> lib.filterAttrs (n: module: let
-        dummyModule = module {
-          pkgs = {};
-          config = {};
-          localLib = {};
-          inherit lib inputs;
-        };
-        inherit (builtins) hasAttr head tail;
-        countAttrs = attrs: m:
-          if (attrs == [])
-          then 0
-          else if (hasAttr (head attrs) m)
-          then 1 + countAttrs (tail attrs) m
-          else 0 + countAttrs (tail attrs) m;
-
-        # TODO be stricter with config attr, only allow if it contains only _type == "if"
-        isModuleValid = m: builtins.length (builtins.attrNames m) == countAttrs ["options" "config" "imports"] m;
-      in
-        lib.asserts.assertMsg (isModuleValid dummyModule) "invalid ${builtins.toString dir}/${n} module");
+    lib.optionalAttrs (lib.pathExists dir)
+    dir
+    |> builtins.readDir
+    |> lib.filterAttrs (n: t: (lib.hasSuffix ".nix" n && n != "default.nix") || t == "directory")
+    |> lib.mapAttrs (n: _: import "${builtins.toString dir}/${n}")
+    |> validateModules dir;
 
   mapPackages = dir:
     if !lib.pathExists dir
@@ -40,11 +20,26 @@
     else
       builtins.readDir dir
       |> lib.filterAttrs (n: t: (lib.hasSuffix ".nix" n && n != "default.nix") || t == "directory")
-      |> lib.mapAttrsToList (name: _: {
-        name = lib.removeSuffix ".nix" name;
-        value = dir + "/${name}";
-      })
-      |> lib.listToAttrs;
+      |> lib.mapAttrs' (
+        name: _:
+          lib.nameValuePair (lib.removeSuffix ".nix" name) (dir + "/${name}")
+      );
+
+  mapUsers = dir:
+    scanPaths dir "directory"
+    |> lib.mapAttrs (
+      username: _: let
+        userDir = dir + "/${username}";
+        defaultNixPath = "${userDir}/default.nix";
+        homeConfigPath = "${userDir}/home.nix";
+        isConfigValid = lib.pathExists defaultNixPath && lib.pathExists homeConfigPath;
+      in
+        lib.optionalAttrs (lib.asserts.assertMsg isConfigValid
+          "User directory ${userDir} must contain both default.nix and home.nix")
+        {
+          inherit defaultNixPath homeConfigPath;
+        }
+    );
 
   mapHosts = dir:
     scanPaths dir "directory"
@@ -52,26 +47,28 @@
       hostname: _: let
         hostDir = "${builtins.toString dir}/${hostname}";
         defaultNixPath = "${hostDir}/default.nix";
-        configNixPath = "${hostDir}/configuration.nix";
+        mainConfig = "${hostDir}/configuration.nix";
+        isConfigValid = lib.pathExists defaultNixPath && lib.pathExists mainConfig;
       in
-        if lib.pathExists defaultNixPath && lib.pathExists configNixPath
-        then {
+        lib.optionalAttrs (lib.asserts.assertMsg isConfigValid
+          "Host directory ${hostDir} must contain both default.nix and configuration.nix")
+        {
           hostAttrs = import hostDir {inherit inputs hostname;};
-          mainConfig = configNixPath;
+          inherit mainConfig;
         }
-        else throw "Host directory ${hostDir} must contain both default.nix and configuration.nix"
     );
 
   forAllSystems = f:
-    map (system: {
+    inputs.nixpkgs.lib.systems.flakeExposed
+    |> map (system: {
       name = system;
       value = f system;
     })
-    inputs.nixpkgs.lib.systems.flakeExposed
     |> lib.listToAttrs;
 
   genHosts = args: hosts:
-    builtins.mapAttrs (
+    hosts
+    |> builtins.mapAttrs (
       hostname: hostData: let
         hostAttrs = hostData.hostAttrs;
         system = hostAttrs.system;
@@ -87,7 +84,7 @@
             hostSpecificModules
             ++ (builtins.attrValues args.discoveredNixosModules)
             ++ [hostData.mainConfig]
-            ++ lib.optionals args.genUsers [
+            ++ [
               inputs.home-manager.nixosModules.home-manager
               {
                 home-manager = {
@@ -95,17 +92,39 @@
                   extraSpecialArgs = specialArgs;
                   sharedModules = homeSpecificModules ++ (builtins.attrValues args.discoveredHomeModules);
                 };
-                local.generateUsers = true;
+                local.generateUsers = args.genUsers;
               }
             ];
         }
-    )
-    hosts;
+    );
+
+  validateModules = dir: modules:
+    modules
+    |> lib.filterAttrs (n: module: let
+      dummyModule = module {
+        pkgs = {};
+        config = {};
+        localLib = {};
+        inherit lib inputs;
+      };
+      inherit (builtins) hasAttr head tail;
+      countAttrs = attrs: m:
+        if (attrs == [])
+        then 0
+        else if (hasAttr (head attrs) m)
+        then 1 + countAttrs (tail attrs) m
+        else 0 + countAttrs (tail attrs) m;
+
+      # TODO be stricter with config attr, only allow if it contains only _type == "if"
+      isModuleValid = m: builtins.length (builtins.attrNames m) == countAttrs ["options" "config" "imports"] m;
+    in
+      lib.asserts.assertMsg (isModuleValid dummyModule) "invalid ${builtins.toString dir}/${n} module");
 in {
   inherit
     scanPaths
     discoverModules
     mapPackages
+    mapUsers
     mapHosts
     forAllSystems
     genHosts
