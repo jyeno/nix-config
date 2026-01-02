@@ -12,21 +12,27 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = ["dm-snapshot"];
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
-  boot.kernelModules = ["kvm-amd"];
-  boot.kernelParams = ["nvidia-drm.fbdev=1"];
-  boot.extraModulePackages = [];
-
-  fileSystems."/data" = {
-    device = "/dev/sda4";
-    fsType = "ext4";
-    options = ["noatime" "rw" "noexec"];
+  boot = {
+    initrd = {
+      availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
+      kernelModules = ["dm-snapshot"];
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = ["kvm-amd"];
+    kernelParams = ["nvidia-drm.fbdev=1"];
+    extraModulePackages = [];
   };
 
-  fileSystems."/persist".neededForBoot = true;
-  fileSystems."/persist/home".neededForBoot = true;
+  fileSystems = {
+    "/data" = {
+      device = "/dev/sda4";
+      fsType = "ext4";
+      options = ["noatime" "rw" "noexec"];
+    };
+
+    "/persist".neededForBoot = true;
+    "/persist/home".neededForBoot = true;
+  };
 
   swapDevices = [];
 

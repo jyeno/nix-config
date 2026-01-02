@@ -20,8 +20,8 @@ in {
         nix.enable = true;
         zig.enable = true;
         clang.enable = true;
-        sql.enable = true;
-        # qml.enable = true;
+        # sql.enable = true;
+        qml.enable = true;
         rust.enable = true;
         markdown = {
           enable = true;

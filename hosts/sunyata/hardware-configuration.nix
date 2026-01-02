@@ -12,22 +12,26 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = ["dm-snapshot" "amdgpu"];
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
-  boot.kernelModules = ["kvm-amd" "amdgpu" "ntsync"];
-  # boot.kernelPatches = [
-  #   {
-  #     name = "amdgpu-ignore-ctx-privileges";
-  #     patch = pkgs.fetchpatch {
-  #       name = "cap_sys_nice_begone.patch";
-  #       url = "https://github.com/Frogging-Family/community-patches/raw/master/linux61-tkg/cap_sys_nice_begone.mypatch";
-  #       hash = "sha256-Y3a0+x2xvHsfLax/uwycdJf3xLxvVfkfDVqjkxNaYEo=";
-  #     };
-  #   }
-  # ];
-  boot.extraModulePackages = [];
+  boot = {
+    initrd = {
+      availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
+      kernelModules = ["dm-snapshot" "amdgpu"];
+    };
+    # boot.kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxKernel.kernels.linux_xanmod_latest;
+    kernelModules = ["kvm-amd" "amdgpu" "ntsync"];
+    extraModulePackages = [];
+    # kernelPatches = [
+    #   {
+    #     name = "amdgpu-ignore-ctx-privileges";
+    #     patch = pkgs.fetchpatch {
+    #       name = "cap_sys_nice_begone.patch";
+    #       url = "https://github.com/Frogging-Family/community-patches/raw/master/linux61-tkg/cap_sys_nice_begone.mypatch";
+    #       hash = "sha256-Y3a0+x2xvHsfLax/uwycdJf3xLxvVfkfDVqjkxNaYEo=";
+    #     };
+    #   }
+    # ];
+  };
 
   fileSystems."/data" = {
     device = "/dev/mapper/Bunk-data";

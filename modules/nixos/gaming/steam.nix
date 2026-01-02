@@ -29,7 +29,7 @@ in {
     };
     compatPackages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
-      default = [pkgs.proton-ge-custom];
+      default = [pkgs.proton-ge-bin];
       description = lib.literalExpression "List of extra compatibility packages like proton-ge";
     };
   };

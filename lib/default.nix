@@ -92,7 +92,7 @@
                   extraSpecialArgs = specialArgs;
                   sharedModules = homeSpecificModules ++ (builtins.attrValues args.discoveredHomeModules);
                 };
-                local.generateUsers = args.genUsers;
+                local.generateUsers = args.genUsers or false;
               }
             ];
         }

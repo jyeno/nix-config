@@ -15,14 +15,6 @@
     mouse.accelProfile = "flat";
   };
 
-  chaotic = {
-    mesa-git.enable = false;
-    hdr = {
-      enable = true;
-      specialisation.enable = false;
-    };
-  };
-
   stylix = import ../../extras/desktop/stylixWest.nix {inherit pkgs;};
 
   local = {

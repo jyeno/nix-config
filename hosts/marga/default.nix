@@ -1,7 +1,6 @@
 {inputs, ...}: let
   system = "x86_64-linux";
   modules = [
-    inputs.chaotic.nixosModules.default
     inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.default
     inputs.sops-nix.nixosModules.sops
