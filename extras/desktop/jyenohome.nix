@@ -175,6 +175,14 @@
       mpv.enable = true;
       browserpass.enable = true;
     };
+    emu.switch = {
+      enable = true;
+      gameDirs = ["/home/games/switch"];
+      resolutionScaling = 1440;
+      antialiasing = "SmaaUltra";
+      aspectRatio = "21:9";
+      dramSize = 8;
+    };
     desktop = let
       jyenowlr = import ./jyenowlr.nix {inherit pkgs;};
     in
@@ -210,6 +218,7 @@
           ".config/vesktop"
           ".config/qutebrowser/greasemonkey"
           ".config/wivrn"
+          ".config/Ryujinx"
           ".password-store"
           ".nixos"
         ];
