@@ -4,13 +4,12 @@
   ...
 }: let
   cfg = config.local.home.misc.persistent;
-  username = config.home.username;
-  symlinkDirs =
+  privateDirs =
     builtins.map (dir: {
       directory = dir;
-      method = "symlink";
+      mode = "0700";
     })
-    cfg.directoriesSymlink;
+    cfg.directoriesPrivate;
 in {
   options.local.home.misc.persistent = {
     enable = lib.mkOption {
@@ -23,10 +22,10 @@ in {
       default = [];
       description = "list of home directories to persist";
     };
-    directoriesSymlink = lib.mkOption {
+    directoriesPrivate = lib.mkOption {
       type = with lib.types; listOf str;
       default = [];
-      description = "list of home directories (symlink) to persist";
+      description = "list of home directories (private) to persist";
     };
     files = lib.mkOption {
       type = with lib.types; listOf str;
@@ -35,10 +34,9 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.persistence."/persist/home/${username}" = {
-      directories = cfg.directories ++ symlinkDirs;
+    home.persistence."/persist" = {
+      directories = cfg.directories ++ privateDirs;
       files = cfg.files;
-      allowOther = true;
     };
   };
 }

@@ -9,7 +9,6 @@
   homeModules = [
     inputs.sops-nix.homeManagerModules.sops
     inputs.nvf.homeManagerModules.default
-    inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.plasma-manager.homeModules.plasma-manager
   ];
 in {

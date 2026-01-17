@@ -81,6 +81,10 @@ in {
           cd $argv[1]
         end
 
+        function nrun
+          nix-shell -p $argv[1] --run "$argv[1] $argv[2..-1]"
+        end
+
         function fish_user_key_bindings
           fish_vi_key_bindings
         end

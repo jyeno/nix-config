@@ -1,5 +1,7 @@
-{inputs}: let
-  lib = inputs.nixpkgs.lib;
+{
+  inputs,
+  lib ? inputs.nixpkgs.lib,
+}: let
   scanPaths = dir: type:
     lib.optionalAttrs (lib.pathExists dir)
     dir
@@ -101,13 +103,13 @@
   validateModules = dir: modules:
     modules
     |> lib.filterAttrs (n: module: let
+      inherit (builtins) hasAttr head tail length attrNames toString;
       dummyModule = module {
         pkgs = {};
         config = {};
         localLib = {};
         inherit lib inputs;
       };
-      inherit (builtins) hasAttr head tail;
       countAttrs = attrs: m:
         if (attrs == [])
         then 0
@@ -116,9 +118,9 @@
         else 0 + countAttrs (tail attrs) m;
 
       # TODO be stricter with config attr, only allow if it contains only _type == "if"
-      isModuleValid = m: builtins.length (builtins.attrNames m) == countAttrs ["options" "config" "imports"] m;
+      isModuleValid = m: (length (attrNames m) == countAttrs ["options" "config" "imports"] m);
     in
-      lib.asserts.assertMsg (isModuleValid dummyModule) "invalid ${builtins.toString dir}/${n} module");
+      lib.asserts.assertMsg (isModuleValid dummyModule) "invalid ${toString dir}/${n} module");
 in {
   inherit
     scanPaths

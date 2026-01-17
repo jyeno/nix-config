@@ -34,6 +34,9 @@
     materialgram
     ghostty
     mumble
+    # inputplumber
+    # evremap
+    # input-remapper
     # zeal
   ];
 
@@ -182,6 +185,54 @@
       antialiasing = "SmaaUltra";
       aspectRatio = "21:9";
       dramSize = 8;
+      extraConfig = {
+        input_config = [
+          {
+            left_joycon_stick = {
+              stick_up = "W";
+              stick_down = "S";
+              stick_left = "A";
+              stick_right = "D";
+              stick_button = "F";
+            };
+            right_joycon_stick = {
+              stick_up = "I";
+              stick_down = "K";
+              stick_left = "J";
+              stick_right = "L";
+              stick_button = "H";
+            };
+            left_joycon = {
+              button_minus = "Minus";
+              button_l = "Shift";
+              button_zl = "Z";
+              button_sl = "Unbound";
+              button_sr = "Unbound";
+              dpad_up = "Up";
+              dpad_down = "Down";
+              dpad_left = "Left";
+              dpad_right = "Right";
+            };
+            right_joycon = {
+              button_plus = "Plus";
+              button_r = "ShiftLeft";
+              button_zr = "O";
+              button_sl = "Unbound";
+              button_sr = "Unbound";
+              button_x = "C";
+              button_b = "Space";
+              button_y = "F";
+              button_a = "E";
+            };
+            version = 1;
+            backend = "WindowKeyboard";
+            id = "0";
+            name = "Keyboard";
+            controller_type = "ProController";
+            player_index = "Player1";
+          }
+        ];
+      };
     };
     desktop = let
       jyenowlr = import ./jyenowlr.nix {inherit pkgs;};
@@ -202,34 +253,35 @@
     misc = {
       persistent = {
         enable = true;
-        directories = [
+        directoriesPrivate = [
+          ".config/sops"
           ".gnupg"
-          "Music"
-          ".mozilla/firefox/jyeno"
-          ".local/share/materialgram"
-          ".local/share/qutebrowser"
+          ".password-store"
+          ".nixos"
+          # ".ssh"
           ".local/share/direnv"
           ".local/share/fish"
           ".local/state/wireplumber"
-          ".config/sops"
+        ];
+        directories = [
+          "Music"
+          ".config/chromium"
+          ".config/qutebrowser/greasemonkey"
+          ".cache/lm-studio"
+          ".config/Ryujinx"
           # ".config/r2modman"
           # ".config/r2modmanPlus-local"
-          ".config/chromium"
           ".config/vesktop"
-          ".config/qutebrowser/greasemonkey"
           ".config/wivrn"
-          ".config/Ryujinx"
-          ".password-store"
-          ".nixos"
-        ];
-        directoriesSymlink = [
+          ".mozilla/firefox/jyeno"
+          ".local/share/materialgram"
+          ".local/share/qutebrowser"
           ".local/share/Steam"
           ".local/share/containers"
-          ".cache/lm-studio"
         ];
         files = [
-          ".ssh/known_hosts"
           ".Passwords.kdbx"
+          ".ssh/known_hosts"
         ];
       };
       sops.enable = true;

@@ -10,7 +10,7 @@
     };
   };
   targets = {
-    nvf.enable = true;
+    # nvf.enable = true;
     # firefox.profileNames = [ "jyeno" ];
     qt = {
       enable = true;

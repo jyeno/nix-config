@@ -15,6 +15,10 @@
     mouse.accelProfile = "flat";
   };
 
+  # services.input-remapper = {
+  #   enable = true;
+  # };
+
   stylix = import ../../extras/desktop/stylixWest.nix {inherit pkgs;};
 
   local = {

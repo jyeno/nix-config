@@ -18,7 +18,7 @@
       kernelModules = ["dm-snapshot" "amdgpu"];
     };
     # boot.kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxKernel.kernels.linux_xanmod_latest;
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
     kernelModules = ["kvm-amd" "amdgpu" "ntsync"];
     extraModulePackages = [];
     # kernelPatches = [
@@ -33,20 +33,22 @@
     # ];
   };
 
-  fileSystems."/data" = {
-    device = "/dev/mapper/Bunk-data";
-    fsType = "ext4";
-    options = ["noatime" "rw" "noexec"];
-  };
+  fileSystems = {
+    "/data" = {
+      device = "/dev/mapper/Bunk-data";
+      fsType = "ext4";
+      options = ["noatime" "rw" "noexec"];
+    };
 
-  fileSystems."/data/games" = {
-    device = "/dev/mapper/Bunk-games";
-    fsType = "ext4";
-    options = ["noatime" "rw"];
-  };
+    "/data/games" = {
+      device = "/dev/mapper/Bunk-games";
+      fsType = "ext4";
+      options = ["noatime" "rw"];
+    };
 
-  fileSystems."/persist".neededForBoot = true;
-  fileSystems."/persist/home".neededForBoot = true;
+    "/persist".neededForBoot = true;
+    "/persist/home".neededForBoot = true;
+  };
 
   swapDevices = [];
 

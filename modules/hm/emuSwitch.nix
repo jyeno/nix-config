@@ -75,7 +75,7 @@ in {
               (lib.lists.findFirstIndex (res: let
                   splitRes = lib.splitString "/" res;
                 in
-                  builtins.elem cfg.resolutionScaling splitRes)
+                  builtins.elem (builtins.toString cfg.resolutionScaling) splitRes)
                 0
                 resolutions)
               + 1;
