@@ -16,7 +16,7 @@ in {
     extraEnv = lib.mkOption {
       type = lib.types.nullOr lib.types.attrs;
       default = {
-        MANGOHUD = gaming.settings.mangohud.enable && ! gaming.gamescope.enable;
+        MANGOHUD = gaming.settings.mangohud.enable; # && ! gaming.gamescope.enable;
         MANGOHUD_CONFIG = gaming.settings.mangohud.configStr;
         ENABLE_VKBASALT = gaming.settings.vkbasalt.enable;
         PROTON_USE_NTSYNC = gaming.settings.ntsync.enable;

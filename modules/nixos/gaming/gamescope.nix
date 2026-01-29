@@ -6,7 +6,7 @@
 }: let
   gaming = config.local.gaming;
   cfg = gaming.gamescope;
-  mkGamescopeArg = name: value: "--${name}=${toString value}";
+  mkGamescopeArg = name: value: "--${name} ${toString value}";
   mkGamescopeFlag = name: enabled: lib.optional enabled "--${name}";
 in {
   options.local.gaming.gamescope = {
