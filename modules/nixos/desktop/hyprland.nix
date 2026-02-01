@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: let
@@ -15,5 +16,19 @@ in {
     programs.light.enable = true;
 
     services.seatd.enable = true;
+
+    xdg.portal = {
+      enable = true;
+      xdgOpenUsePortal = true;
+      config = {
+        common.default = ["gtk"];
+        hyprland.default = [
+          "gtk"
+          "hyprland"
+        ];
+      };
+
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    };
   };
 }

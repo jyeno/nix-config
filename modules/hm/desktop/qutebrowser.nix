@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  cfg = config.local.home.desktop.chromium;
+  cfg = config.local.home.desktop.qutebrowser;
   glanceEnabled = true; #TODO fix
 in {
   options.local.home.desktop.qutebrowser = {

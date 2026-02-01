@@ -54,11 +54,18 @@ in {
       hyprpicker
       hyprland-qtutils
       wl-clipboard
+      wayland-utils
     ];
 
     wayland.windowManager.hyprland = {
       enable = lib.mkDefault true;
       systemd.enable = true;
+      package = null; # evade portal errors when nixos and home module are being used, TODO
+      portalPackage = null;
+      plugins = with pkgs.hyprlandPlugins; [
+        #TODO add hyprscrolling
+        hyprexpo
+      ];
       extraConfig = cfg.extraConfig;
       settings = {
         input = {
@@ -108,22 +115,36 @@ in {
 
         animations.enabled = cfg.animations.enable;
 
-        windowrulev2 = [
+        windowrule = [
           # TODO have rules
-          #firefox PiP window floating and sticky
-          "float, title:^(Picture-in-Picture)$"
-          "float, class:^(float|mpv|popup|imv|scrcpy|org.pulseaudio.pavucontrol|org.keepassxc.KeePassXC|org.qt-project.qml)$"
-          # throw sharing indicators away
-          "workspace special silent, title:^(Firefox — Sharing Indicator)$"
-          "workspace special silent, title:^(.*is sharing (your screen|a window)\.)$"
+          "match:class ^(discord|WebCord|vesktop)$, workspace 3"
+
+          "match:class ^(rofi)$, pin on"
+
+          "match:class ^(float|waypaper|zenity|mpv|popup|imv|scrcpy|org.pulseaudio.pavucontrol|org.keepassxc.KeePassXC|org.qt-project.qml)$, float on"
+
           # steam in ws2
-          "tile, title:^(Steam)$"
-          "float, class:^(steam)$"
-          "workspace 2 silent, class:^(steam)$"
+          "match:title ^(Steam)$, tile"
+          "match:class ^(steam), float on$"
+          "match:class ^(steam)$, workspace 2 silent"
+
+          "match:title ^(Volume Control)$, size 700 450"
+          "match:title ^(Volume Control)$, move 40 55%"
+
+          #firefox PiP window floating and sticky
+          "match:title ^(Picture-in-Picture)$, pin on"
+          "match:title ^(Picture-in-Picture)$, float on"
+
+          # throw sharing indicators away
+          "match:title ^(Firefox — Sharing Indicator)$, workspace special silent"
+          "match:title ^(.*is sharing (your screen|a window)\.)$, workspace special silent"
+
           # idle inhibit while watching videos
-          "idleinhibit focus, class:^(mpv|.*exe)$"
-          "idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$"
-          "idleinhibit fullscreen, class:^(firefox|chromium-browser)$"
+          "match:class ^(mpv|.*exe)$, idleinhibit focus"
+          "match:title:^(.*YouTube.*)$, idle_inhibit focus"
+          "match:class ^(firefox|chromium-browser)$, idle_inhibit fullscreen"
+
+          "match:class ^(xdg-desktop-portal-gtk)$, dim_around on"
         ];
 
         bindm = [
@@ -202,6 +223,7 @@ in {
               # Misc
               "$mainMod, Q, killactive,"
               "$mainMod, F, fullscreen,"
+              "$mainMod, A, hyprexpo:expo, toggle"
               "$mainMod, G, togglegroup,"
               "$mainMod, N, changegroupactive, f"
               "$mainMod SHIFT, P, changegroupactive, b"
