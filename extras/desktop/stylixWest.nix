@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   enable = true;
   autoEnable = true;
-  image = ../wallpapers/dragon.jpg;
+  image = ../wallpapers/fatty.jpg;
   base16Scheme = "${pkgs.base16-schemes}/share/themes/da-one-sea.yaml";
   fonts = {
     monospace = {

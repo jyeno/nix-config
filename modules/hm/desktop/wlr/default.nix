@@ -10,11 +10,13 @@ in {
     #TODO I dont know
     enable = lib.mkEnableOption "Enable wayland user configuration files";
     imv.enable = lib.mkEnableOption "Enable imv";
+    fuzzel.enable = lib.mkEnableOption "Enable fuzzel";
   };
   imports = lib.attrsets.attrValues (localLib.discoverModules ./.);
 
   config = lib.mkIf cfg.enable {
     programs.imv.enable = cfg.imv.enable;
+    programs.fuzzel.enable = cfg.fuzzel.enable;
 
     home.sessionVariables = {
       NIXOS_OZONE_WL = "1";

@@ -1,11 +1,34 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
-  cfg = config.local.home.desktop.plasma;
+  desktop = config.local.home.desktop;
+  cfg = desktop.plasma;
   username = config.home.username;
+
+  userBinds = builtins.listToAttrs (
+    builtins.map (
+      bind: let
+        prefix =
+          if bind.mod == ""
+          then ""
+          else "${bind.mod}+";
+        getCmdName = bind:
+          if lib.hasAttr "description" bind.extras
+          then bind.extras.description
+          else builtins.baseNameOf (builtins.head (builtins.split " " bind.cmd));
+      in {
+        name = "${bind.mod}-${builtins.concatStringsSep "-" bind.keys}";
+        value = {
+          name = "Run ${getCmdName bind}";
+          key = "${prefix}${builtins.concatStringsSep "+" bind.keys}";
+          command = bind.cmd;
+        };
+      }
+    )
+    desktop.keyboard.binds
+  );
 in {
   options.local.home.desktop.plasma = {
     enable = lib.mkEnableOption "Enable plasma configuration";
@@ -82,23 +105,6 @@ in {
         };
       };
       description = "powerdevil settings";
-    };
-    hotkeys = lib.mkOption {
-      type = lib.types.attrs;
-      default = {
-        "launch-ghostty" = {
-          name = "Launch Ghostty";
-          key = "Meta+Return";
-          command = "${lib.getExe pkgs.ghostty}";
-        };
-        "reload-plasma" = {
-          name = "Reload Plasma";
-          key = "Meta+Shift+K";
-          command = "${pkgs.systemd}/bin/systemctl --user restart plasma-plasmashell";
-          logs.enabled = false;
-        };
-      };
-      description = "hotkey commands settings";
     };
     panels = lib.mkOption {
       type = with lib.types; listOf attrs;
@@ -266,7 +272,7 @@ in {
       immutableByDefault = lib.mkDefault true;
       inherit (cfg) workspace panels window-rules powerdevil;
       kscreenlocker.autoLock = lib.mkDefault true;
-      hotkeys.commands = cfg.hotkeys;
+      hotkeys.commands = userBinds;
 
       kwin = {
         inherit (cfg.kwin) effects nightLight titlebarButtons tiling;
@@ -307,25 +313,19 @@ in {
 
       input = {
         keyboard = {
-          layouts = [
-            {
-              layout = "us";
-              variant = "intl";
-            }
-            {
-              displayName = "wk";
-              layout = "us";
-              variant = "workman-intl";
-            }
-            {
-              displayName = "cl-dh";
-              layout = "us";
-              variant = "colemak_dh";
-            }
-          ];
-          options = ["ctrl:nocaps" "caps:ctrl_shifted_capslock" "grp:win_space_toggle"];
-          repeatDelay = 250;
-          repeatRate = 40;
+          inherit (desktop.keyboard) repeatDelay repeatRate;
+
+          layouts = let
+            layouts = lib.splitString "," desktop.keyboard.xkb.layout;
+            variants = lib.splitString "," desktop.keyboard.xkb.variant;
+          in
+            lib.zipListsWith (l: v: {
+              layout = l;
+              variant = v;
+            })
+            layouts
+            variants;
+          options = lib.splitString "," desktop.keyboard.xkb.options;
         };
         mice = [
           {

@@ -10,6 +10,7 @@
   playerctld = lib.getExe' config.services.playerctld.package "playerctld";
   wofi = lib.getExe config.programs.wofi.package;
   cliphist = lib.getExe config.services.cliphist.package;
+  # TODO add userBinds
 in {
   options.local.home.desktop.river = {
     enable = lib.mkEnableOption "Enable riverwm configuration";

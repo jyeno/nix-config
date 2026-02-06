@@ -23,16 +23,16 @@ in {
         mouse-hide-while-typing = true;
         copy-on-select = true;
         gtk-titlebar = false;
-        gtk-tabs-location = "hidden";
+        # gtk-tabs-location = "hidden";
         window-save-state = "always";
         window-decoration = "none";
         term = "xterm-256color";
         keybind = [
           # keybindings for panes/splits
-          "ctrl+s>\=new_split:right"
-          "ctrl+s>-=new_split:down"
+          "ctrl+s>backslash=new_split:right"
+          "ctrl+s>minus=new_split:down"
           "ctrl+s>x=close_surface"
-          "ctrl+s>enter=toggle_split_zoom"
+          "ctrl+s>f=toggle_split_zoom"
           # navigation between splits
           "ctrl+s>h=goto_split:left"
           "ctrl+s>j=goto_split:bottom"
@@ -44,8 +44,6 @@ in {
           "ctrl+s>c=new_tab"
           # quick tab switching
           "ctrl+tab=next_tab"
-          "ctrl+s>arrow_left=previous_tab"
-          "ctrl+s>arrow_right=next_tab"
           "ctrl+s>1=goto_tab:1"
           "ctrl+s>2=goto_tab:2"
           "ctrl+s>3=goto_tab:3"

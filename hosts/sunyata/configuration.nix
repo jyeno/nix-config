@@ -15,6 +15,8 @@
     mouse.accelProfile = "flat";
   };
 
+  # programs.niri.enable = true;
+
   # services.input-remapper = {
   #   enable = true;
   # };
@@ -43,6 +45,7 @@
       };
       plasma.enable = true;
       hyprland.enable = true;
+      niri.enable = true;
     };
     gaming = {
       enable = true;
@@ -58,15 +61,22 @@
       };
       gamemode.enableNotifications = true;
       gamescope = {
-        enable = false;
+        enable = true;
         outputWidth = 3440;
         outputHeight = 1440;
-        nestedRefresh = 165;
-        nestedUnfocusedRefresh = 30;
+        # nestedRefresh = 165;
+        # nestedUnfocusedRefresh = 30;
         hdrItmSdrNits = 101;
         hdrItmTargetNits = 400;
         hdrSdrContentNits = 250;
         sdrGamutWideness = 0.5;
+        extraArgs = [
+          # "-f"
+          "-S fit"
+          "--rt"
+          "--immediate-flips"
+          #"--force-composition"
+        ];
       };
       lact = import ../../extras/desktop/lactcfg.nix;
     };

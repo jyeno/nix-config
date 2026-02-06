@@ -9,7 +9,7 @@ in {
     enable = lib.mkEnableOption "Enable ashell configuration";
     target = lib.mkOption {
       type = lib.types.str;
-      default = "hyprland-session.target";
+      default = "hyprland-session.target"; # wayland-session
       description = "target wayland session";
     };
     settings = lib.mkOption {
@@ -23,7 +23,7 @@ in {
       enable = true;
       systemd = {
         enable = lib.mkDefault true;
-        target = cfg.target;
+        inherit (cfg) target;
       };
       inherit (cfg) settings;
     };

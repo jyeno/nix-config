@@ -1,12 +1,5 @@
 {pkgs, ...}: let
   lib = pkgs.lib;
-  grimblast = lib.getExe pkgs.grimblast;
-  # steam = lib.getExe pkgs.steam;
-  telegram = lib.getExe pkgs.materialgram;
-  light = lib.getExe pkgs.light;
-  foot = lib.getExe' pkgs.foot "footclient";
-  pactl = lib.getExe' pkgs.pulseaudio "pactl";
-  defaultApp = type: "${pkgs.lib.getExe pkgs.handlr-regex} launch ${type}";
   terminal = lib.getExe pkgs.ghostty;
   pavucontrol = lib.getExe pkgs.pavucontrol;
   lockCmd = "${lib.getExe pkgs.hyprlock} &";
@@ -14,43 +7,16 @@
   launcher = lib.getExe pkgs.wofi;
   cliphist = lib.getExe pkgs.cliphist;
   clipboard = "selected=$(${cliphist} list | ${launcher} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy";
-  keybind = mod: key: cmd: "${mod}, ${key}, exec, ${cmd}";
 in {
   river.enable = false;
+  niri.enable = true;
   hyprland = {
-    enable = true;
+    enable = false;
     extraConfig = ''
       monitor = DP-1, 3440x1440@165, 0x0, 1, bitdepth, 10, cm, hdr, sdrbrightness, 1.2, sdrsaturation, 0.98, vrr, 1
     '';
-    keyboard = {
-      layout = "us,us,us";
-      variant = "intl,workman-intl,colemak_dh";
-      options = "ctrl:nocaps,caps:ctrl_shifted_capslock,grp:win_space_toggle";
-    };
     animations.enable = false;
     binds = {
-      config = [
-        # Program bindings
-        (keybind "$mainMod" "Return" "${foot} sh -c 'tmux at -t 0 || tmux'")
-        (keybind "$mainMod ALT" "Return" "${terminal}")
-        # (keybind "$mainMod" "Return" "${defaultApp "x-scheme-handler/terminal"}")
-        (keybind "$mainMod" "e" "${defaultApp "text/plain"}")
-        (keybind "$mainMod" "b" "${defaultApp "x-scheme-handler/https"}")
-        # (keybind "$mainMod" "s" "${steam}")
-        (keybind "$mainMod" "t" "${telegram}")
-        # Brightness control (only works if the system has lightd)
-        (keybind "" "XF86MonBrightnessUp" "${light} -A 10")
-        (keybind "" "XF86MonBrightnessDown" "${light} -U 10")
-        # Volume
-        (keybind "" "XF86AudioRaiseVolume" "${pactl} set-sink-volume @DEFAULT_SINK@ +5%")
-        (keybind "" "XF86AudioLowerVolume" "${pactl} set-sink-volume @DEFAULT_SINK@ -5%")
-        (keybind "" "XF86AudioMute" "${pactl} set-sink-mute @DEFAULT_SINK@ toggle")
-        (keybind "SHIFT" "XF86AudioMute" "${pactl} set-source-mute @DEFAULT_SOURCE@ toggle")
-        (keybind "" "XF86AudioMicMute" "${pactl} set-source-mute @DEFAULT_SOURCE@ toggle")
-        # Screenshotting
-        (keybind "" "Print" "${grimblast} --notify copy output")
-        (keybind "$mainMod" "Print" "${grimblast} --notify copy area")
-      ];
       enableCycleWorkspaces = true;
       enableExtraBinds = true;
     };
@@ -58,8 +24,9 @@ in {
   wlr = {
     enable = true;
     wofi.enable = true;
+    fuzzel.enable = true;
     fnott.enable = true;
-    foot.enable = true;
+    foot.enable = false;
     hypridle.enable = true;
     hyprlock.enable = true;
     # waybar.enable = false;

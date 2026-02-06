@@ -17,7 +17,7 @@ in {
         main = {
           notification-margin = 5;
           default-timeout = 5;
-          anchor = "top-left";
+          anchor = "bottom-left";
           min-width = 360;
           max-width = 360;
         };

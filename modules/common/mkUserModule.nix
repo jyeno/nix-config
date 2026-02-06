@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-  inherit (builtins) mapAttrs;
   genUsers = config.local.generateUsers;
 in {
   options.local = {
@@ -13,7 +12,7 @@ in {
 
   config = lib.mkIf genUsers {
     users.users =
-      mapAttrs
+      builtins.mapAttrs
       (
         username: userConfig:
           lib.optionals userConfig.enable
@@ -32,7 +31,7 @@ in {
       useGlobalPkgs = true;
       backupFileExtension = "backup";
       users =
-        mapAttrs (
+        builtins.mapAttrs (
           username: userConfig:
             lib.optionals (userConfig.enable && userConfig.home.enable)
             (let

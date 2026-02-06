@@ -4,8 +4,27 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.home.desktop.hyprland;
-  playerctldEnabled = config.services.playerctld.enable;
+  desktop = config.local.home.desktop;
+  cfg = desktop.hyprland;
+  userBinds =
+    builtins.map (
+      bind: let
+        keysLength = builtins.length bind.keys;
+        prefix =
+          if bind.mod == ""
+          then ""
+          else "${bind.mod}";
+        extraKeys =
+          if keysLength > 1
+          then " ${builtins.concatStringsSep " " (builtins.take (keysLength - 1) bind.keys)}"
+          else "";
+        key =
+          if bind.keys == []
+          then ""
+          else "${builtins.elemAt bind.keys (keysLength - 1)}";
+      in "${prefix}${extraKeys}, ${key}, exec, ${bind.cmd}"
+    )
+    desktop.keyboard.binds;
 in {
   options.local.home.desktop.hyprland = {
     enable = lib.mkEnableOption "Enable hyprland configuration";
@@ -14,34 +33,12 @@ in {
       default = "";
       description = "hyprland extra config string";
     };
-    keyboard = {
-      layout = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "hyprland keyboard layout string";
-      };
-      variant = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "hyprland keyboard variant string";
-      };
-      options = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "hyprland keyboard options string";
-      };
-    };
     animations.enable = lib.mkEnableOption "Enable hyprland animations";
     binds = {
       mainMod = lib.mkOption {
         type = lib.types.str; # TODO dont allow any string except the ones valid
         default = "SUPER";
         description = "hyprland mainMod";
-      };
-      config = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [];
-        description = "Bind list";
       };
       enableCycleWorkspaces = lib.mkEnableOption "Enable custom script that switches workspaces, returns to the previous workspace if the same bind is pressed again";
       enableExtraBinds = lib.mkEnableOption "Enable extra (opinated) binds like workspace switching, audio controls, kill window, fullscreen, etc";
@@ -69,14 +66,14 @@ in {
       extraConfig = cfg.extraConfig;
       settings = {
         input = {
-          kb_layout = cfg.keyboard.layout;
-          kb_variant = cfg.keyboard.variant;
-          kb_options = cfg.keyboard.options;
+          kb_layout = desktop.keyboard.xkb.layout;
+          kb_variant = desktop.keyboard.xkb.variant;
+          kb_options = desktop.keyboard.xkb.options;
+          repeat_delay = desktop.keyboard.repeatDelay;
+          repeat_rate = desktop.keyboard.repeatRate;
           follow_mouse = lib.mkDefault 1;
           touchpad.natural_scroll = lib.mkDefault false;
           sensitivity = lib.mkDefault 0; # -1.0 - 1.0, 0 means no modification.
-          repeat_delay = lib.mkDefault 250;
-          repeat_rate = lib.mkDefault 40;
         };
 
         general = {
@@ -85,7 +82,6 @@ in {
           gaps_in = 0;
           gaps_out = 0;
           border_size = 2;
-          no_border_on_floating = true;
         };
 
         misc = {
@@ -124,7 +120,7 @@ in {
           "match:class ^(float|waypaper|zenity|mpv|popup|imv|scrcpy|org.pulseaudio.pavucontrol|org.keepassxc.KeePassXC|org.qt-project.qml)$, float on"
 
           # steam in ws2
-          "match:title ^(Steam)$, tile"
+          "match:title ^(Steam)$, tile on"
           "match:class ^(steam), float on$"
           "match:class ^(steam)$, workspace 2 silent"
 
@@ -140,20 +136,20 @@ in {
           "match:title ^(.*is sharing (your screen|a window)\.)$, workspace special silent"
 
           # idle inhibit while watching videos
-          "match:class ^(mpv|.*exe)$, idleinhibit focus"
-          "match:title:^(.*YouTube.*)$, idle_inhibit focus"
+          "match:class ^(mpv|.*exe)$, idle_inhibit focus"
+          "match:title ^(.*YouTube.*)$, idle_inhibit focus"
           "match:class ^(firefox|chromium-browser)$, idle_inhibit fullscreen"
 
           "match:class ^(xdg-desktop-portal-gtk)$, dim_around on"
         ];
 
         bindm = [
-          "$mainMod, mouse:272, movewindow"
-          "$mainMod, mouse:273, resizewindow"
+          "${cfg.binds.mainMod}, mouse:272, movewindow"
+          "${cfg.binds.mainMod}, mouse:273, resizewindow"
         ];
 
         bind =
-          cfg.binds.config
+          userBinds
           ++ (
             let
               hyprctl = lib.getExe' pkgs.hyprland "hyprctl";
@@ -181,97 +177,58 @@ in {
                 then "exec, ${switch-cycle} ${builtins.toString num}"
                 else "workpace, ${num}";
             in [
-              "$mainMod, 1, ${switchWorkspace 1}"
-              "$mainMod, 2, ${switchWorkspace 2}"
-              "$mainMod, 3, ${switchWorkspace 3}"
-              "$mainMod, 4, ${switchWorkspace 4}"
-              "$mainMod, 5, ${switchWorkspace 5}"
-              "$mainMod, 6, ${switchWorkspace 6}"
-              "$mainMod, 7, ${switchWorkspace 7}"
-              "$mainMod, 8, ${switchWorkspace 8}"
-              "$mainMod, 9, ${switchWorkspace 9}"
-              "$mainMod, 0, ${switchWorkspace 0}"
+              "${cfg.binds.mainMod}, 1, ${switchWorkspace 1}"
+              "${cfg.binds.mainMod}, 2, ${switchWorkspace 2}"
+              "${cfg.binds.mainMod}, 3, ${switchWorkspace 3}"
+              "${cfg.binds.mainMod}, 4, ${switchWorkspace 4}"
+              "${cfg.binds.mainMod}, 5, ${switchWorkspace 5}"
+              "${cfg.binds.mainMod}, 6, ${switchWorkspace 6}"
+              "${cfg.binds.mainMod}, 7, ${switchWorkspace 7}"
+              "${cfg.binds.mainMod}, 8, ${switchWorkspace 8}"
+              "${cfg.binds.mainMod}, 9, ${switchWorkspace 9}"
+              "${cfg.binds.mainMod}, 0, ${switchWorkspace 0}"
             ]
           )
           ++ (
             lib.optionals cfg.binds.enableExtraBinds [
               # cycle workspaces
-              "$mainMod, bracketleft, workspace, m-1"
-              "$mainMod, bracketright, workspace, m+1"
+              "${cfg.binds.mainMod}, bracketleft, workspace, m-1"
+              "${cfg.binds.mainMod}, bracketright, workspace, m+1"
 
               # Move active window to a workspace with mainMod + SHIFT + [0-9]
-              "$mainMod SHIFT, 1, movetoworkspace, 1"
-              "$mainMod SHIFT, 2, movetoworkspace, 2"
-              "$mainMod SHIFT, 3, movetoworkspace, 3"
-              "$mainMod SHIFT, 4, movetoworkspace, 4"
-              "$mainMod SHIFT, 5, movetoworkspace, 5"
-              "$mainMod SHIFT, 6, movetoworkspace, 6"
-              "$mainMod SHIFT, 7, movetoworkspace, 7"
-              "$mainMod SHIFT, 8, movetoworkspace, 8"
-              "$mainMod SHIFT, 9, movetoworkspace, 9"
-              "$mainMod SHIFT, 0, movetoworkspace, 10"
+              "${cfg.binds.mainMod} SHIFT, 1, movetoworkspace, 1"
+              "${cfg.binds.mainMod} SHIFT, 2, movetoworkspace, 2"
+              "${cfg.binds.mainMod} SHIFT, 3, movetoworkspace, 3"
+              "${cfg.binds.mainMod} SHIFT, 4, movetoworkspace, 4"
+              "${cfg.binds.mainMod} SHIFT, 5, movetoworkspace, 5"
+              "${cfg.binds.mainMod} SHIFT, 6, movetoworkspace, 6"
+              "${cfg.binds.mainMod} SHIFT, 7, movetoworkspace, 7"
+              "${cfg.binds.mainMod} SHIFT, 8, movetoworkspace, 8"
+              "${cfg.binds.mainMod} SHIFT, 9, movetoworkspace, 9"
+              "${cfg.binds.mainMod} SHIFT, 0, movetoworkspace, 10"
 
-              "$mainMod, mouse_down, workspace, e+1"
-              "$mainMod, mouse_up, workspace, e-1"
+              "${cfg.binds.mainMod}, mouse_down, workspace, e+1"
+              "${cfg.binds.mainMod}, mouse_up, workspace, e-1"
 
               # Move focus with mainMod + arrow keys
-              "$mainMod, left, movefocus, l"
-              "$mainMod, right, movefocus, r"
-              "$mainMod, up, movefocus, u"
-              "$mainMod, down, movefocus, d"
+              "${cfg.binds.mainMod}, left, movefocus, l"
+              "${cfg.binds.mainMod}, right, movefocus, r"
+              "${cfg.binds.mainMod}, up, movefocus, u"
+              "${cfg.binds.mainMod}, down, movefocus, d"
 
               # Misc
-              "$mainMod, Q, killactive,"
-              "$mainMod, F, fullscreen,"
-              "$mainMod, A, hyprexpo:expo, toggle"
-              "$mainMod, G, togglegroup,"
-              "$mainMod, N, changegroupactive, f"
-              "$mainMod SHIFT, P, changegroupactive, b"
-              "$mainMod, E, exit,"
-              "$mainMod SHIFT, Space, togglefloating,"
-              "$mainMod, P, pseudo," # dwindle
-              "$mainMod, J, togglesplit," # dwindle
-              "$mainMod SHIFT, F, exec, hyprctl dispatch dpms on" # fallsafe
+              "${cfg.binds.mainMod}, Q, killactive,"
+              "${cfg.binds.mainMod}, F, fullscreen,"
+              "${cfg.binds.mainMod}, A, hyprexpo:expo, toggle"
+              "${cfg.binds.mainMod}, G, togglegroup,"
+              "${cfg.binds.mainMod}, N, changegroupactive, f"
+              "${cfg.binds.mainMod} SHIFT, P, changegroupactive, b"
+              "${cfg.binds.mainMod}, E, exit,"
+              "${cfg.binds.mainMod} SHIFT, Space, togglefloating,"
+              "${cfg.binds.mainMod}, P, pseudo," # dwindle
+              "${cfg.binds.mainMod}, J, togglesplit," # dwindle
+              "${cfg.binds.mainMod} SHIFT, F, exec, hyprctl dispatch dpms on" # fallsafe
             ]
-            ++ (
-              let
-                playerctl = lib.getExe' pkgs.playerctl "playerctl";
-                playerctld = lib.getExe' pkgs.playerctl "playerctld";
-              in
-                lib.optionals playerctldEnabled [
-                  # Media control
-                  ", XF86AudioNext, exec, ${playerctl} next"
-                  ", XF86AudioPrev, exec, ${playerctl} previous"
-                  ", XF86AudioPlay, exec, ${playerctl} play-pause"
-                  ", XF86AudioStop, exec, ${playerctl} stop"
-                  "ALT, XF86AudioNext, exec, ${playerctld} shift"
-                  "ALT, XF86AudioPrev, exec, ${playerctld} unshift"
-                  "ALT, XF86AudioPlay, exec, systemctl --user restart playerctld"
-                ]
-            )
-            # Screen lock
-            # ++ (
-            #   let
-            #     swaylock = lib.getExe config.programs.swaylock.package;
-            #   in
-            #     lib.optionals config.programs.swaylock.enable [
-            #       ", XF86Launch5, exec, ${swaylock} -S --grace 2"
-            #       ", XF86Launch4, exec, ${swaylock} -S --grace 2"
-            #       "$mainMod, backspace, exec, ${swaylock} -S --grace 2"
-            #     ]
-            # )
-            # Launchers
-            ++ (
-              let
-                wofi = lib.getExe config.programs.wofi.package;
-                cliphist = lib.getExe config.services.cliphist.package;
-              in
-                lib.optionals config.programs.wofi.enable [
-                  "$mainMod, D, exec, ${wofi} -S drun -x 10 -y 10 -W 25% -H 60%"
-                  "$mainMod, X, exec, ${wofi} -S run"
-                  "$mainMod, C, exec, selected=$(${cliphist} list | ${wofi} -S dmenu) && echo \"$selected\" | ${cliphist} decode | wl-copy"
-                ]
-            )
           );
       };
     };

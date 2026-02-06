@@ -56,6 +56,22 @@
     discoveredHomeModules = localLib.discoverModules ./modules/hm;
     discoveredPackages = localLib.mapPackages ./pkgs;
   in {
+    devShells = localLib.forAllSystems (
+      system: let
+        pkgs = legacyPackages.${system};
+      in {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            alejandra
+            pre-commit
+          ];
+
+          shellHook = ''
+            alejandra --version
+          '';
+        };
+      }
+    );
     lib = localLib;
     nixosModules = discoveredNixosModules;
     homeModules = discoveredHomeModules;
