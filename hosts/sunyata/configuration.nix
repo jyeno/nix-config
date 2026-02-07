@@ -15,12 +15,6 @@
     mouse.accelProfile = "flat";
   };
 
-  # programs.niri.enable = true;
-
-  # services.input-remapper = {
-  #   enable = true;
-  # };
-
   stylix = import ../../extras/desktop/stylixWest.nix {inherit pkgs;};
 
   local = {

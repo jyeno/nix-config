@@ -2,6 +2,7 @@
   description = "jyeno's flake config";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     impermanence = {
       url = "github:nix-community/impermanence";
@@ -29,12 +30,6 @@
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland = {
-      type = "git";
-      url = "https://github.com/hyprwm/Hyprland";
-      submodules = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {

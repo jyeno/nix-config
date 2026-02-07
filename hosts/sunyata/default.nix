@@ -19,5 +19,6 @@ in {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
     };
+    overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
   };
 }

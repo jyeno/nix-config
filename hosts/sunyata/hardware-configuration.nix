@@ -17,8 +17,7 @@
       availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
       kernelModules = ["dm-snapshot" "amdgpu"];
     };
-    # boot.kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
     kernelModules = ["kvm-amd" "amdgpu" "ntsync"];
     kernelParams = ["quiet" "clearcpuid=umip"];
     extraModulePackages = [];
