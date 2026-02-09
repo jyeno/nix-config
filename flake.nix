@@ -1,88 +1,50 @@
+# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# Use `nix run .#write-flake` to regenerate it.
 {
-  description = "jyeno's flake config";
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 
-    impermanence = {
-      url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager/trunk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  inputs = {
     disko = {
+      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     };
-    # my secrets repo1
-    nix-secrets = {
-      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1&ref=master";
-      flake = false;
+    flake-file.url = "github:vic/flake-file";
+    flake-parts = {
+      inputs.nixpkgs-lib.follows = "nixpkgs-lib";
+      url = "github:hercules-ci/flake-parts";
     };
-  };
-
-  outputs = inputs: let
-    inherit (inputs.nixpkgs) legacyPackages;
-    localLib = import ./lib {inherit inputs;};
-    discoveredHosts = localLib.mapHosts ./hosts;
-    discoveredNixosModules = with localLib; (discoverModules ./modules/nixos) // (discoverModules ./modules/common);
-    discoveredHomeModules = localLib.discoverModules ./modules/hm;
-    discoveredPackages = localLib.mapPackages ./pkgs;
-  in {
-    devShells = localLib.forAllSystems (
-      system: let
-        pkgs = legacyPackages.${system};
-      in {
-        default = pkgs.mkShell {
-          packages = with pkgs; [
-            alejandra
-            pre-commit
-          ];
-
-          shellHook = ''
-            alejandra --version
-          '';
-        };
-      }
-    );
-    lib = localLib;
-    nixosModules = discoveredNixosModules;
-    homeModules = discoveredHomeModules;
-    packages = localLib.forAllSystems (
-      system: let
-        pkgs = legacyPackages.${system};
-        mapPkgs = builtins.mapAttrs (name: path: pkgs.callPackage path {inherit system;});
-      in
-        mapPkgs discoveredPackages
-    );
-    nixosConfigurations =
-      localLib.genHosts {
-        specialArgs = {inherit inputs localLib;};
-        inherit discoveredNixosModules discoveredHomeModules;
-        genUsers = true;
-      }
-      discoveredHosts;
+    home-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+    };
+    impermanence = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/impermanence";
+    };
+    import-tree.url = "github:vic/import-tree";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-lib.follows = "nixpkgs";
+    nvf = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:notashelf/nvf";
+    };
+    plasma-manager = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/plasma-manager/trunk";
+    };
+    sops-nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:Mic92/sops-nix";
+    };
+    stylix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/stylix";
+    };
+    systems.url = "github:nix-systems/default";
   };
 }

@@ -1,0 +1,38 @@
+{
+  flake.modules.nixos.desktop-general = {
+    pkgs,
+    config,
+    ...
+  }: {
+    services.xserver = {
+      enable = true; # maybe use constants for the layout, variant options
+      xkb = config.systemConstants.keyboard.xkb;
+    };
+    # TODO move
+    services.fstrim.enable = true;
+    services.bpftune.enable = true;
+
+    environment.systemPackages = [
+      (pkgs.wrapOBS {
+        plugins = with pkgs.obs-studio-plugins; [
+          obs-backgroundremoval
+          obs-pipewire-audio-capture
+          obs-source-clone
+          obs-vkcapture
+        ];
+      })
+      pkgs.lsfg-vk
+      pkgs.lsfg-vk-ui
+    ];
+  };
+
+  flake.modules.homeManager.desktop-general = {pkgs, ...}: {
+    programs.zathura = {
+      enable = true;
+      options = {
+        selection-clipboard = "clipboard";
+        recolor = true;
+      };
+    };
+  };
+}
