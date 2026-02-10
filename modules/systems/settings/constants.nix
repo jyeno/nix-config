@@ -10,6 +10,7 @@
     };
 
     config.systemConstants = {
+      persistDir = "/persist";
       # TODO consider if worth it
       keyboard = {
         binds = let

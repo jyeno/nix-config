@@ -23,7 +23,7 @@
           enableTreesitter = true;
           enableFormat = true;
           nix.enable = true;
-          zig.enable = true;
+          # zig.enable = true;
           clang.enable = true;
           sql.enable = true;
           qml.enable = true;

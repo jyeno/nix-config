@@ -4,6 +4,13 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 
   inputs = {
+    agenix = {
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
+      url = "github:ryantm/agenix";
+    };
     disko = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/disko";
@@ -37,9 +44,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/plasma-manager/trunk";
     };
-    sops-nix = {
-      inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:Mic92/sops-nix";
+    secrets = {
+      flake = false;
+      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1";
     };
     stylix = {
       inputs.nixpkgs.follows = "nixpkgs";

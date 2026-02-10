@@ -21,7 +21,9 @@
 
           cli-fish
           cli-tmux
+          cli-git
           cli-ssh
+          cli-gpg
           cli-neomutt
           cli-nvf
           cli-newsboat

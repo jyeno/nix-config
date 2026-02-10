@@ -6,7 +6,10 @@
   }: {
     services.xserver = {
       enable = true; # maybe use constants for the layout, variant options
-      xkb = config.systemConstants.keyboard.xkb;
+      xkb = {
+        layout = "us";
+        variant = "workman-intl";
+      };
     };
     # TODO move
     services.fstrim.enable = true;

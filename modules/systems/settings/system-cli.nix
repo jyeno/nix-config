@@ -6,8 +6,6 @@
       [
         system-minimal
         home-manager
-        # TODO see secrets
-        # secrets
 
         systemd-boot
         locale
@@ -15,7 +13,6 @@
 
         cli-tools
         cli-fish
-        cli-fonts
 
         services-openssh
       ]
@@ -28,10 +25,7 @@
     imports = with inputs.self.modules.homeManager;
       [
         system-minimal
-        secrets
         cli-tools
-        cli-gpg
-        cli-ssh
       ]
       ++ [
         inputs.self.modules.generic.systemConstants

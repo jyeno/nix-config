@@ -1,13 +1,16 @@
-{
-  inputs,
-  lib,
-  ...
-}: {
+{inputs, ...}: {
   flake.modules.nixos.nirvana = {
+    lib,
+    pkgs,
+    ...
+  }: {
     imports = with inputs.self.modules.nixos; [
-      desktop
+      system-cli
       systemd-boot
-      services
+
+      services-podman
+
+      gaming-xonotic-server
     ];
     fileSystems = {
       "/" = {
@@ -27,34 +30,71 @@
         ];
       };
     };
-    # TODO add jyeno-cli
     flake.modules = let
-      users = ["cassio" "igorcafe" "oliver" "leonardohn"];
+      mkUser = name: deps: packages: {inherit name deps packages;};
+      mkUserName = name: mkUser name [] [];
+      users = [(mkUserName "cassio") (mkUserName "igorcafe") (mkUserName "oliver") (mkUserName "leonardohn") (mkUser "jyeno" (with inputs.self.moudles.homeManager; [tmux git fish nvf]) (with pkgs; [ripgrep fq eza nix-output-monitor]))];
     in
       lib.mkMerge [
-        (builtins.map (username:
+        (builtins.map (user:
           lib.mkMerge [
-            (inputs.self.factory.user "${username}" true)
+            (inputs.self.factory.user "${user.name}" true)
             {
-              nixos."${username}" = {
-                users.users."${username}" = {
+              flake.homeConfigurations = inputs.self.lib.mkHomeManager "aarch64-linux" "${user.name}";
+
+              nixos."${user.name}" = {
+                users.users."${user.name}" = {
                   openssh.authorizedKeys.keys = [
-                    (builtins.readFile "../../extras/pubkeys/id_${username}.pub")
+                    (builtins.readFile "../../extras/pubkeys/id_${user.name}.pub")
                   ];
                 };
               };
 
-              # TODO personalize some modules like the ssh one
-              homeManager."${username}" = {
-                imports = with inputs.self.modules.homeManager; [
-                  system-cli
-                ];
+              homeManager."${user.name}" = {
+                imports = with inputs.self.modules.homeManager;
+                  [
+                    system-cli
+                  ]
+                  ++ user.deps;
+                home.packages = user.packages;
               };
             }
           ])
         users)
       ];
-    networking.useDHCP = true;
+    # locale.timezone = "America/Sao_Paulo";
+    networking = {
+      hostName = "nirvana";
+      domain = "privatedns.org";
+      nameservers = ["8.8.8.8" "1.1.1.1"];
+      interfaces.eth0 = {
+        ipv4.addresses = [
+          {
+            address = "10.0.0.90";
+            prefixLength = 24;
+          }
+        ];
+        useDHCP = true;
+      };
+      firewall = {
+        enable = true;
+        allowedTCPPorts = [22];
+        allowedTCPPortRanges = [
+          {
+            from = 25500;
+            to = 25599;
+          }
+        ];
+        allowedUDPPortRanges = [
+          {
+            from = 25500;
+            to = 25599;
+          }
+        ];
+        logRefusedConnections = false;
+        rejectPackets = true;
+      };
+    };
     nixpkgs.hostPlatform = "aarch64-linux";
   };
 }

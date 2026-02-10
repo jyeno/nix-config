@@ -1,11 +1,14 @@
 {inputs, ...}: {
-  flake.modules = {
-    nixos.secrets.imports = [
-      inputs.sops-nix.nixosModules.sops
-      # TODO agenix
+  flake.modules.nixos.secrets = {pkgs, ...}: {
+    imports = [
+      inputs.agenix.nixosModules.default
     ];
-    homeManager.secrets.imports = [
-      inputs.sops-nix.homeManagerModules.sops
+    environment.systemPackages = [inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default];
+  };
+
+  flake.modules.homeManager.secrets = {pkgs, ...}: {
+    imports = [
+      inputs.agenix.homeManagerModules.default
     ];
   };
 }

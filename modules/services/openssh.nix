@@ -1,12 +1,15 @@
-{
+{inputs, ...}: {
   flake.modules.nixos.services-openssh = {
+    config,
+    lib,
+    ...
+  }: {
     services = {
       openssh = {
         enable = true;
-        # hostKeys = lib.optionals (builtins.length cfg.hostKeys > 0) cfg.hostKeys;
-        hostKeys = [
+        hostKeys = inputs.self.lib.mkIfPersistence config [
           {
-            path = "/persistent/etc/ssh/ssh_host_ed25519_key";
+            path = "${config.systemConstants.persistDir}/etc/ssh/ssh_host_ed25519_key";
             type = "ed25519";
           }
         ];

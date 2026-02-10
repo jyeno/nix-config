@@ -5,7 +5,7 @@
     lib,
     ...
   }: {
-    environment.persistence."/persistent" = {
+    environment.persistence."${config.systemConstants.persistDir}" = {
       hideMounts = true;
       directories =
         [

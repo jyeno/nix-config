@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.modules.nixos.marga = {
+  flake.modules.nixos.marga = {config, ...}: {
     imports = with inputs.self.modules.nixos; [
       disko
     ];
@@ -71,13 +71,13 @@
                 extraArgs = ["-f"];
 
                 subvolumes = {
-                  "/persist" = {
+                  "${config.systemConstants.persistDir}" = {
                     mountOptions = ["subvol=persist" "compress=zstd" "noatime"];
-                    mountpoint = "/persist";
+                    mountpoint = "${config.systemConstants.persistDir}";
                   };
                   "/home" = {
                     mountOptions = ["subvol=home" "compress=zstd" "noatime"];
-                    mountpoint = "/persist/home";
+                    mountpoint = "${config.systemConstants.persistDir}/home";
                   };
                   "/games" = {
                     mountOptions = ["subvol=games" "compress=zstd" "noatime"];
