@@ -1,5 +1,8 @@
 {
   flake.modules.nixos.services-wivrn = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      android-tools
+    ];
     services.wivrn = {
       enable = true;
       openFirewall = true;

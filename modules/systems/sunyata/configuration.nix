@@ -27,8 +27,8 @@
         desktop-amd
         desktop-chromium
         desktop-niri
-        desktop-hyprland
-        desktop-plasma
+        # desktop-hyprland
+        # desktop-plasma
 
         gaming-general
         gaming-steam
@@ -47,6 +47,10 @@
       hostName = "sunyata";
       useDHCP = false;
     };
+    # services.libinput = {
+    #   enable = true;
+    #   mouse.accelProfile = "flat";
+    # };
     nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
 
     boot = {

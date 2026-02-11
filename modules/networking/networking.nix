@@ -1,13 +1,17 @@
 {
-  flake.modules.nixos.networking = {config, ...}: {
+  flake.modules.nixos.networking = {
+    config,
+    lib,
+    ...
+  }: {
     networking = {
       # TODO improve, add more settings
-      domain = "nirvana.jyeno.cc";
-      firewall.enable = true;
-      nftables.enable = true;
-      nameservers = ["127.0.0.1" "1.1.1.1"];
-      firewall.allowedTCPPorts = [22];
-      firewall.allowedUDPPorts = [22];
+      domain = lib.mkDefault "nirvana.jyeno.cc";
+      firewall.enable = lib.mkDefault true;
+      nftables.enable = lib.mkDefault true;
+      nameservers = lib.mkDefault ["127.0.0.1" "1.1.1.1"];
+      firewall.allowedTCPPorts = lib.mkDefault [22];
+      firewall.allowedUDPPorts = lib.mkDefault [22];
     };
   };
 }

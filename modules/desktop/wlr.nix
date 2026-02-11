@@ -22,7 +22,7 @@
     #     pkgs.xdg-desktop-portal-gtk
     #   ];
     # };
-    home.sessionVariables = {
+    home.sessionVariables = lib.mkDefault {
       NIXOS_OZONE_WL = "1";
       __GL_GSYNC_ALLOWED = "1";
       __GL_VRR_ALLOWED = "1";
@@ -52,7 +52,7 @@
       GDX_BACKEND = "wayland";
     };
     services = {
-      cliphist.enable = true;
+      cliphist.enable = lib.mkDefault true;
       # hyprsunset = {
       #   enable = true;
       #   systemdTarget = "hyprland-session.target";
@@ -73,7 +73,7 @@
       # };
       fnott = {
         # TODO maybe move or inhibit when plasma
-        enable = true;
+        enable = lib.mkDefault true;
         settings.main = {
           notification-margin = 5;
           default-timeout = 5;
@@ -82,10 +82,12 @@
           max-width = 360;
         };
       };
+      hyprpaper.enable = lib.mkDefault true;
     };
+
     programs = {
-      imv.enable = true;
-      fuzzel.enable = true;
+      imv.enable = lib.mkDefault true;
+      fuzzel.enable = lib.mkDefault true;
     };
   };
 }

@@ -29,9 +29,7 @@
                   type = "luks";
                   name = "crypted";
                   extraOpenArgs = [];
-                  settings = {
-                    allowDiscards = true;
-                  };
+                  settings.allowDiscards = true;
                   content = {
                     type = "lvm_pv";
                     vg = "Neast";

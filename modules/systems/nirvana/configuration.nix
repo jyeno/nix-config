@@ -2,34 +2,20 @@
   flake.modules.nixos.nirvana = {
     lib,
     pkgs,
+    modulesPath,
     ...
   }: {
-    imports = with inputs.self.modules.nixos; [
-      system-cli
-      systemd-boot
+    imports = with inputs.self.modules.nixos;
+      [
+        system-cli
 
-      services-podman
+        services-podman
 
-      gaming-xonotic-server
-    ];
-    fileSystems = {
-      "/" = {
-        device = "/dev/disk/by-uuid/2ba400bb-3ec6-43a3-9661-0f2e5d109368";
-        fsType = "xfs";
-      };
-      "/boot" = {
-        device = "/dev/disk/by-uuid/A77B-82BC";
-        fsType = "vfat";
-        options = [
-          "defaults"
-          "nodev"
-          "noexec"
-          "nosuid"
-          "dmask=0077"
-          "fmask=0077"
-        ];
-      };
-    };
+        gaming-xonotic-server
+      ]
+      ++ [
+        (modulesPath + "/profiles/qemu-guest.nix")
+      ];
     flake.modules = let
       mkUser = name: deps: packages: {inherit name deps packages;};
       mkUserName = name: mkUser name [] [];
@@ -62,7 +48,7 @@
           ])
         users)
       ];
-    # locale.timezone = "America/Sao_Paulo";
+    time.timezone = "America/Sao_Paulo";
     networking = {
       hostName = "nirvana";
       domain = "privatedns.org";
@@ -95,6 +81,55 @@
         rejectPackets = true;
       };
     };
+    boot = {
+      initrd = {
+        availableKernelModules = ["xhci_pci" "usbhid" "virtio_pci" "virtio_scsi"];
+        kernelModules = [];
+      };
+      kernelPackages = pkgs.linuxPackages_latest;
+      kernelParams = ["net.ifnames=0"];
+      extraModulePackages = [];
+      tmp = {
+        useTmpfs = true;
+        tmpfsSize = "8G";
+      };
+    };
+
+    # fileSystems."/".neededForBoot = true;
+
+    fileSystems = {
+      "/" = {
+        device = "/dev/disk/by-uuid/2ba400bb-3ec6-43a3-9661-0f2e5d109368";
+        fsType = "xfs";
+      };
+      "/boot" = {
+        device = "/dev/disk/by-uuid/A77B-82BC";
+        fsType = "vfat";
+        options = [
+          "defaults"
+          "nodev"
+          "noexec"
+          "nosuid"
+          "dmask=0077"
+          "fmask=0077"
+        ];
+      };
+    };
+
     nixpkgs.hostPlatform = "aarch64-linux";
+    # TODO add x86 overlay
+    #pkgs = import inputs.nixpkgs {
+    #  inherit system;
+    #  config.allowUnfree = true;
+    #  overlays = [
+    #    (final: prev: {
+    #      x86 = import inputs.nixpkgs {
+    #        system = "x86_64-linux";
+    #        #modules = [inputs.chaotic.nixosModules.default];
+    #        config.allowUnfree = true;
+    #      };
+    #    })
+    #  ];
+    #};
   };
 }

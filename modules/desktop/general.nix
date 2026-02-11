@@ -1,7 +1,8 @@
 {
   flake.modules.nixos.desktop-general = {
-    pkgs,
     config,
+    pkgs,
+    lib,
     ...
   }: {
     services.xserver = {
@@ -11,6 +12,8 @@
         variant = "workman-intl";
       };
     };
+    services.greetd.enable = lib.mkDefault true;
+    programs.regreet.enable = lib.mkDefault true;
     # TODO move
     services.fstrim.enable = true;
     services.bpftune.enable = true;

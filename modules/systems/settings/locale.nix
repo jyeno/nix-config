@@ -1,8 +1,8 @@
 {
-  flake.modules.nixos.locale = {
+  flake.modules.nixos.locale = {lib, ...}: {
     i18n = {
-      defaultLocale = "en_US.UTF-8";
-      extraLocaleSettings = {
+      defaultLocale = lib.mkDefault "en_US.UTF-8";
+      extraLocaleSettings = lib.mkDefault {
         LC_TIME = "pt_BR.UTF-8";
         LC_ADDRESS = "pt_BR.UTF-8";
         LC_IDENTIFICATION = "pt_BR.UTF-8";
@@ -13,12 +13,12 @@
         LC_PAPER = "pt_BR.UTF-8";
         LC_TELEPHONE = "pt_BR.UTF-8";
       };
-      supportedLocales = [
+      supportedLocales = lib.mkDefault [
         "en_US.UTF-8/UTF-8"
         "pt_BR.UTF-8/UTF-8"
       ];
     };
-    location.provider = "geoclue2";
-    time.timeZone = "America/Bahia";
+    location.provider = lib.mkDefault "geoclue2";
+    time.timeZone = lib.mkDefault "America/Bahia";
   };
 }

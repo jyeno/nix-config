@@ -15,7 +15,6 @@
         path = "${config.home-manager.users.jyeno.home.homeDirectory}/.ssh/id_ed25519";
         mode = "0700";
         owner = "jyeno";
-        group = "jyeno";
       };
     };
   };
