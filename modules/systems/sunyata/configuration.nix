@@ -17,6 +17,7 @@
         impermanence
         secrets
         iwd
+        stylix-jyeno
 
         jyeno
 

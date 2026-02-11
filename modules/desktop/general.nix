@@ -5,15 +5,19 @@
     lib,
     ...
   }: {
-    services.xserver = {
-      enable = true; # maybe use constants for the layout, variant options
+    services.xserver = lib.mkDefault {
+      enable = true;
       xkb = {
         layout = "us";
         variant = "workman-intl";
       };
     };
-    services.greetd.enable = lib.mkDefault true;
-    programs.regreet.enable = lib.mkDefault true;
+    services.displayManager = lib.mkIf (config.services.displayManager.sddm.enable
+      == false
+      && config.services.displayManager.gdm.enable == false
+      && config.services.displayManager.lightdm.enable == false) {
+      lemurs.enable = true;
+    };
     # TODO move
     services.fstrim.enable = true;
     services.bpftune.enable = true;
@@ -32,8 +36,12 @@
     ];
   };
 
-  flake.modules.homeManager.desktop-general = {pkgs, ...}: {
-    programs.zathura = {
+  flake.modules.homeManager.desktop-general = {
+    pkgs,
+    lib,
+    ...
+  }: {
+    programs.zathura = lib.mkDefault {
       enable = true;
       options = {
         selection-clipboard = "clipboard";

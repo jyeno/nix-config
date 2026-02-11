@@ -42,4 +42,17 @@
     home.homeDirectory = "/home/${config.home.username}";
     home.stateVersion = "25.05";
   };
+
+  perSystem = {
+    pkgs,
+    system,
+    ...
+  }: {
+    devShells.default = pkgs.mkShell {
+      packages = with pkgs; [
+        alejandra
+        pre-commit
+      ];
+    };
+  };
 }

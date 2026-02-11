@@ -1,15 +1,17 @@
 {inputs, ...}: {
   flake.modules.nixos.marga = {
     config,
+    modulesPath,
     pkgs,
     ...
   }: {
     imports = with inputs.self.modules.nixos;
       [
-        systemd-desktop
+        system-desktop
         impermanence
         secrets
         iwd
+        stylix-jyeno
 
         jyeno
 

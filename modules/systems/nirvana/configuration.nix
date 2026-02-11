@@ -16,37 +16,37 @@
       ++ [
         (modulesPath + "/profiles/qemu-guest.nix")
       ];
-    flake.modules = let
+    flake = let
       mkUser = name: deps: packages: {inherit name deps packages;};
       mkUserName = name: mkUser name [] [];
-      users = [(mkUserName "cassio") (mkUserName "igorcafe") (mkUserName "oliver") (mkUserName "leonardohn") (mkUser "jyeno" (with inputs.self.moudles.homeManager; [tmux git fish nvf]) (with pkgs; [ripgrep fq eza nix-output-monitor]))];
+      users = [(mkUserName "cassio") (mkUserName "igorcafe") (mkUserName "oliver") (mkUserName "leonardohn") (mkUser "jyeno" (with inputs.self.modules.homeManager; [tmux git fish nvf]) [])];
     in
       lib.mkMerge [
-        (builtins.map (user:
-          lib.mkMerge [
-            (inputs.self.factory.user "${user.name}" true)
-            {
-              flake.homeConfigurations = inputs.self.lib.mkHomeManager "aarch64-linux" "${user.name}";
-
-              nixos."${user.name}" = {
-                users.users."${user.name}" = {
-                  openssh.authorizedKeys.keys = [
-                    (builtins.readFile "../../extras/pubkeys/id_${user.name}.pub")
-                  ];
+        (builtins.map (user: {
+            homeConfigurations = inputs.self.lib.mkHomeManager "aarch64-linux" "${user.name}";
+            modules = lib.mkMerge [
+              (inputs.self.factory.user "${user.name}" true)
+              {
+                nixos."${user.name}" = {
+                  users.users."${user.name}" = {
+                    openssh.authorizedKeys.keys = [
+                      (builtins.readFile "../../extras/pubkeys/id_${user.name}.pub")
+                    ];
+                  };
                 };
-              };
 
-              homeManager."${user.name}" = {
-                imports = with inputs.self.modules.homeManager;
-                  [
-                    system-cli
-                  ]
-                  ++ user.deps;
-                home.packages = user.packages;
-              };
-            }
-          ])
-        users)
+                homeManager."${user.name}" = {
+                  imports = with inputs.self.modules.homeManager;
+                    [
+                      system-cli
+                    ]
+                    ++ user.deps;
+                  home.packages = user.packages;
+                };
+              }
+            ];
+          })
+          users)
       ];
     time.timezone = "America/Sao_Paulo";
     networking = {
@@ -96,6 +96,8 @@
     };
 
     # fileSystems."/".neededForBoot = true;
+    documentation.man.enable = false;
+    security.sudo.wheelNeedsPassword = false;
 
     fileSystems = {
       "/" = {
