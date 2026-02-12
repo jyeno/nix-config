@@ -34,7 +34,6 @@
         };
         nirvana = {
           hostname = "nirvana.jyeno.cc";
-          user = "${username}";
         };
       };
     };

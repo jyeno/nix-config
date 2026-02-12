@@ -30,7 +30,7 @@
       };
     };
 
-    time.timezone = "America/Sao_Paulo";
+    time.timeZone = "America/Sao_Paulo";
     documentation.man.enable = false;
     security.sudo.wheelNeedsPassword = false;
 

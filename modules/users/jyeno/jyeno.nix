@@ -3,6 +3,7 @@
   lib,
   ...
 }: {
+  # desktop version, factory is already implemented on jyeno-cli thus needs only to import
   flake.modules = lib.mkMerge [
     (self.factory.user "jyeno" true)
     {
@@ -14,7 +15,6 @@
         };
       };
 
-      # TODO personalize some modules like the ssh one
       homeManager.jyeno = {pkgs, ...}: {
         imports = with self.modules.homeManager; [
           system-desktop
@@ -22,10 +22,10 @@
           cli-fish
           cli-tmux
           cli-git
-          cli-ssh
-          cli-gpg
-          cli-neomutt
           cli-nvf
+          cli-gpg
+          cli-ssh
+          cli-neomutt
           cli-newsboat
 
           desktop-wlr
@@ -48,9 +48,9 @@
           unzip
           p7zip
           strace
+          nix-output-monitor
           age
           spotdl
-          nix-output-monitor
 
           #desktop
           keepassxc

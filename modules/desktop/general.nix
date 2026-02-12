@@ -14,8 +14,7 @@
     };
     services.displayManager = lib.mkIf (config.services.displayManager.sddm.enable
       == false
-      && config.services.displayManager.gdm.enable == false
-      && config.services.displayManager.lightdm.enable == false) {
+      && config.services.displayManager.gdm.enable == false) {
       lemurs.enable = true;
     };
     # TODO move

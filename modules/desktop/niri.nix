@@ -44,6 +44,15 @@
       spawn-at-startup "ashell"
       spawn-at-startup "ghostty"
 
+
+      cursor {
+        xcursor-theme "Bibata-Modern-Ice"
+        xcursor-size 32
+
+        hide-when-typing
+        hide-after-inactive-ms 1000
+      }
+
       input {
         focus-follows-mouse max-scroll-amount="0%"
 
