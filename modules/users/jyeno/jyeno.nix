@@ -15,53 +15,87 @@
         };
       };
 
-      homeManager.jyeno = {pkgs, ...}: {
-        imports = with self.modules.homeManager; [
-          system-desktop
+      homeManager.jyeno = {
+        pkgs,
+        specialArgs,
+        ...
+      }: let
+        graphicsEnabled = specialArgs.graphicsEnabled;
+        niriEnabled = specialArgs.niriEnabled or false;
+        hyprlandEnabled = specialArgs.hyprlandEnabled or false;
+        plasmaEnabled = specialArgs.plasmaEnabled or false;
+        wlrEnabled = niriEnabled || hyprlandEnabled;
+      in {
+        imports = with self.modules.homeManager;
+          [
+            system-cli
 
-          cli-fish
-          cli-tmux
-          cli-git
-          cli-nvf
-          cli-gpg
-          cli-ssh
-          cli-neomutt
-          cli-newsboat
+            cli-fish
+            cli-tmux
+            cli-git
+            cli-nvf
+          ]
+          ++ lib.optionals graphicsEnabled [
+            # system-desktop
+            cli-pass
+            cli-players
+            cli-mpd
 
-          desktop-wlr
-          desktop-firefox
-          desktop-chromium
-          desktop-qutebrowser
-          desktop-ashell
-          desktop-ghostty
-          desktop-idlelock
-          desktop-niri
-          desktop-hyprland
-          desktop-plasma
+            desktop-general
+            cli-gpg
+            # extras
+            cli-ssh
+            cli-neomutt
+            cli-newsboat
 
-          emu-switch
-        ];
-        home.packages = with pkgs; [
-          #cli
-          zip
-          xz
-          unzip
-          p7zip
-          strace
-          nix-output-monitor
-          age
-          spotdl
+            desktop-firefox
+            desktop-chromium
+            desktop-qutebrowser
+            desktop-ghostty
+            emu-switch
+          ]
+          ++ lib.optionals wlrEnabled [
+            desktop-wlr
+            desktop-ashell
+            desktop-idlelock
+          ]
+          ++ lib.optionals niriEnabled [
+            desktop-niri
+          ]
+          ++ lib.optionals hyprlandEnabled [
+            desktop-hyprland
+          ]
+          ++ lib.optionals plasmaEnabled [
+            desktop-plasma
+          ];
+        home.packages = with pkgs;
+          [
+            #cli
+            zip
+            xz
+            unzip
+            p7zip
+            strace
+            nix-output-monitor
+          ]
+          ++ lib.optionals graphicsEnabled [
+            age
+            spotdl
 
-          #desktop
-          keepassxc
-          pavucontrol
-          lmstudio
-          r2modman
-          vesktop
-          materialgram
-          mumble
-          # zeal
-        ];
+            #desktop
+            keepassxc
+            pavucontrol
+            lmstudio
+            r2modman
+            vesktop
+            materialgram
+            mumble
+            # zeal
+          ];
+        programs.git.settings.user = {
+          name = "Jean Lima Andrade";
+          email = "jeno.andrade@gmail.com";
+        };
       };
     }
   ];

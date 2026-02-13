@@ -9,6 +9,8 @@
       [
         system-cli
 
+        jyeno
+
         services-podman
 
         gaming-xonotic-server

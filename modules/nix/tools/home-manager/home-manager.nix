@@ -1,5 +1,9 @@
 {inputs, ...}: let
-  home-manager-config = {lib, ...}: {
+  home-manager-config = {
+    lib,
+    config,
+    ...
+  }: {
     home-manager = {
       verbose = true;
       useUserPackages = true;
@@ -7,6 +11,12 @@
       backupFileExtension = "backup";
       backupCommand = "rm";
       overwriteBackup = true;
+      extraSpecialArgs = {
+        graphicsEnabled = config.hardware.graphics.enable;
+        niriEnabled = config.programs.niri.enable;
+        hyprlandEnabled = config.programs.hyprland.enable;
+        plasmaEnabled = config.services.desktopManager.plasma6.enable;
+      };
     };
   };
 in {
