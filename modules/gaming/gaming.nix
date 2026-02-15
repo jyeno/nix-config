@@ -6,32 +6,6 @@
       vkbasalt
     ];
 
-    programs.gamemode = {
-      enable = true;
-      enableRenice = true;
-      settings = {
-        general = {
-          desiredgov = "performance";
-          reaper_freq = 3;
-          renice = 4;
-          softrealtime = "on";
-          inhibit_screensaver = 1;
-        };
-        gpu = {
-          apply_gpu_optimisations = "accept-responsibility";
-          amd_performance_level = "high";
-        };
-        cpu = {
-          park_cores = "no";
-          pin_cores = "yes";
-        };
-        custom = {
-          start = "${pkgs.libnotify}/bin/notify-send 'GameMode Started'";
-          end = "${pkgs.libnotify}/bin/notify-send 'GameMode Ended'";
-        };
-      };
-    };
-
     systemd.tmpfiles.rules = [
       "w /proc/sys/kernel/sched_autogroup_enabled - - - - 1"
       "w /proc/sys/kernel/sched_cfs_bandwidth_slice_us - - - - 3000"

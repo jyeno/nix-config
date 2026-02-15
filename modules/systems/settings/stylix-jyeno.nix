@@ -13,8 +13,23 @@
       };
       fonts = {
         monospace = {
-          package = pkgs.nerd-fonts.iosevka;
-          name = "Iosevka NFM";
+          package = pkgs.iosevka;
+          name = "Iosevka Term";
+        };
+
+        serif = {
+          package = pkgs.iosevka;
+          name = "Iosevka Slab";
+        };
+
+        sansSerif = {
+          package = pkgs.iosevka;
+          name = "Iosevka";
+        };
+
+        emoji = {
+          package = pkgs.noto-fonts-color-emoji;
+          name = "Noto Color Emoji";
         };
       };
       targets = {

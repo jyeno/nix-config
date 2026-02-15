@@ -28,6 +28,7 @@
         serve = "python -m http.server";
         nrs = "nixos-rebuild --ask-sudo-password switch --flake . &| ${pkgs.lib.getExe pkgs.nix-output-monitor}";
         nrt = "nixos-rebuild --ask-sudo-password test --flake . &| ${pkgs.lib.getExe pkgs.nix-output-monitor}";
+        npkgs = "nix search nixpkgs";
         ttm = "${pkgs.lib.getExe pkgs.tt} -quotes en";
         q = "exit";
       };
