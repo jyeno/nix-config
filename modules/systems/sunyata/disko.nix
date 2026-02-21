@@ -35,6 +35,7 @@
                     format = "xfs";
                     mountpoint = "${config.systemConstants.persistDir}";
                     mountOptions = [
+                      "defaults"
                       "noatime"
                       "nodiratime"
                       "logbufs=8"
@@ -55,6 +56,7 @@
                     format = "xfs";
                     mountpoint = "/nix";
                     mountOptions = [
+                      "defaults"
                       "noatime"
                       "nodiratime"
                       "logbufs=8"
@@ -85,7 +87,7 @@
                   type = "filesystem";
                   format = "xfs";
                   mountpoint = "/data";
-                  mountOptions = ["noatime" "rw" "noexec"];
+                  mountOptions = ["noatime" "rw"];
                 };
               };
             };

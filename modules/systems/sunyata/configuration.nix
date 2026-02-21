@@ -40,18 +40,15 @@
         (modulesPath + "/installer/scan/not-detected.nix")
       ];
 
-    fileSystems = {
-      "${config.systemConstants.persistDir}".neededForBoot = true;
-      "${config.systemConstants.persistDir}/home".neededForBoot = true;
-    };
+    fileSystems."${config.systemConstants.persistDir}".neededForBoot = true;
     networking = {
       hostName = "sunyata";
       useDHCP = false;
     };
-    # services.libinput = {
-    #   enable = true;
-    #   mouse.accelProfile = "flat";
-    # };
+    services.libinput = {
+      enable = true;
+      mouse.accelProfile = "flat";
+    };
     nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
 
     boot = {
@@ -64,6 +61,8 @@
       kernelParams = ["quiet" "clearcpuid=umip"];
       extraModulePackages = [];
     };
+
+    swapDevices = [];
 
     nixpkgs.hostPlatform = "x86_64-linux";
     hardware.cpu.amd.updateMicrocode = true;
