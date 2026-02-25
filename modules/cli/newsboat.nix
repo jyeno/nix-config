@@ -22,8 +22,7 @@
         urls =
           let
             url-tags = url: tags: {
-              url = url;
-              inherit tags;
+              inherit tags url;
             };
           in
           [

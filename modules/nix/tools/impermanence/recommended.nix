@@ -15,10 +15,10 @@
           "/var/lib/nixos"
           "/var/lib/systemd/coredump"
         ]
-        ++ lib.optionals (config.networking.networkmanager.enable) [
+        ++ lib.optionals config.networking.networkmanager.enable [
           "/etc/NetworkManager/system-connections"
         ]
-        ++ lib.optionals (config.networking.wireless.iwd.enable) [
+        ++ lib.optionals config.networking.wireless.iwd.enable [
           "/var/lib/iwd"
         ];
         files = [

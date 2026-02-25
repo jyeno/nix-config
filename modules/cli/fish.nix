@@ -37,27 +37,27 @@
         plugins = with pkgs.fishPlugins; [
           {
             name = "done";
-            src = done.src;
+            inherit (done) src;
           }
           {
             name = "fish-fzf";
-            src = fzf-fish.src;
+            inherit (fzf-fish) src;
           }
           {
             name = "puffer";
-            src = puffer.src;
+            inherit (puffer) src;
           }
           {
             name = "autopair";
-            src = autopair.src;
+            inherit (autopair) src;
           }
           {
             name = "colored-man-pages";
-            src = colored-man-pages.src;
+            inherit (colored-man-pages) src;
           }
           {
             name = "z";
-            src = z.src;
+            inherit (z) src;
           }
         ];
         interactiveShellInit = ''
@@ -95,7 +95,6 @@
           set -g man_underline -u 93a1a1
         '';
       };
-
       programs.nix-index.enableFishIntegration = true;
 
       programs.starship = {

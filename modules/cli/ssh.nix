@@ -6,7 +6,7 @@
       ...
     }:
     let
-      username = config.home.username;
+      inherit (config.home) username;
       ed25519Pubkey = builtins.readFile ../../extras/pubkeys/id_${username}.pub;
       rsaPubkey = "";
     in

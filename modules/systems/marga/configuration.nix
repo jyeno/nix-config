@@ -23,9 +23,8 @@
           services-tlp
 
           desktop-nvidia
-          desktop-firefox
-          desktop-qutebrowser
           desktop-plasma
+          desktop-niri
         ]
         ++ [
           (modulesPath + "/installer/scan/not-detected.nix")

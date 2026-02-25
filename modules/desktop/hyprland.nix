@@ -16,7 +16,7 @@
     }:
     let
       mainMod = "SUPER";
-      xkb = config.systemConstants.keyboard.xkb;
+      inherit (config.systemConstants.keyboard) xkb;
       userBinds = builtins.map (
         bind:
         let

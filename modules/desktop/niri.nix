@@ -11,9 +11,9 @@
       ...
     }:
     let
-      xkb = config.systemConstants.keyboard.xkb;
-      repeatDelay = config.systemConstants.keyboard.repeatDelay;
-      repeatRate = config.systemConstants.keyboard.repeatRate;
+      inherit (config.systemConstants.keyboard) xkb;
+      inherit (config.systemConstants.keyboard) repeatDelay;
+      inherit (config.systemConstants.keyboard) repeatRate;
       userBinds = builtins.map (
         bind:
         let

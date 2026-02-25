@@ -18,7 +18,7 @@
       ...
     }:
     let
-      username = config.home.username;
+      inherit (config.home) username;
       userBinds = builtins.listToAttrs (
         builtins.map (
           bind:
@@ -258,7 +258,7 @@
         input = {
           keyboard =
             let
-              keyboard = config.systemConstants.keyboard;
+              inherit (config.systemConstants) keyboard;
             in
             {
               inherit (keyboard) repeatDelay repeatRate;
