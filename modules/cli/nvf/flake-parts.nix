@@ -1,6 +1,6 @@
 {
-  # Modules to help you handle persistent state on systems with ephemeral root storage
-  # https://github.com/nix-community/impermanence
+  # Module to configure neovim on nixos
+  # https://github.com/notashelf/nvf
 
   flake-file.inputs.nvf = {
     url = "github:notashelf/nvf";

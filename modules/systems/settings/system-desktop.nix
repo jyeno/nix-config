@@ -1,4 +1,5 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   # expansion of cli system for desktop use
 
   flake.modules.nixos.system-desktop = {
@@ -15,22 +16,24 @@
     ];
   };
 
-  flake.modules.homeManager.system-desktop = {pkgs, ...}: {
-    imports = with inputs.self.modules.homeManager; [
-      system-cli
+  flake.modules.homeManager.system-desktop =
+    { pkgs, ... }:
+    {
+      imports = with inputs.self.modules.homeManager; [
+        system-cli
 
-      cli-pass
-      cli-players
-      cli-mpd
+        cli-pass
+        cli-players
+        cli-mpd
 
-      desktop-general
-      desktop-easyeffects
-    ];
-    home.packages = with pkgs; [
-      lm_sensors
-      lsof
-      usbutils
-      pciutils
-    ];
-  };
+        desktop-general
+        desktop-easyeffects
+      ];
+      home.packages = with pkgs; [
+        lm_sensors
+        lsof
+        usbutils
+        pciutils
+      ];
+    };
 }

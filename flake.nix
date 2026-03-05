@@ -1,7 +1,8 @@
 # DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
     agenix = {
@@ -46,12 +47,12 @@
     };
     secrets = {
       flake = false;
-      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1";
+      url = "git+ssh://git@github.com/jyeno/secrets-me?ref=master&rev=4b5ef1d00874ef298348bb4a185b9d8f32d3a2bb&shallow=1";
     };
     stylix = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/stylix";
     };
-    systems.url = "github:nix-systems/default";
   };
+
 }

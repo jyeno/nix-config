@@ -1,15 +1,17 @@
-{inputs, ...}: {
-  flake.modules.homeManager.desktop-general = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
-    home = inputs.self.lib.mkIfPersistence config {
-      # home = {
-      persistence."${config.systemConstants.persistDir}" = {
-        directories =
-          [
+{ inputs, ... }:
+{
+  flake.modules.homeManager.desktop-general =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      home = inputs.self.lib.mkIfPersistence config {
+        # home = {
+        persistence."${config.systemConstants.persistDir}" = {
+          directories = [
             # TODO check if a program like steam (from system, not hm)
             ".local/share/Steam"
             ".config/wivrn"
@@ -52,7 +54,7 @@
             # ++ lib.optionals (lib.elem pkgs.materialgram config.home.packages) [
             #   ".local/share/materialgram"
           ];
+        };
       };
     };
-  };
 }

@@ -1,13 +1,15 @@
 {
-  flake.modules.nixos.services-docker = {pkgs, ...}: {
-    virtualisation.docker = {
-      enable = true;
-      autoPrune.enable = true;
-      rootless = {
+  flake.modules.nixos.services-docker =
+    { pkgs, ... }:
+    {
+      virtualisation.docker = {
         enable = true;
-        setSocketVariable = true;
+        autoPrune.enable = true;
+        rootless = {
+          enable = true;
+          setSocketVariable = true;
+        };
+        extraPackages = [ pkgs.docker-compose ];
       };
-      extraPackages = [pkgs.docker-compose];
     };
-  };
 }

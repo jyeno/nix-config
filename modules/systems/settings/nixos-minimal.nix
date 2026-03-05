@@ -15,7 +15,11 @@
       settings = {
         warn-dirty = true;
         auto-optimise-store = false;
-        experimental-features = ["nix-command" "flakes" "pipe-operators"];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+          "pipe-operators"
+        ];
         download-buffer-size = 1024 * 1024 * 1024;
         substituters = [
           "https://cache.nixos.org?priority=10"
@@ -38,21 +42,25 @@
     };
   };
 
-  flake.modules.homeManager.system-minimal = {config, ...}: {
-    home.homeDirectory = "/home/${config.home.username}";
-    home.stateVersion = "25.05";
-  };
-
-  perSystem = {
-    pkgs,
-    system,
-    ...
-  }: {
-    devShells.default = pkgs.mkShell {
-      packages = with pkgs; [
-        alejandra
-        pre-commit
-      ];
+  flake.modules.homeManager.system-minimal =
+    { config, ... }:
+    {
+      home.homeDirectory = "/home/${config.home.username}";
+      home.stateVersion = "25.05";
     };
-  };
+
+  perSystem =
+    {
+      pkgs,
+      system,
+      ...
+    }:
+    {
+      devShells.default = pkgs.mkShell {
+        packages = with pkgs; [
+          nixfmt
+          pre-commit
+        ];
+      };
+    };
 }

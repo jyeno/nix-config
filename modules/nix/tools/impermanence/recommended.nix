@@ -1,14 +1,15 @@
 {
-  flake.modules.nixos.impermanence = {
-    config,
-    pkgs,
-    lib,
-    ...
-  }: {
-    environment.persistence."${config.systemConstants.persistDir}" = {
-      hideMounts = true;
-      directories =
-        [
+  flake.modules.nixos.impermanence =
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      environment.persistence."${config.systemConstants.persistDir}" = {
+        hideMounts = true;
+        directories = [
           "/etc/ssh/"
           "/var/log"
           "/var/lib/nixos"
@@ -20,10 +21,10 @@
         ++ lib.optionals (config.networking.wireless.iwd.enable) [
           "/var/lib/iwd"
         ];
-      files = [
-        "/etc/machine-id"
-      ];
+        files = [
+          "/etc/machine-id"
+        ];
+      };
+      programs.fuse.userAllowOther = true;
     };
-    programs.fuse.userAllowOther = true;
-  };
 }

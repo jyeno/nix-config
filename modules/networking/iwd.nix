@@ -1,16 +1,16 @@
 {
-  flake.modules.nixos.iwd = {pkgs, ...}: {
-    networking.wireless.iwd = {
-      enable = true;
-      settings = {
-        General.EnableNetworkConfiguration = true;
-        IPv6.Enabled = true;
+  flake.modules.nixos.iwd =
+    { pkgs, ... }:
+    {
+      networking.wireless.iwd = {
+        enable = true;
         settings = {
-          Autoconnect = true;
+          General.EnableNetworkConfiguration = true;
+          IPv6.Enabled = true;
+          settings.Autoconnect = true;
         };
       };
     };
-  };
 }
 #sops.secrets."wireless.env" = {};
 #systemd.services.impermanenceIwdNetworks = {
@@ -45,4 +45,3 @@
 #};
 ## };
 #}
-

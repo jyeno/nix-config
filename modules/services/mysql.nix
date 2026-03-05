@@ -1,8 +1,10 @@
 {
-  flake.modules.nixos.services-mysql = {pkgs, ...}: {
-    services.mysql = {
-      enable = true;
-      package = pkgs.mariadb;
+  flake.modules.nixos.services-mysql =
+    { pkgs, ... }:
+    {
+      services.mysql = {
+        enable = true;
+        package = pkgs.mariadb;
+      };
     };
-  };
 }

@@ -1,4 +1,5 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   # setup of tools for dendritic pattern
 
   # Simplify Nix Flakes with the module system

@@ -1,4 +1,5 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   flake.modules.nixos.nirvana-todo = {
     # TODO check if disko not error out on boot
     imports = with inputs.self.modules.nixos; [
@@ -20,7 +21,12 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = ["fmask=0022" "dmask=0022" "noatime" "defaults"];
+                mountOptions = [
+                  "fmask=0022"
+                  "dmask=0022"
+                  "noatime"
+                  "defaults"
+                ];
               };
             };
             root = {

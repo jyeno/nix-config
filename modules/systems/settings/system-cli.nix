@@ -1,8 +1,10 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   # import all essential nix-tools which are used in all modules of a specific class
 
   flake.modules.nixos.system-cli = {
-    imports = with inputs.self.modules.nixos;
+    imports =
+      with inputs.self.modules.nixos;
       [
         system-minimal
         home-manager
@@ -22,7 +24,8 @@
   };
 
   flake.modules.homeManager.system-cli = {
-    imports = with inputs.self.modules.homeManager;
+    imports =
+      with inputs.self.modules.homeManager;
       [
         system-minimal
         cli-tools

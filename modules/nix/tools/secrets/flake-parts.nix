@@ -10,7 +10,7 @@
       inputs.home-manager.follows = "home-manager";
     };
     secrets = {
-      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1";
+      url = "git+ssh://git@github.com/jyeno/secrets-me?ref=master&rev=4b5ef1d00874ef298348bb4a185b9d8f32d3a2bb&shallow=1";
       flake = false;
       # It's also possible to directly depend on a local Git repository.
       # git-directory-example.url = "git+file:/path/to/repo?shallow=1";
