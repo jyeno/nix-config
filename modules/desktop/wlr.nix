@@ -7,7 +7,6 @@
     {
       pkgs,
       lib,
-      config,
       ...
     }:
     {
@@ -98,6 +97,8 @@
             notification-icon-size = 64;
             notification-body-image-height = 200;
             notification-body-image-width = 200;
+            notification-2fa-action = false;
+            notification-inline-replies = false;
 
             timeout = 5;
             timeout-critical = 0;
@@ -128,22 +129,22 @@
             };
           };
         };
-        swww.enable = true; # TODO stylix and awww
-        # wpaperd.enable = true;
-        # hyprpaper.enable = lib.mkDefault true;
+        # swww.enable = true; # TODO stylix and awww
+        wpaperd.enable = true;
+        hyprpaper.enable = false;
       };
-      systemd.user.services.awww = {
-        # TODO change binary to awww
-        Unit = {
-          Description = "Awww wallpaper daemon";
-          After = [ "wl-session.target" ];
-        };
-        Service = {
-          ExecStart = "${pkgs.swww}/bin/swww-daemon";
-          Restart = "always";
-        };
-        Install.WantedBy = [ "wl-session.target" ];
-      };
+      # systemd.user.services.awww = {
+      #   # TODO change binary to awww
+      #   Unit = {
+      #     Description = "Awww wallpaper daemon";
+      #     After = [ "wl-session.target" ];
+      #   };
+      #   Service = {
+      #     ExecStart = "${pkgs.swww}/bin/swww-daemon";
+      #     Restart = "always";
+      #   };
+      #   Install.WantedBy = [ "wl-session.target" ];
+      # };
 
       programs = {
         imv.enable = lib.mkDefault true;

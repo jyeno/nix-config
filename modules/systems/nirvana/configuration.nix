@@ -2,7 +2,6 @@
 {
   flake.modules.nixos.nirvana =
     {
-      lib,
       pkgs,
       modulesPath,
       ...
@@ -42,7 +41,7 @@
       };
 
       time.timeZone = "America/Sao_Paulo";
-      documentation.man.enable = false;
+      documentation.enable = false;
       security.sudo.wheelNeedsPassword = false;
 
       # fileSystems."/".neededForBoot = true;

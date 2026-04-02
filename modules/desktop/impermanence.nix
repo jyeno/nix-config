@@ -25,6 +25,10 @@
             ".cache/lm-studio"
             ".local/share/materialgram"
           ]
+          ++ lib.optionals (lib.elem pkgs.azahar config.home.packages) [
+            ".config/azahar-emu"
+            ".local/share/azahar-emu"
+          ]
           ++ lib.optionals (lib.elem pkgs.ryubing config.home.packages) [
             ".config/Ryujinx"
             # ]

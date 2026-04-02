@@ -74,7 +74,6 @@
           touchpad {
             tap
             dwt
-            natural-scroll
             accel-speed 0.2
             accel-profile "flat"
             scroll-method "two-finger"
@@ -92,7 +91,7 @@
           gaps 15
           center-focused-column "never"
 
-          default-column-width { proportion 0.38; }
+          default-column-width { proportion 0.43; }
           preset-column-widths {
             proportion 0.33333
             proportion 0.5

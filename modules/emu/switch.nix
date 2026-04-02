@@ -10,6 +10,7 @@
       imports = [ inputs.self.modules.homeManager.mutableFiles ];
       home.packages = [
         pkgs.ryubing
+        pkgs.azahar
       ];
 
       xdg.configFile."Ryujinx/system/Profiles.json" = {

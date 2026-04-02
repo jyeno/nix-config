@@ -21,9 +21,8 @@
             (self.factory.user "${username}" true)
             {
               nixos."${username}" = {
-                users.users."${username}".initialHashedPassword =
-                  "$y$j9T$QEk2jvCnblyKUNmkB0Z4o.$h4621Dq2jyNUrjP6AjYQWzQ/mvld783fd.6X5JQtm58";
                 users.users."${username}" = {
+                  initialHashedPassword = "$y$j9T$QEk2jvCnblyKUNmkB0Z4o.$h4621Dq2jyNUrjP6AjYQWzQ/mvld783fd.6X5JQtm58";
                   openssh.authorizedKeys.keys = [
                     (builtins.readFile ../../../extras/pubkeys/id_jyeno.pub)
                   ];
@@ -40,9 +39,7 @@
                     cli-tmux
                     cli-git
                     cli-nvf
-                    cli-players
 
-                    desktop-general
                     desktop-firefox
                     desktop-ghostty
                   ];

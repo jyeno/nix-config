@@ -30,8 +30,8 @@
           "ctrl+shift+right=next_tab"
           "ctrl+shift+right=next_tab"
           #clipboard
-          "ctrl+shift>c=copy_to_clipboard"
-          "ctrl+shift>v=paste_from_clipboard"
+          "ctrl+shift+c=copy_to_clipboard"
+          "ctrl+shift+v=paste_from_clipboard"
           "shift+insert=paste_from_selection"
           # quick tab switching
           "ctrl+tab=next_tab"
