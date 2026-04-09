@@ -94,6 +94,8 @@
               vesktop
               materialgram
               mumble
+              ffmpeg
+              libopus
               # zeal
             ];
           programs.git.settings.user = {

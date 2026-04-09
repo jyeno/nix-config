@@ -2,7 +2,6 @@
   flake.modules.nixos.impermanence =
     {
       config,
-      pkgs,
       lib,
       ...
     }:
@@ -17,6 +16,9 @@
         ]
         ++ lib.optionals config.networking.networkmanager.enable [
           "/etc/NetworkManager/system-connections"
+        ]
+        ++ lib.optionals config.services.tailscale.enable [
+          "/var/lib/tailscale"
         ]
         ++ lib.optionals config.networking.wireless.iwd.enable [
           "/var/lib/iwd"

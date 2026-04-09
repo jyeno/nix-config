@@ -14,17 +14,19 @@
           system-desktop
           impermanence
           secrets
-          iwd
+          # iwd
           stylix-jyeno
 
           jyeno
 
           services-glance
           services-tlp
+          services-tailscale
+          services-minidlna
 
           desktop-nvidia
           desktop-plasma
-          desktop-niri
+          # desktop-niri
         ]
         ++ [
           (modulesPath + "/installer/scan/not-detected.nix")
@@ -65,6 +67,7 @@
       networking = {
         hostName = "marga";
         useDHCP = false;
+        networkmanager.enable = true;
       };
       nixpkgs.hostPlatform = "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = true;

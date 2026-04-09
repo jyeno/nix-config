@@ -72,6 +72,11 @@
               wifi_more_cmd = "${ghostty} -e iwctl";
               vpn_more_cmd = "${ghostty} -e iwctl";
               bluetooth_more_cmd = "${ghostty} --command=bluetoothctl";
+              battery_format = "IconAndPercentage";
+              peripheral_battery_format = "Icon";
+              microphone_indicator_format = "IconAndPercentage";
+              network_indicator_format = "IconAndPercentage";
+              bluetooth_indicator_format = "Icon";
             };
 
             appearance = {

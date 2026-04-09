@@ -27,6 +27,7 @@
 
           services-podman
           services-glance
+          services-minidlna
           # services-wivrn
 
           desktop-amd
