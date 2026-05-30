@@ -15,7 +15,7 @@
             MANGOHUD_CONFIG = "full,core_load=0";
             ENABLE_VKBASALT = false;
             PROTON_USE_NTSYNC = true;
-            PROTON_USE_WOW64 = true;
+            # PROTON_USE_WOW64 = true;
             PROTON_ENABLE_HDR = true;
             PROTON_ENABLE_WAYLAND = true;
             PROTON_PREFER_SDL = true;

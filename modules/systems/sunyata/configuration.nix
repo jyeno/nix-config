@@ -35,7 +35,7 @@
           desktop-chromium
           desktop-niri
           # desktop-hyprland
-          # desktop-plasma
+          desktop-plasma
 
           gaming-general
           gaming-steam
