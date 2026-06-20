@@ -29,7 +29,46 @@
         localNetworkGameTransfers.openFirewall = true;
         gamescopeSession.enable = true;
         protontricks.enable = true;
-        extraCompatPackages = [ pkgs.proton-ge-bin ];
+        extraCompatPackages = [
+          pkgs.proton-ge-bin
+          (pkgs.callPackage (
+            {
+              lib,
+              fetchurl,
+              stdenvNoCC,
+            }:
+            let
+              name = "proton-cachyos-bin";
+              version = "11.0-20260601";
+              title = "Proton-CachyOS";
+              homepage = "https://github.com/CachyOS/proton-cachyos";
+              release = "cachyos-${version}-slr";
+              tarball = "proton-${release}-x86_64.tar.xz";
+              hash = "sha256-N2bcB4voaFNlRpAyQ6NvDCw/tSwfC5tHXuIPV0+puZs=";
+            in
+            stdenvNoCC.mkDerivation {
+              inherit name version;
+
+              src = fetchurl {
+                inherit hash;
+                url = "${homepage}/releases/download/${release}/${tarball}";
+              };
+
+              buildCommand = ''
+                mkdir -p $out/bin
+                tar -C $out/bin --strip=1 -x -f $src
+                sed -i -r 's|"proton-.*"|"${title}"|' $out/bin/compatibilitytool.vdf
+              '';
+
+              meta = with lib; {
+                inherit homepage;
+                description = "Compatibility tool for Steam Play based" + " on Wine and additional components";
+                license = licenses.bsd3;
+                platforms = [ "x86_64-linux" ];
+              };
+            }
+          ) { })
+        ];
       };
     };
 }

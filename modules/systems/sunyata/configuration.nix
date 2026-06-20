@@ -35,7 +35,7 @@
           desktop-chromium
           desktop-niri
           # desktop-hyprland
-          desktop-plasma
+          # desktop-plasma
 
           gaming-general
           gaming-steam
@@ -56,6 +56,7 @@
         mouse.accelProfile = "flat";
       };
       nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+      services.fwupd.enable = true;
 
       boot = {
         initrd = {
@@ -71,6 +72,7 @@
             "dm-snapshot"
             "amdgpu"
           ];
+          systemd.enable = false;
         };
         kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
         kernelModules = [
