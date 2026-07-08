@@ -17,7 +17,7 @@
             ghostty = lib.getExe pkgs.ghostty;
             pavucontrol = lib.getExe pkgs.pavucontrol;
             lockCmd = "${lib.getExe pkgs.hyprlock} &";
-            clockFormat = "%a %d %b %R";
+            clockFormat = "%d/%m/%Y %I:%M %p";
             fuzzel = lib.getExe pkgs.fuzzel;
             cliphist = lib.getExe pkgs.cliphist;
             clipboard = "selected=$(${cliphist} list | ${fuzzel} -d) && echo \"$selected\" | ${cliphist} decode | wl-copy";
@@ -46,6 +46,7 @@
                   "Privacy"
                   "Settings"
                 ]
+                "Tempo"
               ];
             };
             workspaces = {
@@ -61,7 +62,12 @@
               temp_alert_threshold = 80;
             };
 
-            clock.format = clockFormat;
+            tempo.clock_format = clockFormat;
+            notifications = {
+              format = "%H:%M";
+              show_timestamps = true;
+              show_bodies = true;
+            };
 
             media_player.max_title_length = textCap;
 

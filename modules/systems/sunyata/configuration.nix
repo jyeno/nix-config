@@ -1,10 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs = {
-    # include nix-cachyos-kernel only to this machine
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-  };
-
   flake.modules.nixos.sunyata =
     {
       pkgs,
@@ -22,6 +17,8 @@
           secrets
           iwd
           stylix-jyeno
+          nyx
+          lowlatency
 
           jyeno
 
@@ -32,7 +29,7 @@
 
           desktop-amd
           desktop-wlr
-          desktop-chromium
+          # desktop-chromium
           desktop-niri
           # desktop-hyprland
           # desktop-plasma
@@ -55,7 +52,6 @@
         enable = true;
         mouse.accelProfile = "flat";
       };
-      nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
       services.fwupd.enable = true;
 
       boot = {
@@ -72,9 +68,9 @@
             "dm-snapshot"
             "amdgpu"
           ];
-          systemd.enable = false;
+          # systemd.enable = false;
         };
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+        kernelPackages = pkgs.linuxPackages_cachyos-lto-znver4;
         kernelModules = [
           "kvm-amd"
           "amdgpu"
@@ -83,9 +79,14 @@
         kernelParams = [
           "quiet"
           "clearcpuid=umip"
+          "pcie_aspm=off"
+          "amdgpu.gpu_recovery=1"
+          "amdgpu.runpm=0"
         ];
         extraModulePackages = [ ];
       };
+
+      # chaotic.hdr.enable = true;
 
       swapDevices = [ ];
 

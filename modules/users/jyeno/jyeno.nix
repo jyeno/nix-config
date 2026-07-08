@@ -52,7 +52,7 @@
               cli-newsboat
 
               desktop-firefox
-              desktop-chromium
+              # desktop-chromium
               desktop-qutebrowser
               desktop-ghostty
               emu-switch

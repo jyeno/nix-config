@@ -26,6 +26,7 @@
               "input"
             ]
             ++ ifTheyExist [
+              "uinput"
               "network"
               "seat"
               "wireshark"

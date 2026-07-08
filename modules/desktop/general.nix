@@ -36,8 +36,8 @@
             obs-vkcapture
           ];
         })
-        pkgs.lsfg-vk
-        pkgs.lsfg-vk-ui
+        # pkgs.lsfg-vk
+        # pkgs.lsfg-vk-ui
       ];
       security.polkit.extraConfig = ''
         polkit.addRule(function(action, subject) {
