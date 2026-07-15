@@ -4,7 +4,7 @@
       languages = {
         enableTreesitter = true;
         enableFormat = true;
-        enableDAP = true;
+        enableDAP = false;
         enableExtraDiagnostics = true;
         nix = {
           enable = true;
@@ -18,7 +18,7 @@
           };
         };
         zig.enable = true;
-        clang.enable = true;
+        # clang.enable = true;
         sql.enable = true;
         qml.enable = true;
         rust.enable = true;

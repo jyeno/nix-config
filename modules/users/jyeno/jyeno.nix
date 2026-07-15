@@ -71,6 +71,7 @@
             ++ lib.optionals plasmaEnabled [
               desktop-plasma
             ];
+          home.pointerCursor.enable = true;
           home.packages =
             with pkgs;
             [
@@ -81,6 +82,7 @@
               p7zip
               strace
               nix-output-monitor
+              zmx
             ]
             ++ lib.optionals graphicsEnabled [
               age

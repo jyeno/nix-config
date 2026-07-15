@@ -36,10 +36,7 @@
     import-tree.url = "github:vic/import-tree";
     low-latency-layer.url = "github:nmetschke/nixos-low-latency-layer";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nvf.url = "github:notashelf/nvf";
     plasma-manager = {
       url = "github:nix-community/plasma-manager/trunk";
       inputs.nixpkgs.follows = "nixpkgs";

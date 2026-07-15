@@ -46,23 +46,23 @@
       imports = [
         inputs.self.modules.homeManager.plasma-manager
       ];
-      programs.konsole = {
-        enable = true; # or maybe not
-        defaultProfile = "${username}";
-        profiles."${username}".extraConfig = {
-          Scrolling = {
-            HistorySize = 100000;
-            ScrollFullPage = 1;
-          };
-        };
-        extraConfig = {
-          KonsoleWindow.RemoveWindowTitleBarAndFrame = true;
-          TabBar = {
-            NewTabBehavior = "PutNewTabAfterCurrentTab";
-            TabBarVisibility = "AlwaysHideTabBar";
-          };
-        };
-      };
+      # programs.konsole = {
+      #   enable = true; # or maybe not
+      #   defaultProfile = "${username}";
+      #   profiles."${username}".extraConfig = {
+      #     Scrolling = {
+      #       HistorySize = 100000;
+      #       ScrollFullPage = 1;
+      #     };
+      #   };
+      #   extraConfig = {
+      #     KonsoleWindow.RemoveWindowTitleBarAndFrame = true;
+      #     TabBar = {
+      #       NewTabBehavior = "PutNewTabAfterCurrentTab";
+      #       TabBarVisibility = "AlwaysHideTabBar";
+      #     };
+      #   };
+      # };
 
       programs.plasma = {
         enable = true;

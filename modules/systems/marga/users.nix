@@ -57,9 +57,9 @@
         ) users)
         ++ [
           {
-            nixos.marga.imports = builtins.map (
-              username: (builtins.getAttr "${username}" self.modules.nixos)
-            ) users;
+            # nixos.marga.imports = builtins.map (
+            #   username: (builtins.getAttr "${username}" self.modules.nixos)
+            # ) users;
           }
         ]
       );

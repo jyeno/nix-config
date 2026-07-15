@@ -16,6 +16,7 @@
           secrets
           # iwd
           stylix-jyeno
+          nyx
 
           jyeno
 
@@ -26,6 +27,9 @@
 
           desktop-nvidia
           desktop-plasma
+
+          gaming-general
+          gaming-steam
           # desktop-niri
         ]
         ++ [
@@ -44,7 +48,7 @@
           ];
           kernelModules = [ "dm-snapshot" ];
         };
-        kernelPackages = pkgs.linuxPackages_latest;
+        kernelPackages = pkgs.linuxPackages_cachyos;
         kernelModules = [ "kvm-amd" ];
         kernelParams = [ "nvidia-drm.fbdev=1" ];
         extraModulePackages = [ ];
