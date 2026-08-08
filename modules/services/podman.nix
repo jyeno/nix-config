@@ -13,7 +13,7 @@
         oci-containers.backend = "podman";
         containers = {
           enable = true;
-          registries.search = [ "docker.io" ];
+          registries.settings.search = [ "docker.io" ];
         };
         podman = {
           enable = true;
