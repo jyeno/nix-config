@@ -8,7 +8,7 @@
           port = 25598;
           hostname = "Nordeste do Sul (Gameplays)";
           sv_motd = "cabouse";
-          sv_public = 0;
+          sv_public = 1;
           skill = 5;
           g_grappling_hook = 1;
         };
@@ -16,7 +16,7 @@
           exec ruleset-overkill.cfg
         '';
         appendConfig = lib.mkDefault ''
-          bot_number 6
+          bot_number 0
           g_powerups 0
           g_pickup_items 0
 

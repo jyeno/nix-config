@@ -31,6 +31,10 @@
           ]
           ++ lib.optionals (lib.elem pkgs.ryubing config.home.packages) [
             ".config/Ryujinx"
+          ]
+          ++ lib.optionals (lib.elem pkgs.eden config.home.packages) [
+            ".config/eden"
+            ".local/share/eden"
             # ]
             # ++ lib.optionals (lib.elem pkgs.wivrn config.home.packages) [
             #   ".config/wivrn"

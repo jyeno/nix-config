@@ -19,7 +19,7 @@
           grep = "rg --color=auto";
           cat = "bat --style=plain --paging=never";
           la = "eza -a --color=always --group-directories-first --grid --icons";
-          ls = "eza -al --color=always --group-directories-first --grid --icons";
+          ls = "eza --color=always --group-directories-first --grid --icons";
           ll = "eza -l --color=always --group-directories-first --octal-permissions --icons";
           lt = "eza -aT --color=always --group-directories-first --icons";
           tree = "eza -T --all --icons --git-ignore";

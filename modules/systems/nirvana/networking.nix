@@ -3,7 +3,7 @@
     networking =
       let
         portsFrom = 25500;
-        portsTo = 25500;
+        portsTo = 25600;
       in
       {
         hostName = "nirvana";
