@@ -18,11 +18,11 @@
         shellAliases = {
           grep = "rg --color=auto";
           cat = "bat --style=plain --paging=never";
-          la = "eza -a --color=always --group-directories-first --grid --icons";
-          ls = "eza --color=always --group-directories-first --grid --icons";
-          ll = "eza -l --color=always --group-directories-first --octal-permissions --icons";
-          lt = "eza -aT --color=always --group-directories-first --icons";
-          tree = "eza -T --all --icons --git-ignore";
+          la = "eza -a --color=always --group-directories-first --grid";
+          ls = "eza --color=always --group-directories-first --grid";
+          ll = "eza -l --color=always --group-directories-first --octal-permissions";
+          lt = "eza -aT --color=always --group-directories-first";
+          tree = "eza -T --all --git-ignore";
           s = "fzf";
           top = "${pkgs.lib.getExe pkgs.btop}";
           down = "aria2c (wl-paste)";
