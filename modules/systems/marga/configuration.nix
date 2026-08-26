@@ -25,7 +25,7 @@
           services-tailscale
           services-minidlna
 
-          desktop-nvidia
+          # desktop-nvidia
           desktop-plasma
 
           gaming-general

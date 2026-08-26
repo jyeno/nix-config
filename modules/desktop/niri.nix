@@ -137,7 +137,7 @@
                     {
                       name = "${prefix}${builtins.concatStringsSep "+" bind.keys}";
                       value = {
-                        spawn = [ "${bind.cmd}" ];
+                        spawn = lib.splitString " " bind.cmd;
                       };
                     }
                   ) config.systemConstants.keyboard.binds

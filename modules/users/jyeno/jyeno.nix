@@ -40,6 +40,7 @@
               cli-nvf
             ]
             ++ lib.optionals graphicsEnabled [
+              cli-crush
               cli-pass
               cli-players
               cli-mpd
@@ -71,7 +72,7 @@
             ++ lib.optionals plasmaEnabled [
               desktop-plasma
             ];
-          home.pointerCursor.enable = true;
+          home.pointerCursor.enable = graphicsEnabled;
           home.packages =
             with pkgs;
             [
