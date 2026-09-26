@@ -35,6 +35,7 @@
         ACTION=="add|change", KERNEL=="sd[a-z][a-z]*|mmcblk[0-9][0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
 
         ACTION=="add|change", KERNEL=="nvme[0-9][0-9]*n[0-9][0-9]*", ATTR{queue/scheduler}="none"
+        KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
       '';
     };
 }

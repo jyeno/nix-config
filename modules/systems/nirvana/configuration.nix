@@ -15,6 +15,7 @@
           jyeno
 
           services-podman
+          services-jellyfin
 
           gaming-xonotic-server
         ]

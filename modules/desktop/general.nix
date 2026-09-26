@@ -26,18 +26,19 @@
       # TODO move
       services.fstrim.enable = true;
       services.bpftune.enable = true;
+      hardware.uinput.enable = true;
 
-      environment.systemPackages = [
-        (pkgs.wrapOBS {
-          plugins = with pkgs.obs-studio-plugins; [
+      environment.systemPackages = with pkgs; [
+        (wrapOBS {
+          plugins = with obs-studio-plugins; [
             obs-backgroundremoval
             obs-pipewire-audio-capture
             obs-source-clone
             obs-vkcapture
           ];
         })
-        # pkgs.lsfg-vk
-        # pkgs.lsfg-vk-ui
+        lsfg-vk
+        lsfg-vk-ui
       ];
       security.polkit.extraConfig = ''
         polkit.addRule(function(action, subject) {

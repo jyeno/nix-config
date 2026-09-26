@@ -1,12 +1,15 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.desktop-plasma = {
+  flake.modules.nixos.desktop-plasma = { lib, ... }: {
     # TODO check bug https://github.com/nix-community/stylix/issues/1092
     services.desktopManager.plasma6.enable = true;
 
-    services.displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
+    services.displayManager = {
+      defaultSession = lib.mkForce "plasma";
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
     };
   };
 
@@ -18,7 +21,7 @@
       ...
     }:
     let
-      inherit (config.home) username;
+      # inherit (config.home) username;
       userBinds = builtins.listToAttrs (
         builtins.map (
           bind:
@@ -63,7 +66,6 @@
       #     };
       #   };
       # };
-
       programs.plasma = {
         enable = true;
         overrideConfig = true;
@@ -98,6 +100,7 @@
                     "applications:com.mitchellh.ghostty.desktop"
                     "applications:steam.desktop"
                     "applications:io.github.kukuruzka165.materialgram.desktop"
+                    "applications:firefox.desktop"
                     "applications:org.qutebrowser.qutebrowser.desktop"
                   ];
                   behavior.showTasks = {

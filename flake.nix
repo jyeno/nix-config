@@ -35,6 +35,10 @@
     };
     import-tree.url = "github:vic/import-tree";
     low-latency-layer.url = "github:nmetschke/nixos-low-latency-layer";
+    niri-spicy = {
+      url = "github:losnoco/niri?ref=spicy-main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nvf.url = "github:notashelf/nvf";
     plasma-manager = {
@@ -43,6 +47,10 @@
     };
     secrets = {
       url = "git+ssh://git@github.com/jyeno/secrets-me?ref=master&rev=4b5ef1d00874ef298348bb4a185b9d8f32d3a2bb&shallow=1";
+      flake = false;
+    };
+    smithay-spicy = {
+      url = "github:losnoco/smithay?ref=spicy-master";
       flake = false;
     };
     stylix = {

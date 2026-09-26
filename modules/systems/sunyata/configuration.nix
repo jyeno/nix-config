@@ -24,7 +24,8 @@
 
           services-podman
           services-glance
-          services-minidlna
+          # services-minidlna
+          # services-jellyfin
           # services-wivrn
 
           desktop-amd
@@ -32,7 +33,7 @@
           # desktop-chromium
           desktop-niri
           # desktop-hyprland
-          # desktop-plasma
+          desktop-plasma
 
           gaming-general
           gaming-steam

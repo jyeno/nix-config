@@ -40,7 +40,7 @@
               cli-nvf
             ]
             ++ lib.optionals graphicsEnabled [
-              cli-crush
+              # cli-crush
               cli-pass
               cli-players
               cli-mpd

@@ -1,5 +1,8 @@
-{
-  flake.modules.homeManager.cli-crush = {
+{ inputs, ... }: {
+  flake.modules.homeManager.cli-crush = { config, ... }: {
+    imports = [
+      inputs.self.modules.homeManager.secrets
+    ];
     programs.crush = {
       enable = true;
       settings = {
@@ -10,7 +13,7 @@
         providers.zai = {
           # type = "";
           # base_url = "";
-          api_key = "$(cat /run/agenix/jyeno-api)";
+          api_key = "$(cat ${config.age.secrets.jyeno-api.path})";
           models = [
             {
               id = "glm-5.2";

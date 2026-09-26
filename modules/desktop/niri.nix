@@ -1,10 +1,32 @@
 {
-  flake.modules.nixos.desktop-niri = {
-    programs.niri = {
-      enable = true;
-      # package = self.packages.${pkgs.stdenv.hostPlatform.system}.jniri;
+  inputs,
+  ...
+}:
+{
+  flake.modules.nixos.desktop-niri =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = [ pkgs.shaderc ];
+      programs.niri = {
+        package = inputs.niri-spicy.packages.${pkgs.stdenv.hostPlatform.system}.niri.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.cmake
+            pkgs.git
+            pkgs.python3
+          ];
+          env = (old.env or { }) // {
+            CMAKE_POLICY_VERSION_MINIMUM = "3.5";
+          };
+          postUnpack =
+            (old.postUnpack or "")
+            + ''
+              cp -r --no-preserve=mode,ownership ${inputs.smithay-spicy} $sourceRoot/../smithay
+              chmod -R u+w $sourceRoot/../smithay
+            '';
+        });
+        enable = true;
+      };
     };
-  };
 
   flake.modules.homeManager.desktop-niri =
     {
@@ -15,6 +37,12 @@
     {
       wayland.windowManager.niri = {
         enable = true;
+        checkConfig = false;
+        extraConfig = ''
+          output "DP-1" {
+            hdr
+          }
+        '';
         settings =
           let
             inherit (config.systemConstants.keyboard) xkb;
