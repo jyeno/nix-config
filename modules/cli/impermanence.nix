@@ -35,6 +35,9 @@
             ++ lib.optionals (lib.elem pkgs.pass config.home.packages) [
               (privateDir ".password-store")
             ]
+            ++ lib.optionals (lib.elem pkgs.concord config.home.packages) [
+              (privateDir ".local/state/concord")
+            ]
             ++ lib.optionals (lib.elem pkgs.direnv config.home.packages) [
               (privateDir ".local/share/direnv")
             ]

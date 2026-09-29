@@ -44,6 +44,7 @@
               cli-pass
               cli-players
               cli-mpd
+              cli-concord
 
               desktop-general
               cli-gpg
