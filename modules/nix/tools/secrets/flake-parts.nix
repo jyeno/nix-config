@@ -1,0 +1,18 @@
+{
+  # age-encrypted secrets for NixOS / Darwin and Home Manager
+  # https://github.com/ryantm/agenix
+
+  flake-file.inputs = {
+    agenix = {
+      url = "github:ryantm/agenix";
+      # url = "github:yaxitech/ragenix"; # rust drop-in replacment
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    secrets = {
+      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1";
+      flake = false;
+      # It's also possible to directly depend on a local Git repository.
+      # git-directory-example.url = "git+file:/path/to/repo?shallow=1";
+    };
+  };
+}

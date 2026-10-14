@@ -1,77 +1,62 @@
+# DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
+# Use `nix run .#write-flake` to regenerate it.
 {
-  description = "jyeno's flake config";
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
-    impermanence = {
-      url = "github:nix-community/impermanence";
+  inputs = {
+    agenix = {
+      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager/trunk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland = {
-      type = "git";
-      url = "https://github.com/hyprwm/Hyprland";
-      submodules = true;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # my secrets repo1
-    nix-secrets = {
-      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1&ref=master";
+    flake-file.url = "github:vic/flake-file";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    import-tree.url = "github:vic/import-tree";
+    low-latency-layer.url = "github:nmetschke/nixos-low-latency-layer";
+    niri-spicy = {
+      url = "github:losnoco/niri?ref=spicy-main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nvf.url = "github:notashelf/nvf";
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager/trunk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    secrets = {
+      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1";
       flake = false;
     };
-  };
-
-  outputs = inputs: let
-    inherit (inputs.nixpkgs) legacyPackages;
-    localLib = import ./lib {inherit inputs;};
-    discoveredHosts = localLib.mapHosts ./hosts;
-    discoveredNixosModules = with localLib; (discoverModules ./modules/nixos) // (discoverModules ./modules/common);
-    discoveredHomeModules = localLib.discoverModules ./modules/hm;
-    discoveredPackages = localLib.mapPackages ./pkgs;
-  in {
-    lib = localLib;
-    nixosModules = discoveredNixosModules;
-    homeModules = discoveredHomeModules;
-    packages = localLib.forAllSystems (
-      system: let
-        pkgs = legacyPackages.${system};
-        mapPkgs = builtins.mapAttrs (name: path: pkgs.callPackage path {inherit system;});
-      in
-        mapPkgs discoveredPackages
-    );
-    nixosConfigurations =
-      localLib.genHosts {
-        specialArgs = {inherit inputs localLib;};
-        inherit discoveredNixosModules discoveredHomeModules;
-        genUsers = true;
-      }
-      discoveredHosts;
+    smithay-spicy = {
+      url = "github:losnoco/smithay?ref=spicy-master";
+      flake = false;
+    };
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wrappers = {
+      url = "github:BirdeeHub/nix-wrapper-modules";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }
