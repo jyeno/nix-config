@@ -1,4 +1,4 @@
-# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
@@ -6,10 +6,7 @@
   inputs = {
     agenix = {
       url = "github:ryantm/agenix";
-      inputs = {
-        home-manager.follows = "home-manager";
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     disko = {
@@ -46,7 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     secrets = {
-      url = "git+ssh://git@github.com/jyeno/secrets-me?ref=master&rev=4b5ef1d00874ef298348bb4a185b9d8f32d3a2bb&shallow=1";
+      url = "git+ssh://git@github.com/jyeno/secrets-me?shallow=1";
       flake = false;
     };
     smithay-spicy = {

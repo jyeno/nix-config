@@ -24,8 +24,7 @@
 
           services-podman
           services-glance
-          # services-minidlna
-          # services-jellyfin
+          services-tailscale
           # services-wivrn
 
           desktop-amd
@@ -69,7 +68,6 @@
             "dm-snapshot"
             "amdgpu"
           ];
-          # systemd.enable = false;
         };
         kernelPackages = pkgs.linuxPackages_cachyos-lto-znver4;
         kernelModules = [
@@ -85,6 +83,8 @@
           "amdgpu.runpm=0"
         ];
         extraModulePackages = [ ];
+        # allows building aarch64 locally
+        binfmt.emulatedSystems = [ "aarch64-linux" ];
       };
 
       # chaotic.hdr.enable = true;

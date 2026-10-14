@@ -6,6 +6,7 @@
 
   flake.modules.nixos.system-minimal = {
     nixpkgs.config.allowUnfree = true;
+    boot.zfs.forceImportRoot = false;
     system.stateVersion = "25.05";
 
     users.mutableUsers = false;

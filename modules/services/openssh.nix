@@ -7,6 +7,7 @@
       ...
     }:
     {
+      networking.firewall.allowedTCPPorts = [ 22 ];
       services = {
         openssh = {
           enable = true;
@@ -20,7 +21,15 @@
                 }
               ];
             in
-            if keys != { } then keys else [ ];
+            if keys != { } then
+              keys
+            else
+              [
+                {
+                  path = "/etc/ssh/ssh_host_ed25519_key";
+                  type = "ed25519";
+                }
+              ];
           settings = {
             PermitRootLogin = "no";
             PasswordAuthentication = false;

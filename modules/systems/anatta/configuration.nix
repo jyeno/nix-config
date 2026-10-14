@@ -2,6 +2,7 @@
 {
   flake.modules.nixos.anatta =
     {
+      lib,
       modulesPath,
       pkgs,
       ...
@@ -15,8 +16,10 @@
           jyeno
 
           services-podman
+          services-bluetooth
           services-tailscale
-          services-minidlna
+
+          zram
         ]
         ++ [
           (modulesPath + "/installer/sd-card/sd-image-aarch64.nix")
@@ -24,7 +27,8 @@
 
       # GPU / framebuffer
 
-      # Bootloader (Pi firmware handles boot)
+      # Bootloader (Pi firmware loads U-Boot, which reads the extlinux config
+      # populated by sd-image-aarch64)
       boot = {
         initrd.availableKernelModules = [
           "xhci_pci"
@@ -32,15 +36,11 @@
           "usb_storage"
         ];
         kernelModules = [ "vc4" ];
+        # system-cli enables systemd-boot (EFI); the Pi is not EFI, boot via extlinux instead
         loader = {
-          grub.enable = false;
-          raspberryPi = {
-            enable = true;
-            version = 3;
-            # firmwareConfig = ''
-            #   core_freq=250
-            # '';
-          };
+          systemd-boot.enable = lib.mkForce false;
+          efi.canTouchEfiVariables = lib.mkForce false;
+          generic-extlinux-compatible.enable = true;
         };
 
         # Kernel
@@ -65,9 +65,8 @@
         wireless = {
           enable = true;
           # TODO move to secrets secretsFile = config.age.secrets.wifi-password.path;
-          networks."home" = {
-            ssid = "my-network";
-            pskRaw = "ext:psk_home";
+          networks."SSID" = {
+            psk = "rawPasswordHere";
           };
         };
 
@@ -79,8 +78,6 @@
 
       # Locale
       i18n.defaultLocale = "en_US.UTF-8";
-
-      # TODO Create a user jlatoo
 
       # Allow sudo for wheel
       security.sudo.wheelNeedsPassword = false;
